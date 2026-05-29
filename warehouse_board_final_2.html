@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Warehouse Board — Daniel Rodriguez</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.10.0/dist/tabler-icons.min.css"/>
+<style>
+:root{
+  --bg:#f5f4f1;--surface:#ffffff;--border:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --text:#1a1a18;--text-muted:#6b6b67;--text-hint:#9a9a96;
+  --radius-md:8px;--radius-lg:14px;
+  --green:#1D9E75;--green-bg:#EAF3DE;--green-text:#27500A;
+  --amber:#BA7517;--amber-bg:#FAEEDA;--amber-text:#633806;
+  --red:#E24B4A;--red-bg:#FCEBEB;--red-text:#A32D2D;
+  --blue:#378ADD;--blue-bg:#E6F1FB;--blue-text:#0C447C;
+  --purple:#7F77DD;--purple-bg:#EEEDFE;--purple-text:#3C3489;
+  --gray-bg:#F1EFE8;--gray-text:#444441;
+  --teal-bg:#E1F5EE;--teal-text:#085041;
+  --coral-bg:#FAECE7;--coral-text:#712B13;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.topbar{background:#1a1a18;color:#f5f4f1;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+.topbar-logo{font-size:18px;font-weight:600;letter-spacing:-0.02em;color:#f5f4f1}
+.topbar-sub{font-size:12px;color:rgba(255,255,255,0.45)}
+.topbar-date{font-size:12px;color:rgba(255,255,255,0.55);background:rgba(255,255,255,0.08);border-radius:var(--radius-md);padding:5px 12px}
+.container{max-width:1100px;margin:0 auto;padding:2rem 1.5rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.full{grid-column:1/-1}
+.card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:0.5px solid var(--border);flex-wrap:wrap}
+.ch i{font-size:18px}
+.ch h2{font-size:14px;font-weight:600;color:var(--text);flex:1;letter-spacing:-0.01em}
+.badge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;display:inline-block;white-space:nowrap}
+.b-green{background:var(--green-bg);color:var(--green-text)}
+.b-amber{background:var(--amber-bg);color:var(--amber-text)}
+.b-red{background:var(--red-bg);color:var(--red-text)}
+.b-blue{background:var(--blue-bg);color:var(--blue-text)}
+.b-purple{background:var(--purple-bg);color:var(--purple-text)}
+.b-gray{background:var(--gray-bg);color:var(--gray-text)}
+.b-teal{background:var(--teal-bg);color:var(--teal-text)}
+.safety-box{background:var(--amber-bg);border-left:3px solid var(--amber);padding:14px 16px;margin-bottom:12px}
+.safety-box .s-title{font-size:15px;font-weight:600;color:#412402;margin-bottom:6px}
+.safety-box .s-detail{font-size:13px;color:var(--amber-text);line-height:1.65}
+.ack-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:12px}
+.ack-btn{display:flex;align-items:center;gap:8px;padding:8px 12px;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);cursor:pointer;background:var(--bg);font-size:13px;color:var(--text);font-family:inherit;transition:all 0.15s}
+.ack-btn.acked{background:var(--green-bg);border-color:#97C459;color:var(--green-text)}
+.ack-btn i{font-size:16px}
+.ack-summary{font-size:12px;color:var(--text-muted);margin-top:10px}
+.metric-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:16px}
+.met{background:var(--bg);border-radius:var(--radius-md);padding:12px 14px}
+.met .lbl{font-size:11px;color:var(--text-muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.04em}
+.met .val{font-size:24px;font-weight:600;color:var(--text);letter-spacing:-0.02em}
+.goal-bar-wrap{margin:12px 0 6px}
+.goal-bar-track{width:100%;height:24px;background:var(--bg);border-radius:var(--radius-md);overflow:hidden}
+.goal-bar-fill{height:100%;border-radius:var(--radius-md);transition:width 0.5s;display:flex;align-items:center;justify-content:flex-end;padding-right:10px}
+.goal-bar-pct{font-size:12px;font-weight:500;color:#fff}
+.goal-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-top:5px}
+.goal-edit{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.goal-edit input{font-size:13px;padding:6px 8px;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);background:var(--bg);color:var(--text);width:90px}
+.perf-hdr,.perf-row{display:grid;grid-template-columns:34px 1fr 62px 62px 62px;gap:8px;align-items:center}
+.perf-hdr{padding:0 0 8px;border-bottom:0.5px solid var(--border-mid);margin-bottom:2px}
+.perf-row{padding:8px 0;border-bottom:0.5px solid var(--border)}
+.perf-row:last-child{border-bottom:none}
+.col-lbl{font-size:11px;font-weight:600;color:var(--text-muted);text-align:center;text-transform:uppercase;letter-spacing:0.04em}
+.perf-input{font-size:13px;padding:5px 4px;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);background:var(--bg);color:var(--text);width:100%;text-align:center}
+.perf-input:focus{outline:none;border-color:var(--blue)}
+.row-total{font-size:14px;font-weight:600;color:var(--text);text-align:center}
+.av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.av0{background:var(--blue-bg);color:var(--blue-text)}
+.av1{background:var(--teal-bg);color:var(--teal-text)}
+.av2{background:var(--purple-bg);color:var(--purple-text)}
+.av3{background:var(--amber-bg);color:var(--amber-text)}
+.av4{background:var(--coral-bg);color:var(--coral-text)}
+.row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:0.5px solid var(--border)}
+.row:last-child{border-bottom:none}
+.txt{font-size:14px;color:var(--text)}
+.txt-sm{font-size:13px;color:var(--text-muted)}
+.txt-xs{font-size:12px;color:var(--text-muted)}
+.bold{font-weight:600}
+.tog{font-size:12px;color:var(--text-muted);cursor:pointer;display:inline-flex;align-items:center;gap:5px;margin-top:12px;padding:5px 0;user-select:none;border-bottom:1px dashed var(--border-mid)}
+.tog:hover{color:var(--text)}
+.add-form{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.add-form input,.add-form select,.add-form textarea{font-size:13px;padding:8px 10px;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);background:var(--bg);color:var(--text);width:100%;font-family:inherit}
+.add-form input:focus,.add-form select:focus,.add-form textarea:focus{outline:none;border-color:var(--blue)}
+.add-form textarea{resize:vertical;min-height:60px}
+.btn{font-size:13px;font-weight:500;padding:8px 16px;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);background:var(--text);color:var(--bg);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:opacity 0.15s;font-family:inherit}
+.btn:hover{opacity:0.85}
+.btn-ghost{background:transparent;color:var(--text)}
+.btn-ghost:hover{background:var(--bg);opacity:1}
+.hidden{display:none}
+.del{background:none;border:none;cursor:pointer;color:var(--text-hint);font-size:14px;padding:3px 5px;border-radius:5px;flex-shrink:0}
+.del:hover{color:var(--red-text);background:var(--red-bg)}
+.err-item,.kudo-item,.ann-item{padding:10px 0;border-bottom:0.5px solid var(--border)}
+.err-item:last-child,.kudo-item:last-child,.ann-item:last-child{border-bottom:none}
+.status-pill{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;cursor:pointer;border:none;font-family:inherit}
+.s-open{background:var(--red-bg);color:var(--red-text)}
+.s-resolved{background:var(--green-bg);color:var(--green-text)}
+.s-inprog{background:var(--amber-bg);color:var(--amber-text)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.cleanup-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--border)}
+.cleanup-row:last-child{border-bottom:none}
+.cleanup-task{display:flex;align-items:center;gap:10px}
+.cleanup-icon{width:32px;height:32px;border-radius:var(--radius-md);background:var(--teal-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cleanup-icon i{font-size:16px;color:var(--teal-text)}
+.footer{text-align:center;padding:2rem;font-size:12px;color:var(--text-hint)}
+@media(max-width:600px){.topbar{padding:0 1rem}.container{padding:1rem}.perf-hdr,.perf-row{grid-template-columns:28px 1fr 48px 48px 48px;gap:4px}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:12px">
+    <i class="ti ti-building-warehouse" style="font-size:20px;color:#EAF3DE"></i>
+    <div>
+      <div class="topbar-logo">Warehouse Board</div>
+      <div class="topbar-sub">Daniel Rodriguez &nbsp;·&nbsp; Team of 5</div>
+    </div>
+  </div>
+  <div class="topbar-date" id="dateBadge"></div>
+</div>
+
+<div class="container">
+<div class="grid">
+
+  <!-- 1. DAILY SAFETY TOPIC -->
+  <div class="card full">
+    <div class="ch">
+      <i class="ti ti-shield-check" style="color:#854F0B"></i>
+      <h2>Daily safety topic</h2>
+      <span class="badge b-amber" id="safetyDate"></span>
+      <span class="badge b-amber" id="ackBadge">0 / 5 acknowledged</span>
+    </div>
+    <div class="safety-box">
+      <div class="s-title" id="safetyTopic">Forklift pedestrian zones — always check mirrors before reversing</div>
+      <div class="s-detail" id="safetyDetail">Remind all associates: sound the horn at every intersection. Pedestrians always have right of way. Yellow floor markings define safe walking corridors — keep them clear at all times.</div>
+    </div>
+    <div class="ack-grid" id="ackGrid"></div>
+    <div class="ack-summary" id="ackSummary"></div>
+    <div class="tog" id="togSafety"><i class="ti ti-edit"></i> Update today's safety topic</div>
+    <div class="add-form hidden" id="safetyForm">
+      <input type="text" id="sTopic" placeholder="Safety topic title…"/>
+      <textarea id="sDetail2" placeholder="Key points, reminders, or action items…"></textarea>
+      <button class="btn" onclick="saveSafety()"><i class="ti ti-shield-check"></i> Save topic</button>
+    </div>
+  </div>
+
+  <!-- 2. ANNOUNCEMENTS -->
+  <div class="card full">
+    <div class="ch">
+      <i class="ti ti-speakerphone" style="color:#993C1D"></i>
+      <h2>Announcements</h2>
+      <span class="badge b-gray" id="annCount">0</span>
+    </div>
+    <div id="annList"></div>
+    <div class="tog" id="togAnn"><i class="ti ti-plus"></i> Post announcement</div>
+    <div class="add-form hidden" id="annForm">
+      <select id="aTag"><option value="general">General</option><option value="info">Info</option><option value="urgent">Urgent</option><option value="resolved">Resolved</option></select>
+      <textarea id="aText" placeholder="Write your announcement…"></textarea>
+      <button class="btn" onclick="addAnn()"><i class="ti ti-send"></i> Post</button>
+    </div>
+  </div>
+
+  <!-- 3. DAILY TASKS -->
+  <div class="card full">
+    <div class="ch">
+      <i class="ti ti-checklist" style="color:#1D9E75"></i>
+      <h2>Daily tasks</h2>
+      <span class="badge b-green" id="taskCount">0 open</span>
+    </div>
+    <div id="taskList"></div>
+    <div class="tog" id="togTask"><i class="ti ti-plus"></i> Add task</div>
+    <div class="add-form hidden" id="taskForm">
+      <input type="text" id="tText" placeholder="Task description…"/>
+      <select id="tAssign">
+        <option value="">Assign to…</option>
+        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Natalie Orenday</option><option>Team</option>
+      </select>
+      <button class="btn" onclick="addTask()"><i class="ti ti-plus"></i> Add task</button>
+    </div>
+  </div>
+
+  <!-- 4. ERRORS & CORRECTIONS -->
+  <div class="card">
+    <div class="ch">
+      <i class="ti ti-alert-triangle" style="color:#A32D2D"></i>
+      <h2>Errors &amp; corrections</h2>
+      <span class="badge b-red" id="errCount">0 open</span>
+    </div>
+    <div id="errList"></div>
+    <div class="tog" id="togErr"><i class="ti ti-plus"></i> Log an error</div>
+    <div class="add-form hidden" id="errForm">
+      <select id="eType">
+        <option value="">Error type…</option>
+        <option>Wrong item picked</option><option>Mislabeled shipment</option><option>Damaged goods</option>
+        <option>Short shipment</option><option>Receiving error</option><option>Putaway error</option>
+        <option>Cycle count discrepancy</option><option>Carrier issue</option><option>Data entry error</option><option>Other</option>
+      </select>
+      <select id="eWho">
+        <option value="">Associate involved (optional)…</option>
+        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Natalie Orenday</option>
+      </select>
+      <textarea id="eDesc" placeholder="Describe the error and what was corrected…"></textarea>
+      <button class="btn" onclick="addError()"><i class="ti ti-alert-triangle"></i> Log error</button>
+    </div>
+  </div>
+
+  <!-- 5. STAFF KUDOS -->
+  <div class="card">
+    <div class="ch">
+      <i class="ti ti-star" style="color:#534AB7"></i>
+      <h2>Staff kudos</h2>
+      <span class="badge b-purple" id="kudoCount">0 today</span>
+    </div>
+    <div id="kudoList"></div>
+    <div class="tog" id="togKudo"><i class="ti ti-plus"></i> Give kudos</div>
+    <div class="add-form hidden" id="kudoForm">
+      <select id="kWho">
+        <option value="">Recognizing…</option>
+        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Natalie Orenday</option><option>The whole team</option>
+      </select>
+      <input type="text" id="kFrom" placeholder="Your name (from)…"/>
+      <textarea id="kMsg" placeholder="What did they do great?…"></textarea>
+      <button class="btn" onclick="addKudo()"><i class="ti ti-star"></i> Post kudos</button>
+    </div>
+  </div>
+
+  <!-- 6. PERFORMANCE LOG -->
+  <div class="card full">
+    <div class="ch">
+      <i class="ti ti-trending-up" style="color:#1D9E75"></i>
+      <h2>Performance log — orders completed today</h2>
+      <span class="badge b-green" id="totalBadge">Team total: 0</span>
+    </div>
+    <div class="metric-g">
+      <div class="met"><div class="lbl">Team total</div><div class="val" id="pmTotal">0</div></div>
+      <div class="met"><div class="lbl">Daily goal</div><div class="val" id="pmGoal">200</div></div>
+      <div class="met"><div class="lbl">Top performer</div><div class="val" style="font-size:16px;padding-top:5px" id="pmTop">—</div></div>
+      <div class="met"><div class="lbl">Avg per person</div><div class="val" id="pmAvg">0</div></div>
+    </div>
+    <div class="goal-bar-wrap">
+      <div class="goal-bar-track">
+        <div class="goal-bar-fill" id="goalBarFill" style="width:0%;background:#378ADD">
+          <span class="goal-bar-pct" id="goalBarPct"></span>
+        </div>
+      </div>
+      <div class="goal-meta">
+        <span id="goalMetaLeft">0 of 200 orders</span>
+        <span id="goalMetaRight">0% of daily goal</span>
+      </div>
+    </div>
+    <div class="goal-edit">
+      <span class="txt-xs">Daily goal:</span>
+      <input type="number" id="goalInput" value="200" min="1" step="1"/>
+      <button class="btn btn-ghost" onclick="setGoal()"><i class="ti ti-target"></i> Set goal</button>
+    </div>
+    <div style="margin:16px 0 6px">
+      <div class="perf-hdr">
+        <div></div>
+        <div class="col-lbl" style="text-align:left">Associate</div>
+        <div class="col-lbl">AM</div>
+        <div class="col-lbl">PM</div>
+        <div class="col-lbl">Total</div>
+      </div>
+      <div id="perfRows"></div>
+    </div>
+    <button class="btn btn-ghost" onclick="calcPerf()"><i class="ti ti-refresh"></i> Recalculate</button>
+  </div>
+
+  <!-- 7. WEEKLY CLEANUP ASSIGNMENTS -->
+  <div class="card">
+    <div class="ch">
+      <i class="ti ti-trash" style="color:#0F6E56"></i>
+      <h2>Weekly cleanup assignments</h2>
+      <span class="badge b-teal" id="weekBadge"></span>
+    </div>
+    <div id="cleanupList"></div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-ghost" onclick="rotateCleanup()"><i class="ti ti-rotate"></i> Rotate assignments</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('overrideForm').classList.toggle('hidden')"><i class="ti ti-edit"></i> Override</button>
+    </div>
+    <div class="add-form hidden" id="overrideForm">
+      <div class="txt-xs" style="margin-bottom:4px">Reassign a task:</div>
+      <select id="oTask">
+        <option value="">Select task…</option>
+        <option>Cardboard break down</option><option>Hallway trash bags</option><option>Station trash cans</option><option>Sweep Hallways</option><option>Sweep stations</option>
+      </select>
+      <select id="oWho">
+        <option value="">Assign to…</option>
+        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Natalie Orenday</option>
+      </select>
+      <button class="btn" onclick="applyOverride()"><i class="ti ti-check"></i> Apply</button>
+    </div>
+  </div>
+
+  <!-- 8. TEAM STATUS -->
+  <div class="card">
+    <div class="ch">
+      <i class="ti ti-users" style="color:#534AB7"></i>
+      <h2>Team status</h2>
+    </div>
+    <div id="teamList"></div>
+  </div>
+
+</div>
+</div>
+
+<div class="footer">Warehouse Board &nbsp;·&nbsp; Daniel Rodriguez &nbsp;·&nbsp; <span id="footerYear"></span></div>
+
+<script>
+const today=new Date();
+const dateStr=today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+document.getElementById('dateBadge').textContent=dateStr;
+document.getElementById('safetyDate').textContent=dateStr;
+document.getElementById('footerYear').textContent=today.getFullYear();
+
+const TEAM=[
+  {initials:'AO',name:'Aberham Ordaz',role:'Warehouse associate',av:'av0',status:'on'},
+  {initials:'CC',name:'Carson Cole',role:'Warehouse associate',av:'av1',status:'on'},
+  {initials:'GR',name:'Gio Rodriguez',role:'Warehouse associate',av:'av2',status:'on'},
+  {initials:'JT',name:'Jon Tolbert',role:'Warehouse associate',av:'av3',status:'on'},
+  {initials:'NO',name:'Natalie Orenday',role:'Warehouse associate',av:'av4',status:'on'},
+];
+const team=TEAM.map(m=>({...m}));
+const statusDot={on:'#1D9E75',off:'#888780',break:'#EF9F27'};
+const statusLabel={on:'On shift',off:'Off today',break:'On break'};
+
+function renderTeam(){
+  document.getElementById('teamList').innerHTML=team.map((m,i)=>`
+    <div class="row">
+      <div class="av ${m.av}">${m.initials}</div>
+      <div style="flex:1"><div class="txt bold">${m.name}</div><div class="txt-xs">${statusLabel[m.status]}</div></div>
+      <select onchange="team[${i}].status=this.value;renderTeam()" style="font-size:12px;padding:4px 8px;border:0.5px solid rgba(0,0,0,0.15);border-radius:7px;background:#f5f4f1;color:#1a1a18;font-family:inherit">
+        <option value="on" ${m.status==='on'?'selected':''}>On shift</option>
+        <option value="break" ${m.status==='break'?'selected':''}>On break</option>
+        <option value="off" ${m.status==='off'?'selected':''}>Off today</option>
+      </select>
+      <div class="dot" style="background:${statusDot[m.status]}"></div>
+    </div>`).join('');
+}
+
+const ackState={};
+function renderAck(){
+  document.getElementById('ackGrid').innerHTML=team.map(m=>`
+    <button class="ack-btn ${ackState[m.name]?'acked':''}" onclick="toggleAck('${m.name}')">
+      <i class="ti ${ackState[m.name]?'ti-circle-check':'ti-circle'}"></i>
+      <span>${m.name.split(' ')[0]}</span>
+    </button>`).join('');
+  const count=Object.values(ackState).filter(Boolean).length;
+  document.getElementById('ackBadge').textContent=`${count} / 5 acknowledged`;
+  document.getElementById('ackBadge').className=`badge ${count===5?'b-green':'b-amber'}`;
+  document.getElementById('ackSummary').textContent=count===5?'All associates have acknowledged today\'s safety topic.':count===0?'Tap your name above to acknowledge you\'ve read today\'s topic.':`${5-count} associate${5-count>1?'s':''} yet to acknowledge.`;
+}
+function toggleAck(name){ackState[name]=!ackState[name];renderAck();}
+function saveSafety(){
+  const topic=document.getElementById('sTopic').value.trim();
+  const detail=document.getElementById('sDetail2').value.trim();
+  if(!topic)return;
+  document.getElementById('safetyTopic').textContent=topic;
+  document.getElementById('safetyDetail').textContent=detail;
+  Object.keys(ackState).forEach(k=>ackState[k]=false);
+  document.getElementById('sTopic').value='';document.getElementById('sDetail2').value='';
+  document.getElementById('safetyForm').classList.add('hidden');renderAck();
+}
+
+const TASKS=['Cardboard break down','Hallway trash bags','Station trash cans','Sweep Hallways','Sweep stations'];
+const TASK_ICONS=['ti-box','ti-trash','ti-trash','ti-arrows-right','ti-arrows-right'];
+function getWeekNumber(){
+  const d=new Date();d.setHours(0,0,0,0);
+  d.setDate(d.getDate()+3-(d.getDay()+6)%7);
+  const w1=new Date(d.getFullYear(),0,4);
+  return 1+Math.round(((d-w1)/86400000-3+(w1.getDay()+6)%7)/7);
+}
+function getWeekOf(){
+  const d=new Date();const day=d.getDay();
+  const diff=d.getDate()-day+(day===0?-6:1);
+  const mon=new Date(d.setDate(diff));
+  return mon.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+const weekNum=getWeekNumber();
+document.getElementById('weekBadge').textContent='Week of '+getWeekOf();
+let cleanupAssignments=TASKS.map((task,i)=>({task,icon:TASK_ICONS[i],assigneeIdx:(i+weekNum)%TEAM.length}));
+function renderCleanup(){
+  document.getElementById('cleanupList').innerHTML=cleanupAssignments.map(c=>`
+    <div class="cleanup-row">
+      <div class="cleanup-task">
+        <div class="cleanup-icon"><i class="ti ${c.icon}"></i></div>
+        <div class="txt bold">${c.task}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="av ${TEAM[c.assigneeIdx].av}" style="width:28px;height:28px;font-size:10px">${TEAM[c.assigneeIdx].initials}</div>
+        <div class="txt" style="white-space:nowrap">${TEAM[c.assigneeIdx].name.split(' ')[0]}</div>
+      </div>
+    </div>`).join('');
+}
+function rotateCleanup(){cleanupAssignments=cleanupAssignments.map(c=>({...c,assigneeIdx:(c.assigneeIdx+1)%TEAM.length}));renderCleanup();}
+function applyOverride(){
+  const task=document.getElementById('oTask').value;const who=document.getElementById('oWho').value;
+  if(!task||!who)return;
+  const idx=TEAM.findIndex(m=>m.name===who);const tIdx=cleanupAssignments.findIndex(c=>c.task===task);
+  if(idx>=0&&tIdx>=0)cleanupAssignments[tIdx].assigneeIdx=idx;
+  document.getElementById('oTask').value='';document.getElementById('oWho').value='';
+  document.getElementById('overrideForm').classList.add('hidden');renderCleanup();
+}
+
+let dailyGoal=200;
+function setGoal(){const v=parseInt(document.getElementById('goalInput').value)||200;dailyGoal=v;document.getElementById('pmGoal').textContent=v;calcPerf();}
+function updateGoalBar(total){
+  const pct=Math.min(Math.round(total/dailyGoal*100),100);
+  const fill=document.getElementById('goalBarFill');
+  fill.style.width=pct+'%';fill.style.background=pct>=100?'#1D9E75':pct>=75?'#BA7517':'#378ADD';
+  document.getElementById('goalBarPct').textContent=pct>10?pct+'%':'';
+  document.getElementById('goalMetaLeft').textContent=`${total} of ${dailyGoal} orders`;
+  document.getElementById('goalMetaRight').textContent=`${pct}% of daily goal`;
+}
+const perfData=team.map(m=>({name:m.name.split(' ')[0],initials:m.initials,av:m.av,am:0,pm:0}));
+function renderPerf(){
+  document.getElementById('perfRows').innerHTML=perfData.map((p,i)=>`
+    <div class="perf-row">
+      <div class="av ${p.av}" style="width:28px;height:28px;font-size:10px">${p.initials}</div>
+      <div class="txt">${p.name}</div>
+      <input class="perf-input" type="number" min="0" step="1" value="${p.am}" oninput="perfData[${i}].am=parseInt(this.value)||0;calcPerf()"/>
+      <input class="perf-input" type="number" min="0" step="1" value="${p.pm}" oninput="perfData[${i}].pm=parseInt(this.value)||0;calcPerf()"/>
+      <div class="row-total" id="pt${i}">0</div>
+    </div>`).join('');
+}
+function calcPerf(){
+  let total=0,top='—',topN=0;
+  perfData.forEach((p,i)=>{
+    const t=p.am+p.pm;total+=t;
+    const el=document.getElementById('pt'+i);if(el)el.textContent=t;
+    if(t>topN){topN=t;top=p.name;}
+  });
+  const active=perfData.filter(p=>p.am+p.pm>0).length||1;
+  document.getElementById('pmTotal').textContent=total;
+  document.getElementById('pmTop').textContent=topN>0?top:'—';
+  document.getElementById('pmAvg').textContent=Math.round(total/active);
+  document.getElementById('totalBadge').textContent='Team total: '+total;
+  updateGoalBar(total);
+}
+
+let errors=[];
+function renderErrors(){
+  const el=document.getElementById('errList');
+  const open=errors.filter(e=>e.status==='open').length;
+  document.getElementById('errCount').textContent=open+' open';
+  if(!errors.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No errors logged today.</p>';return;}
+  el.innerHTML=errors.map((e,i)=>`
+    <div class="err-item">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap">
+        <span class="badge b-red">${e.type}</span>
+        ${e.who?`<span class="txt-xs">${e.who}</span>`:''}
+        <button class="status-pill ${e.status==='open'?'s-open':e.status==='resolved'?'s-resolved':'s-inprog'}" onclick="cycleErr(${i})">${e.status}</button>
+        <span class="txt-xs" style="margin-left:auto">${e.time}</span>
+        <button class="del" onclick="delErr(${i})"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="txt-sm">${e.desc}</div>
+    </div>`).join('');
+}
+function cycleErr(i){const s=['open','in progress','resolved'];const c=s.indexOf(errors[i].status);errors[i].status=s[(c+1)%3];renderErrors();}
+function delErr(i){errors.splice(i,1);renderErrors();}
+function addError(){
+  const type=document.getElementById('eType').value;const who=document.getElementById('eWho').value;const desc=document.getElementById('eDesc').value.trim();
+  if(!type||!desc)return;
+  const now=new Date();
+  errors.unshift({type,who,desc,status:'open',time:now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})});
+  document.getElementById('eType').value='';document.getElementById('eWho').value='';document.getElementById('eDesc').value='';
+  document.getElementById('errForm').classList.add('hidden');renderErrors();
+}
+
+const kudoAv={'Aberham Ordaz':'av0','Carson Cole':'av1','Gio Rodriguez':'av2','Jon Tolbert':'av3','Natalie Orenday':'av4','The whole team':'av1'};
+const kudoIn={'Aberham Ordaz':'AO','Carson Cole':'CC','Gio Rodriguez':'GR','Jon Tolbert':'JT','Natalie Orenday':'NO','The whole team':'ALL'};
+let kudos=[];
+function renderKudos(){
+  const el=document.getElementById('kudoList');
+  document.getElementById('kudoCount').textContent=kudos.length+' today';
+  if(!kudos.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No kudos yet — be the first!</p>';return;}
+  el.innerHTML=kudos.map((k,i)=>`
+    <div class="kudo-item">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+        <div class="av ${kudoAv[k.who]||'av0'}" style="width:28px;height:28px;font-size:10px">${kudoIn[k.who]||'?'}</div>
+        <div class="txt bold">${k.who}</div>
+        <span class="badge b-purple" style="margin-left:auto">${k.time}</span>
+        <button class="del" onclick="delKudo(${i})"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="txt-sm" style="padding-left:36px">"${k.msg}"</div>
+      ${k.from?`<div class="txt-xs" style="padding-left:36px;margin-top:3px">— ${k.from}</div>`:''}
+    </div>`).join('');
+}
+function delKudo(i){kudos.splice(i,1);renderKudos();}
+function addKudo(){
+  const who=document.getElementById('kWho').value;const from=document.getElementById('kFrom').value.trim();const msg=document.getElementById('kMsg').value.trim();
+  if(!who||!msg)return;
+  const now=new Date();
+  kudos.unshift({who,from,msg,time:now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})});
+  document.getElementById('kWho').value='';document.getElementById('kFrom').value='';document.getElementById('kMsg').value='';
+  document.getElementById('kudoForm').classList.add('hidden');renderKudos();
+}
+
+const tagCls={urgent:'b-red',info:'b-blue',general:'b-gray',resolved:'b-green'};
+let anns=[
+  {tag:'urgent',text:'Safety walk-through this Friday 2pm — all staff required.',time:'8:00 AM'},
+  {tag:'info',text:'Welcome to the warehouse board! Reach out to Daniel with any questions.',time:'Today'},
+];
+function renderAnns(){
+  const el=document.getElementById('annList');
+  document.getElementById('annCount').textContent=anns.length;
+  if(!anns.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No announcements.</p>';return;}
+  el.innerHTML=anns.map((a,i)=>`
+    <div class="ann-item">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
+        <span class="badge ${tagCls[a.tag]}">${a.tag}</span>
+        <span class="txt-xs" style="margin-left:auto">${a.time}</span>
+        <button class="del" onclick="delAnn(${i})"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="txt-sm">${a.text}</div>
+    </div>`).join('');
+}
+function delAnn(i){anns.splice(i,1);renderAnns();}
+function addAnn(){
+  const tag=document.getElementById('aTag').value;const text=document.getElementById('aText').value.trim();
+  if(!text)return;
+  const now=new Date();
+  anns.unshift({tag,text,time:now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})});
+  document.getElementById('aText').value='';document.getElementById('annForm').classList.add('hidden');renderAnns();
+}
+
+let tasks=[];
+function renderTasks(){
+  const el=document.getElementById('taskList');
+  const open=tasks.filter(t=>!t.done).length;
+  document.getElementById('taskCount').textContent=open+' open';
+  if(!tasks.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No tasks yet.</p>';return;}
+  el.innerHTML=tasks.map((t,i)=>`
+    <div class="row">
+      <input type="checkbox" ${t.done?'checked':''} onchange="tasks[${i}].done=!tasks[${i}].done;renderTasks()" style="accent-color:#1D9E75;width:16px;height:16px;cursor:pointer;flex-shrink:0">
+      <span class="txt" style="flex:1;${t.done?'text-decoration:line-through;color:#9a9a96':''}">${t.text}</span>
+      ${t.assignee?`<span class="badge b-gray">${t.assignee.split(' ')[0]}</span>`:''}
+      <button class="del" onclick="tasks.splice(${i},1);renderTasks()"><i class="ti ti-x"></i></button>
+    </div>`).join('');
+}
+function addTask(){
+  const text=document.getElementById('tText').value.trim();const assignee=document.getElementById('tAssign').value;
+  if(!text)return;
+  tasks.push({text,assignee,done:false});
+  document.getElementById('tText').value='';document.getElementById('tAssign').value='';
+  document.getElementById('taskForm').classList.add('hidden');renderTasks();
+}
+
+const togMap={togSafety:'safetyForm',togErr:'errForm',togKudo:'kudoForm',togAnn:'annForm',togTask:'taskForm'};
+Object.keys(togMap).forEach(id=>{
+  document.getElementById(id).onclick=function(){document.getElementById(togMap[id]).classList.toggle('hidden');};
+});
+
+renderTeam();renderAck();renderPerf();calcPerf();renderErrors();renderKudos();renderAnns();renderTasks();renderCleanup();
+</script>
+</body>
+</html>
