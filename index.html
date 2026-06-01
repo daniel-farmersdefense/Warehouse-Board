@@ -19,6 +19,7 @@
   --gray-bg:#F1EFE8;--gray-text:#444441;
   --teal-bg:#E1F5EE;--teal-text:#085041;
   --coral-bg:#FAECE7;--coral-text:#712B13;
+  --pink-bg:#FDE8F0;--pink-text:#7B1040;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
@@ -77,6 +78,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .av2{background:var(--purple-bg);color:var(--purple-text)}
 .av3{background:var(--amber-bg);color:var(--amber-text)}
 .av4{background:var(--coral-bg);color:var(--coral-text)}
+.av5{background:var(--pink-bg);color:var(--pink-text)}
 .row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:0.5px solid var(--border)}
 .row:last-child{border-bottom:none}
 .txt{font-size:14px;color:var(--text)}
@@ -120,7 +122,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     <i class="ti ti-building-warehouse" style="font-size:20px;color:#EAF3DE"></i>
     <div>
       <div class="topbar-logo">Warehouse Board</div>
-      <div class="topbar-sub">Daniel Rodriguez &nbsp;·&nbsp; Team of 5</div>
+      <div class="topbar-sub">Daniel Rodriguez &nbsp;·&nbsp; Team of 6</div>
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:12px">
@@ -138,7 +140,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
       <i class="ti ti-shield-check" style="color:#854F0B"></i>
       <h2>Daily safety topic</h2>
       <span class="badge b-amber" id="safetyDate"></span>
-      <span class="badge b-amber" id="ackBadge">0 / 5 acknowledged</span>
+      <span class="badge b-amber" id="ackBadge">0 / 6 acknowledged</span>
     </div>
     <div class="safety-box">
       <div class="s-title" id="safetyTopic">Forklift pedestrian zones — always check mirrors before reversing</div>
@@ -183,7 +185,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
       <input type="text" id="tText" placeholder="Task description…"/>
       <select id="tAssign">
         <option value="">Assign to…</option>
-        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Natalie Orenday</option><option>Team</option>
+        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Orenday</option><option>Team</option>
       </select>
       <button class="btn" onclick="addTask()"><i class="ti ti-plus"></i> Add task</button>
     </div>
@@ -207,7 +209,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
       </select>
       <select id="eWho">
         <option value="">Associate involved (optional)…</option>
-        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Natalie Orenday</option>
+        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Orenday</option>
       </select>
       <textarea id="eDesc" placeholder="Describe the error and what was corrected…"></textarea>
       <button class="btn" onclick="addError()"><i class="ti ti-alert-triangle"></i> Log error</button>
@@ -226,7 +228,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     <div class="add-form hidden" id="kudoForm">
       <select id="kWho">
         <option value="">Recognizing…</option>
-        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Natalie Orenday</option><option>The whole team</option>
+        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Orenday</option><option>The whole team</option>
       </select>
       <input type="text" id="kFrom" placeholder="Your name (from)…"/>
       <textarea id="kMsg" placeholder="What did they do great?…"></textarea>
@@ -296,7 +298,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
       </select>
       <select id="oWho">
         <option value="">Assign to…</option>
-        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Natalie Orenday</option>
+        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Orenday</option>
       </select>
       <button class="btn" onclick="applyOverride()"><i class="ti ti-check"></i> Apply</button>
     </div>
@@ -332,6 +334,7 @@ const TEAM=[
   {initials:'CC',name:'Carson Cole',av:'av1'},
   {initials:'GR',name:'Gio Rodriguez',av:'av2'},
   {initials:'JT',name:'Jon Tolbert',av:'av3'},
+  {initials:'LR',name:'Lani Rodriguez',av:'av5'},
   {initials:'NO',name:'Natalie Orenday',av:'av4'},
 ];
 const statusDot={on:'#1D9E75',off:'#888780',break:'#EF9F27'};
@@ -421,9 +424,10 @@ async function loadAck(){
       <span>${m.name.split(' ')[0]}</span>
     </button>`).join('');
   const count=acked.length;
-  document.getElementById('ackBadge').textContent=`${count} / 5 acknowledged`;
-  document.getElementById('ackBadge').className=`badge ${count===5?'b-green':'b-amber'}`;
-  document.getElementById('ackSummary').textContent=count===5?'All associates have acknowledged today\'s safety topic.':count===0?'Tap your name above to acknowledge you\'ve read today\'s topic.':`${5-count} associate${5-count>1?'s':''} yet to acknowledge.`;
+  const total=TEAM.length;
+  document.getElementById('ackBadge').textContent=`${count} / ${total} acknowledged`;
+  document.getElementById('ackBadge').className=`badge ${count===total?'b-green':'b-amber'}`;
+  document.getElementById('ackSummary').textContent=count===total?'All associates have acknowledged today\'s safety topic.':count===0?'Tap your name above to acknowledge you\'ve read today\'s topic.':`${total-count} associate${total-count>1?'s':''} yet to acknowledge.`;
   setSynced();
 }
 async function toggleAck(name){
@@ -540,8 +544,8 @@ async function addError(){
   document.getElementById('errForm').classList.add('hidden');await loadErrors();
 }
 
-const kudoAv={'Aberham Ordaz':'av0','Carson Cole':'av1','Gio Rodriguez':'av2','Jon Tolbert':'av3','Natalie Orenday':'av4','The whole team':'av1'};
-const kudoIn={'Aberham Ordaz':'AO','Carson Cole':'CC','Gio Rodriguez':'GR','Jon Tolbert':'JT','Natalie Orenday':'NO','The whole team':'ALL'};
+const kudoAv={'Aberham Ordaz':'av0','Carson Cole':'av1','Gio Rodriguez':'av2','Jon Tolbert':'av3','Lani Rodriguez':'av5','Natalie Orenday':'av4','The whole team':'av1'};
+const kudoIn={'Aberham Ordaz':'AO','Carson Cole':'CC','Gio Rodriguez':'GR','Jon Tolbert':'JT','Lani Rodriguez':'LR','Natalie Orenday':'NO','The whole team':'ALL'};
 async function loadKudos(){
   const {data}=await sb.from('kudos').select('*').eq('date',todayStr).order('created_at',{ascending:false});
   const el=document.getElementById('kudoList');
