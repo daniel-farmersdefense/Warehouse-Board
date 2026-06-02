@@ -95,15 +95,18 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .btn:hover{opacity:0.85}
 .btn-ghost{background:transparent;color:var(--text)}
 .btn-ghost:hover{background:var(--bg);opacity:1}
+.btn-sm{font-size:12px;padding:5px 10px}
 .hidden{display:none}
 .del{background:none;border:none;cursor:pointer;color:var(--text-hint);font-size:14px;padding:3px 5px;border-radius:5px;flex-shrink:0}
 .del:hover{color:var(--red-text);background:var(--red-bg)}
-.err-item,.kudo-item,.ann-item,.workload-item{padding:10px 0;border-bottom:0.5px solid var(--border)}
-.err-item:last-child,.kudo-item:last-child,.ann-item:last-child,.workload-item:last-child{border-bottom:none}
+.err-item,.kudo-item,.ann-item,.workload-item,.sugg-item,.priority-item,.bday-item{padding:10px 0;border-bottom:0.5px solid var(--border)}
+.err-item:last-child,.kudo-item:last-child,.ann-item:last-child,.workload-item:last-child,.sugg-item:last-child,.priority-item:last-child,.bday-item:last-child{border-bottom:none}
 .status-pill{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;cursor:pointer;border:none;font-family:inherit}
 .s-open{background:var(--red-bg);color:var(--red-text)}
 .s-resolved{background:var(--green-bg);color:var(--green-text)}
 .s-inprog{background:var(--amber-bg);color:var(--amber-text)}
+.s-pending{background:var(--amber-bg);color:var(--amber-text)}
+.s-done{background:var(--green-bg);color:var(--green-text)}
 .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .cleanup-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--border)}
 .cleanup-row:last-child{border-bottom:none}
@@ -117,6 +120,39 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .break-row:last-child{border-bottom:none}
 .break-label{font-size:12px;color:var(--text-muted)}
 .break-time{font-size:13px;font-weight:600;background:var(--blue-bg);color:var(--blue-text);padding:2px 10px;border-radius:20px}
+/* WEATHER */
+.weather-main{display:flex;align-items:center;gap:20px;padding:10px 0 14px}
+.weather-icon{font-size:52px;line-height:1}
+.weather-temp{font-size:48px;font-weight:700;letter-spacing:-0.04em;color:var(--text);line-height:1}
+.weather-desc{font-size:14px;color:var(--text-muted);margin-top:4px;text-transform:capitalize}
+.weather-loc{font-size:12px;color:var(--text-hint);margin-top:2px}
+.weather-details{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+.weather-detail{background:var(--bg);border-radius:var(--radius-md);padding:8px 10px;text-align:center}
+.weather-detail .wd-val{font-size:15px;font-weight:600;color:var(--text)}
+.weather-detail .wd-lbl{font-size:11px;color:var(--text-muted);margin-top:2px}
+/* INCIDENT */
+.incident-big{text-align:center;padding:20px 0 10px}
+.incident-num{font-size:72px;font-weight:700;line-height:1;letter-spacing:-0.04em}
+.incident-label{font-size:13px;color:var(--text-muted);margin-top:6px}
+.incident-record{font-size:12px;color:var(--text-muted);margin-top:4px}
+/* SAFETY LIBRARY */
+.topic-cat{margin-bottom:14px}
+.topic-cat-title{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.topic-chips{display:flex;flex-wrap:wrap;gap:6px}
+.topic-chip{font-size:12px;padding:5px 12px;border:0.5px solid var(--border-mid);border-radius:20px;cursor:pointer;background:var(--bg);color:var(--text);font-family:inherit;transition:all 0.15s}
+.topic-chip:hover{background:var(--amber-bg);border-color:var(--amber);color:var(--amber-text)}
+/* CHART */
+.chart-outer{position:relative;padding-bottom:28px;margin-bottom:8px}
+.chart-wrap{display:flex;align-items:flex-end;gap:6px;height:180px;position:relative}
+.goal-line-h{position:absolute;left:0;right:0;border-top:2px dashed var(--red);pointer-events:none}
+.goal-line-label{position:absolute;right:0;font-size:10px;color:var(--red);font-weight:600;background:var(--surface);padding:0 4px;margin-top:-9px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;position:relative}
+.bar-val-label{font-size:11px;font-weight:600;color:var(--text);margin-bottom:3px;min-height:16px;text-align:center}
+.bar-body{width:85%;border-radius:6px 6px 0 0;transition:height 0.5s;min-height:2px}
+.bar-day-label{font-size:11px;color:var(--text-muted);position:absolute;bottom:-22px;text-align:center;width:100%}
+.chart-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)}
+.legend-swatch{width:12px;height:12px;border-radius:3px;flex-shrink:0}
 /* HISTORY */
 .hist-nav{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
 .hist-date-btn{font-size:12px;padding:5px 12px;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);background:transparent;color:var(--text);cursor:pointer;font-family:inherit}
@@ -126,7 +162,14 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .hist-table th{text-align:left;font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;padding:0 8px 8px;border-bottom:0.5px solid var(--border-mid)}
 .hist-table td{padding:10px 8px;border-bottom:0.5px solid var(--border);color:var(--text)}
 .hist-table tr:last-child td{border-bottom:none}
-.hist-table .total-row td{font-weight:600;background:var(--bg);border-radius:var(--radius-md)}
+.hist-table .total-row td{font-weight:600;background:var(--bg)}
+/* BIRTHDAYS */
+.bday-soon{background:var(--purple-bg);border-left:3px solid var(--purple);border-radius:var(--radius-md);padding:10px 14px;margin-bottom:10px}
+.bday-soon .bday-name{font-size:15px;font-weight:600;color:var(--purple-text)}
+.bday-soon .bday-date{font-size:12px;color:var(--purple-text);margin-top:2px}
+/* PRIORITY */
+.priority-item{border-left:3px solid var(--red);padding-left:10px}
+.priority-item.done{border-left-color:var(--green);opacity:0.7}
 .footer{text-align:center;padding:2rem;font-size:12px;color:var(--text-hint)}
 .loading{text-align:center;padding:20px;font-size:13px;color:var(--text-muted)}
 @media(max-width:600px){.topbar{padding:0 1rem}.container{padding:1rem}.perf-hdr,.perf-row{grid-template-columns:28px 1fr 48px 48px 48px;gap:4px}.break-grid{grid-template-columns:1fr}}
@@ -151,7 +194,49 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 <div class="container">
 <div class="grid">
 
-  <!-- 1. DAILY SAFETY TOPIC -->
+  <!-- 1. WEATHER + INCIDENT side by side -->
+  <div class="card">
+    <div class="ch">
+      <i class="ti ti-cloud" style="color:#378ADD"></i>
+      <h2>Weather — Watsonville, CA</h2>
+      <span class="badge b-blue" id="weatherBadge">Loading…</span>
+    </div>
+    <div id="weatherContent"><div class="loading">Fetching weather...</div></div>
+  </div>
+
+  <div class="card">
+    <div class="ch">
+      <i class="ti ti-alert-octagon" style="color:#A32D2D"></i>
+      <h2>Days since last incident</h2>
+      <span class="badge b-green" id="incidentBadge">Safe streak</span>
+    </div>
+    <div class="incident-big">
+      <div class="incident-num" id="incidentDays">0</div>
+      <div class="incident-label">days without a workplace incident</div>
+      <div class="incident-record" id="incidentRecord"></div>
+    </div>
+    <div style="margin-top:14px">
+      <button class="btn btn-ghost btn-sm" onclick="resetIncident()"><i class="ti ti-refresh"></i> Report incident — reset counter</button>
+    </div>
+  </div>
+
+  <!-- 2. PRIORITY ORDER FLAG -->
+  <div class="card full">
+    <div class="ch">
+      <i class="ti ti-flag-filled" style="color:#A32D2D"></i>
+      <h2>Priority orders</h2>
+      <span class="badge b-red" id="priorityCount">0 active</span>
+    </div>
+    <div id="priorityList"><div class="loading">Loading...</div></div>
+    <div class="tog" id="togPriority"><i class="ti ti-plus"></i> Flag a priority order</div>
+    <div class="add-form hidden" id="priorityForm">
+      <input type="text" id="pRef" placeholder="Order # or reference…"/>
+      <textarea id="pDetail" placeholder="Why is this urgent? Customer name, deadline, special instructions…"></textarea>
+      <button class="btn" onclick="addPriority()"><i class="ti ti-flag-filled"></i> Flag order</button>
+    </div>
+  </div>
+
+  <!-- 3. DAILY SAFETY TOPIC -->
   <div class="card full">
     <div class="ch">
       <i class="ti ti-shield-check" style="color:#854F0B"></i>
@@ -165,16 +250,20 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
     <div class="ack-grid" id="ackGrid"></div>
     <div class="ack-summary" id="ackSummary"></div>
-    <div class="tog" id="togSafety"><i class="ti ti-edit"></i> Update today's safety topic</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+      <div class="tog" id="togSafety" style="margin-top:0"><i class="ti ti-edit"></i> Write custom topic</div>
+      <div class="tog" id="togLibrary" style="margin-top:0"><i class="ti ti-books"></i> Pick from library</div>
+    </div>
     <div class="add-form hidden" id="safetyForm">
       <input type="text" id="sTopic" placeholder="Safety topic title…"/>
       <textarea id="sDetail2" placeholder="Key points, reminders, or action items…"></textarea>
       <button class="btn" onclick="saveSafety()"><i class="ti ti-shield-check"></i> Save topic</button>
     </div>
+    <div class="hidden" id="libraryPanel" style="margin-top:12px"></div>
   </div>
 
-  <!-- 2. ANNOUNCEMENTS -->
-  <div class="card full">
+  <!-- 4. ANNOUNCEMENTS -->
+  <div class="card">
     <div class="ch">
       <i class="ti ti-speakerphone" style="color:#993C1D"></i>
       <h2>Announcements</h2>
@@ -189,7 +278,27 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 3. DAILY WORKLOAD -->
+  <!-- 5. BIRTHDAYS -->
+  <div class="card">
+    <div class="ch">
+      <i class="ti ti-cake" style="color:#534AB7"></i>
+      <h2>Team birthdays</h2>
+      <span class="badge b-purple" id="bdayBadge">Loading…</span>
+    </div>
+    <div id="bdaySoon"></div>
+    <div id="bdayList"><div class="loading">Loading...</div></div>
+    <div class="tog" id="togBday"><i class="ti ti-plus"></i> Add birthday</div>
+    <div class="add-form hidden" id="bdayForm">
+      <select id="bWho">
+        <option value="">Select team member…</option>
+        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Orenday</option>
+      </select>
+      <input type="text" id="bDate" placeholder="Birthday (MM/DD e.g. 03/15)…"/>
+      <button class="btn" onclick="addBday()"><i class="ti ti-cake"></i> Save birthday</button>
+    </div>
+  </div>
+
+  <!-- 6. DAILY WORKLOAD -->
   <div class="card full">
     <div class="ch">
       <i class="ti ti-layout-list" style="color:#185FA5"></i>
@@ -204,7 +313,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 4. BREAK SCHEDULE -->
+  <!-- 7. BREAK SCHEDULE -->
   <div class="card full">
     <div class="ch">
       <i class="ti ti-coffee" style="color:#534AB7"></i>
@@ -227,7 +336,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 5. ERRORS & CORRECTIONS -->
+  <!-- 8. ERRORS & CORRECTIONS -->
   <div class="card">
     <div class="ch">
       <i class="ti ti-alert-triangle" style="color:#A32D2D"></i>
@@ -252,7 +361,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 6. STAFF KUDOS -->
+  <!-- 9. STAFF KUDOS -->
   <div class="card">
     <div class="ch">
       <i class="ti ti-star" style="color:#534AB7"></i>
@@ -272,7 +381,23 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 7. PERFORMANCE LOG -->
+  <!-- 10. EMPLOYEE SUGGESTIONS -->
+  <div class="card full">
+    <div class="ch">
+      <i class="ti ti-bulb" style="color:#BA7517"></i>
+      <h2>Employee suggestions</h2>
+      <span class="badge b-amber" id="suggCount">0 new</span>
+    </div>
+    <div id="suggList"><div class="loading">Loading...</div></div>
+    <div class="tog" id="togSugg"><i class="ti ti-plus"></i> Submit a suggestion</div>
+    <div class="add-form hidden" id="suggForm">
+      <textarea id="sText" placeholder="Share your idea or suggestion…"></textarea>
+      <input type="text" id="sFrom" placeholder="Your name (optional — leave blank to stay anonymous)…"/>
+      <button class="btn" onclick="addSugg()"><i class="ti ti-send"></i> Submit</button>
+    </div>
+  </div>
+
+  <!-- 11. PERFORMANCE LOG -->
   <div class="card full">
     <div class="ch">
       <i class="ti ti-trending-up" style="color:#1D9E75"></i>
@@ -314,7 +439,31 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     <button class="btn btn-ghost" onclick="savePerf()"><i class="ti ti-device-floppy"></i> Save performance</button>
   </div>
 
-  <!-- 8. PERFORMANCE HISTORY -->
+  <!-- 12. WEEKLY CHART -->
+  <div class="card full">
+    <div class="ch">
+      <i class="ti ti-chart-bar" style="color:#185FA5"></i>
+      <h2>Weekly goal vs actual</h2>
+      <span class="badge b-blue" id="chartWeekLabel"></span>
+    </div>
+    <div class="metric-g">
+      <div class="met"><div class="lbl">Week total</div><div class="val" id="chartWeekTotal">0</div></div>
+      <div class="met"><div class="lbl">Week goal</div><div class="val" id="chartWeekGoal">—</div></div>
+      <div class="met"><div class="lbl">Best day</div><div class="val" style="font-size:16px;padding-top:5px" id="chartBestDay">—</div></div>
+      <div class="met"><div class="lbl">Days hit goal</div><div class="val" id="chartDaysHit">0 / 5</div></div>
+    </div>
+    <div class="chart-outer">
+      <div class="chart-wrap" id="chartBars"></div>
+    </div>
+    <div class="chart-legend">
+      <div class="legend-item"><div class="legend-swatch" style="background:#1D9E75"></div> Hit goal</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#378ADD"></div> Below goal</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#F1EFE8;border:0.5px solid #ccc"></div> No data</div>
+      <div class="legend-item"><div style="width:20px;border-top:2px dashed #E24B4A;margin-top:5px"></div><span style="margin-left:4px">Daily goal</span></div>
+    </div>
+  </div>
+
+  <!-- 13. PERFORMANCE HISTORY -->
   <div class="card full">
     <div class="ch">
       <i class="ti ti-calendar-stats" style="color:#185FA5"></i>
@@ -325,7 +474,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     <div id="histContent"><div class="loading">Loading history...</div></div>
   </div>
 
-  <!-- 9. WEEKLY CLEANUP ASSIGNMENTS -->
+  <!-- 14. WEEKLY CLEANUP -->
   <div class="card">
     <div class="ch">
       <i class="ti ti-trash" style="color:#0F6E56"></i>
@@ -334,24 +483,17 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
     <div id="cleanupList"></div>
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-      <button class="btn btn-ghost" onclick="rotateCleanup()"><i class="ti ti-rotate"></i> Rotate assignments</button>
+      <button class="btn btn-ghost" onclick="rotateCleanup()"><i class="ti ti-rotate"></i> Rotate</button>
       <button class="btn btn-ghost" onclick="document.getElementById('overrideForm').classList.toggle('hidden')"><i class="ti ti-edit"></i> Override</button>
     </div>
     <div class="add-form hidden" id="overrideForm">
-      <div class="txt-xs" style="margin-bottom:4px">Reassign a task:</div>
-      <select id="oTask">
-        <option value="">Select task…</option>
-        <option>Cardboard break down</option><option>Hallway trash bags</option><option>Station trash cans</option><option>Sweep Hallways</option><option>Sweep stations</option>
-      </select>
-      <select id="oWho">
-        <option value="">Assign to…</option>
-        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Orenday</option>
-      </select>
+      <select id="oTask"><option value="">Select task…</option><option>Cardboard break down</option><option>Hallway trash bags</option><option>Station trash cans</option><option>Sweep Hallways</option><option>Sweep stations</option></select>
+      <select id="oWho"><option value="">Assign to…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Orenday</option></select>
       <button class="btn" onclick="applyOverride()"><i class="ti ti-check"></i> Apply</button>
     </div>
   </div>
 
-  <!-- 10. TEAM STATUS -->
+  <!-- 15. TEAM STATUS -->
   <div class="card">
     <div class="ch">
       <i class="ti ti-users" style="color:#534AB7"></i>
@@ -365,20 +507,16 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 <div class="footer">Warehouse Board &nbsp;·&nbsp; Daniel Rodriguez &nbsp;·&nbsp; <span id="footerYear"></span></div>
 
 <script>
-const SUPABASE_URL = 'https://pwtacpqguobhbmyrhfwi.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_yAVs5dAKMQvVAvwMcgRCnA_at6y44wQ';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL='https://pwtacpqguobhbmyrhfwi.supabase.co';
+const SUPABASE_KEY='sb_publishable_yAVs5dAKMQvVAvwMcgRCnA_at6y44wQ';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-// ── PACIFIC TIME DATE (fixes the reset bug) ─────────────────────
-function getPacificDateStr() {
-  return new Date().toLocaleDateString('en-CA', {timeZone: 'America/Los_Angeles'});
-}
-const todayStr = getPacificDateStr();
-const today = new Date();
-const dateStr = today.toLocaleDateString('en-US', {weekday:'long',month:'long',day:'numeric',year:'numeric',timeZone:'America/Los_Angeles'});
-document.getElementById('dateBadge').textContent = dateStr;
-document.getElementById('safetyDate').textContent = dateStr;
-document.getElementById('footerYear').textContent = today.getFullYear();
+function getPacificDateStr(){return new Date().toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'});}
+const todayStr=getPacificDateStr();
+const dateStr=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric',timeZone:'America/Los_Angeles'});
+document.getElementById('dateBadge').textContent=dateStr;
+document.getElementById('safetyDate').textContent=dateStr;
+document.getElementById('footerYear').textContent=new Date().getFullYear();
 
 const TEAM=[
   {initials:'AO',name:'Aberham Ordaz',av:'av0'},
@@ -390,56 +528,228 @@ const TEAM=[
 ];
 const statusDot={on:'#1D9E75',off:'#888780',break:'#EF9F27'};
 const statusLabel={on:'On shift',off:'Off today',break:'On break'};
-
 function setSynced(){document.getElementById('syncDot').className='sync-dot live';document.getElementById('syncLabel').textContent='Live';}
 function setSyncing(){document.getElementById('syncDot').className='sync-dot';document.getElementById('syncLabel').textContent='Syncing...';}
 
-const togMap={togSafety:'safetyForm',togErr:'errForm',togKudo:'kudoForm',togAnn:'annForm',togWorkload:'workloadForm'};
-Object.keys(togMap).forEach(id=>{
-  document.getElementById(id).onclick=function(){document.getElementById(togMap[id]).classList.toggle('hidden');};
-});
+// ── WEATHER ─────────────────────────────────────────────────────
+const WEATHER_ICONS={0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'🌦',53:'🌦',55:'🌧',61:'🌧',63:'🌧',65:'🌧',71:'🌨',73:'🌨',75:'❄️',80:'🌦',81:'🌧',82:'⛈',95:'⛈',96:'⛈',99:'⛈'};
+const WEATHER_DESC={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',48:'Foggy',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',80:'Rain showers',81:'Heavy showers',82:'Violent showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
+async function loadWeather(){
+  try{
+    const geo=await fetch('https://geocoding-api.open-meteo.com/v1/search?name=Watsonville&country=US&count=1');
+    const gd=await geo.json();
+    const {latitude:lat,longitude:lon}=gd.results[0];
+    const wx=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FLos_Angeles`);
+    const wd=await wx.json();
+    const c=wd.current;
+    const code=c.weather_code;
+    const icon=WEATHER_ICONS[code]||'🌡';
+    const desc=WEATHER_DESC[code]||'Unknown';
+    document.getElementById('weatherBadge').textContent=Math.round(c.temperature_2m)+'°F';
+    document.getElementById('weatherContent').innerHTML=`
+      <div class="weather-main">
+        <div class="weather-icon">${icon}</div>
+        <div>
+          <div class="weather-temp">${Math.round(c.temperature_2m)}°F</div>
+          <div class="weather-desc">${desc}</div>
+          <div class="weather-loc">Watsonville, CA 95076</div>
+        </div>
+      </div>
+      <div class="weather-details">
+        <div class="weather-detail"><div class="wd-val">${c.relative_humidity_2m}%</div><div class="wd-lbl">Humidity</div></div>
+        <div class="weather-detail"><div class="wd-val">${Math.round(c.wind_speed_10m)} mph</div><div class="wd-lbl">Wind</div></div>
+        <div class="weather-detail"><div class="wd-val">${new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</div><div class="wd-lbl">Updated</div></div>
+      </div>`;
+  }catch(e){document.getElementById('weatherContent').innerHTML='<p class="txt-sm" style="padding:8px 0">Weather unavailable — check your connection.</p>';}
+}
 
-// ── CLEANUP ─────────────────────────────────────────────────────
-const TASKS=['Cardboard break down','Hallway trash bags','Station trash cans','Sweep Hallways','Sweep stations'];
-const TASK_ICONS=['ti-box','ti-trash','ti-trash','ti-arrows-right','ti-arrows-right'];
-function getWeekNumber(){
-  const d=new Date();d.setHours(0,0,0,0);
-  d.setDate(d.getDate()+3-(d.getDay()+6)%7);
-  const w1=new Date(d.getFullYear(),0,4);
-  return 1+Math.round(((d-w1)/86400000-3+(w1.getDay()+6)%7)/7);
+// ── INCIDENT ────────────────────────────────────────────────────
+async function loadIncident(){
+  const {data}=await sb.from('incident').select('*').order('last_reset',{ascending:false}).limit(1).single();
+  let days=0,record=0;
+  if(data){const last=new Date(data.last_reset);days=Math.floor((new Date()-last)/(1000*60*60*24));record=data.record_days||0;}
+  document.getElementById('incidentDays').textContent=days;
+  document.getElementById('incidentDays').style.color=days>=30?'#1D9E75':days>=14?'#BA7517':'#E24B4A';
+  document.getElementById('incidentBadge').textContent=days>=30?'🏆 30+ days safe':days>=14?'2 weeks safe':'Building streak';
+  document.getElementById('incidentBadge').className=`badge ${days>=30?'b-green':days>=14?'b-teal':'b-amber'}`;
+  document.getElementById('incidentRecord').textContent=record>0?`All-time record: ${record} days`:'';
 }
-function getWeekOf(){
-  const d=new Date();const day=d.getDay();
-  const diff=d.getDate()-day+(day===0?-6:1);
-  const mon=new Date(d.setDate(diff));
-  return mon.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+async function resetIncident(){
+  if(!confirm('Report a workplace incident and reset the counter to 0?'))return;
+  setSyncing();
+  const {data:existing}=await sb.from('incident').select('*').limit(1).single();
+  const last=existing?new Date(existing.last_reset):new Date();
+  const days=Math.floor((new Date()-last)/(1000*60*60*24));
+  const oldRecord=existing?existing.record_days||0:0;
+  const newRecord=Math.max(days,oldRecord);
+  if(existing){await sb.from('incident').update({last_reset:new Date().toISOString(),record_days:newRecord}).eq('id',existing.id);}
+  else{await sb.from('incident').insert({last_reset:new Date().toISOString(),record_days:0});}
+  await loadIncident();setSynced();
 }
-const weekNum=getWeekNumber();
-document.getElementById('weekBadge').textContent='Week of '+getWeekOf();
-let cleanupAssignments=TASKS.map((task,i)=>({task,icon:TASK_ICONS[i],assigneeIdx:(i+weekNum)%TEAM.length}));
-function renderCleanup(){
-  document.getElementById('cleanupList').innerHTML=cleanupAssignments.map(c=>`
-    <div class="cleanup-row">
-      <div class="cleanup-task">
-        <div class="cleanup-icon"><i class="ti ${c.icon}"></i></div>
-        <div class="txt bold">${c.task}</div>
+
+// ── PRIORITY ORDERS ─────────────────────────────────────────────
+async function loadPriority(){
+  const {data}=await sb.from('priority_orders').select('*').eq('date',todayStr).order('created_at',{ascending:false});
+  const el=document.getElementById('priorityList');
+  const active=(data||[]).filter(p=>p.status==='pending').length;
+  document.getElementById('priorityCount').textContent=active+' active';
+  document.getElementById('priorityCount').className=`badge ${active>0?'b-red':'b-green'}`;
+  if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No priority orders flagged today.</p>';return;}
+  el.innerHTML=data.map(p=>`
+    <div class="priority-item ${p.status==='done'?'done':''}">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap">
+        <i class="ti ti-flag-filled" style="color:${p.status==='done'?'#1D9E75':'#A32D2D'};font-size:14px"></i>
+        <span class="txt bold">${p.order_ref}</span>
+        <button class="status-pill ${p.status==='pending'?'s-pending':'s-done'}" onclick="cyclePriority('${p.id}','${p.status}')">${p.status}</button>
+        <span class="txt-xs" style="margin-left:auto">${new Date(p.created_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</span>
+        <button class="del" onclick="delPriority('${p.id}')"><i class="ti ti-x"></i></button>
       </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <div class="av ${TEAM[c.assigneeIdx].av}" style="width:28px;height:28px;font-size:10px">${TEAM[c.assigneeIdx].initials}</div>
-        <div class="txt" style="white-space:nowrap">${TEAM[c.assigneeIdx].name.split(' ')[0]}</div>
-      </div>
+      <div class="txt-sm">${p.detail}</div>
     </div>`).join('');
+  setSynced();
 }
-function rotateCleanup(){cleanupAssignments=cleanupAssignments.map(c=>({...c,assigneeIdx:(c.assigneeIdx+1)%TEAM.length}));renderCleanup();}
-function applyOverride(){
-  const task=document.getElementById('oTask').value;const who=document.getElementById('oWho').value;
-  if(!task||!who)return;
-  const idx=TEAM.findIndex(m=>m.name===who);const tIdx=cleanupAssignments.findIndex(c=>c.task===task);
-  if(idx>=0&&tIdx>=0)cleanupAssignments[tIdx].assigneeIdx=idx;
-  document.getElementById('oTask').value='';document.getElementById('oWho').value='';
-  document.getElementById('overrideForm').classList.add('hidden');renderCleanup();
+async function cyclePriority(id,current){setSyncing();await sb.from('priority_orders').update({status:current==='pending'?'done':'pending'}).eq('id',id);await loadPriority();}
+async function delPriority(id){setSyncing();await sb.from('priority_orders').delete().eq('id',id);await loadPriority();}
+async function addPriority(){
+  const ref=document.getElementById('pRef').value.trim();const detail=document.getElementById('pDetail').value.trim();
+  if(!ref||!detail)return;setSyncing();
+  await sb.from('priority_orders').insert({date:todayStr,order_ref:ref,detail,status:'pending'});
+  document.getElementById('pRef').value='';document.getElementById('pDetail').value='';
+  document.getElementById('priorityForm').classList.add('hidden');await loadPriority();
 }
-renderCleanup();
+document.getElementById('togPriority').onclick=function(){document.getElementById('priorityForm').classList.toggle('hidden');};
+
+// ── BIRTHDAYS ───────────────────────────────────────────────────
+async function loadBdays(){
+  const {data}=await sb.from('birthdays').select('*').order('name');
+  const el=document.getElementById('bdayList');
+  const soonEl=document.getElementById('bdaySoon');
+  if(!data||!data.length){
+    el.innerHTML='<p class="txt-sm" style="padding:8px 0">No birthdays added yet — add your team\'s birthdays above.</p>';
+    soonEl.innerHTML='';
+    document.getElementById('bdayBadge').textContent='None added yet';
+    return;
+  }
+  const now=new Date();
+  const thisYear=now.getFullYear();
+  const upcoming=[];
+  data.forEach(b=>{
+    const parts=b.birthday.split('-');
+    const month=parseInt(parts[1]);const day=parseInt(parts[2]);
+    let bday=new Date(thisYear,month-1,day);
+    if(bday<now)bday=new Date(thisYear+1,month-1,day);
+    const daysUntil=Math.ceil((bday-now)/(1000*60*60*24));
+    upcoming.push({...b,daysUntil,month,day});
+  });
+  upcoming.sort((a,b)=>a.daysUntil-b.daysUntil);
+  const next=upcoming[0];
+  if(next.daysUntil<=7){
+    soonEl.innerHTML=`<div class="bday-soon"><div class="bday-name">🎂 ${next.daysUntil===0?'Today is':'Coming up:'} ${next.name}'s birthday!</div><div class="bday-date">${next.daysUntil===0?'Happy birthday!':next.daysUntil===1?'Tomorrow!':'In '+next.daysUntil+' days — '+new Date(thisYear,next.month-1,next.day).toLocaleDateString('en-US',{month:'long',day:'numeric'})}</div></div>`;
+    document.getElementById('bdayBadge').textContent=next.daysUntil===0?'🎂 Today!':'🎂 In '+next.daysUntil+' days';
+    document.getElementById('bdayBadge').className='badge b-purple';
+  } else {
+    soonEl.innerHTML='';
+    document.getElementById('bdayBadge').textContent='Next: '+new Date(thisYear,next.month-1,next.day).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    document.getElementById('bdayBadge').className='badge b-gray';
+  }
+  el.innerHTML=upcoming.map(b=>`
+    <div class="bday-item" style="display:flex;align-items:center;gap:10px">
+      <i class="ti ti-cake" style="color:#534AB7;font-size:16px;flex-shrink:0"></i>
+      <div style="flex:1"><div class="txt bold">${b.name}</div><div class="txt-xs">${new Date(thisYear,b.month-1,b.day).toLocaleDateString('en-US',{month:'long',day:'numeric'})} &nbsp;·&nbsp; in ${b.daysUntil} days</div></div>
+      <button class="del" onclick="delBday('${b.id}')"><i class="ti ti-x"></i></button>
+    </div>`).join('');
+  setSynced();
+}
+async function addBday(){
+  const who=document.getElementById('bWho').value;const dateInput=document.getElementById('bDate').value.trim();
+  if(!who||!dateInput)return;
+  const parts=dateInput.split('/');if(parts.length!==2)return alert('Please use MM/DD format');
+  const month=parts[0].padStart(2,'0');const day=parts[1].padStart(2,'0');
+  const birthday=`2000-${month}-${day}`;
+  setSyncing();
+  await sb.from('birthdays').upsert({name:who,birthday},{onConflict:'name'});
+  document.getElementById('bWho').value='';document.getElementById('bDate').value='';
+  document.getElementById('bdayForm').classList.add('hidden');await loadBdays();
+}
+async function delBday(id){setSyncing();await sb.from('birthdays').delete().eq('id',id);await loadBdays();}
+document.getElementById('togBday').onclick=function(){document.getElementById('bdayForm').classList.toggle('hidden');};
+
+// ── SUGGESTIONS ─────────────────────────────────────────────────
+async function loadSugg(){
+  const {data}=await sb.from('suggestions').select('*').order('created_at',{ascending:false});
+  const el=document.getElementById('suggList');
+  const newCount=(data||[]).filter(s=>s.status==='new').length;
+  document.getElementById('suggCount').textContent=newCount+' new';
+  document.getElementById('suggCount').className=`badge ${newCount>0?'b-amber':'b-gray'}`;
+  if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No suggestions yet — team members can submit ideas here.</p>';return;}
+  el.innerHTML=data.map(s=>`
+    <div class="sugg-item">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap">
+        <span class="badge ${s.status==='new'?'b-amber':'b-green'}">${s.status==='new'?'new':'reviewed'}</span>
+        <span class="txt-xs">${s.signed_by?'— '+s.signed_by:'Anonymous'}</span>
+        <span class="txt-xs" style="margin-left:auto">${new Date(s.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>
+        <button class="status-pill ${s.status==='new'?'s-inprog':'s-resolved'}" onclick="cycleSugg('${s.id}','${s.status}')">${s.status==='new'?'mark reviewed':'mark new'}</button>
+        <button class="del" onclick="delSugg('${s.id}')"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="txt-sm">${s.text}</div>
+    </div>`).join('');
+  setSynced();
+}
+async function cycleSugg(id,current){setSyncing();await sb.from('suggestions').update({status:current==='new'?'reviewed':'new'}).eq('id',id);await loadSugg();}
+async function delSugg(id){setSyncing();await sb.from('suggestions').delete().eq('id',id);await loadSugg();}
+async function addSugg(){
+  const text=document.getElementById('sText').value.trim();const signed_by=document.getElementById('sFrom').value.trim();
+  if(!text)return;setSyncing();
+  await sb.from('suggestions').insert({text,signed_by:signed_by||null,status:'new'});
+  document.getElementById('sText').value='';document.getElementById('sFrom').value='';
+  document.getElementById('suggForm').classList.add('hidden');await loadSugg();
+}
+document.getElementById('togSugg').onclick=function(){document.getElementById('suggForm').classList.toggle('hidden');};
+
+// ── SAFETY LIBRARY ──────────────────────────────────────────────
+const SAFETY_LIBRARY={
+  'Pallet Jack Safety':[
+    {t:'Pallet jack speed control',d:'Always walk at a safe pace when operating the pallet jack. Never ride on the forks. Keep your feet clear of the wheels at all times, especially when turning.'},
+    {t:'Loading a pallet jack correctly',d:'Make sure forks are fully inserted under the pallet before pumping. Check that the load is balanced and stable. Never exceed the 5,500 lb weight limit.'},
+    {t:'Pallet jack inspection before use',d:'Before each use check: forks for cracks or bends, wheels for damage, hydraulic system for leaks, and horn functionality. Tag out any equipment that needs repair — do not use.'},
+    {t:'Turning corners with a pallet jack',d:'Slow down before every turn. Sound the horn at blind corners. Never make sharp turns with a heavy load — this can tip the pallet and cause injury.'},
+    {t:'Parking the pallet jack safely',d:'Always park the pallet jack with forks fully lowered to the floor. Never leave it in an aisle or blocking an exit. Return to designated storage area after use.'},
+  ],
+  'Rolling Ladder Safety':[
+    {t:'Locking the rolling ladder wheels',d:'Before climbing, always lock all four wheel brakes. Test stability by pressing down on the first step. Never climb a ladder that has not been fully locked.'},
+    {t:'Three points of contact on the ladder',d:'Maintain three points of contact at all times — two hands and one foot, or two feet and one hand. Never carry items in both hands while climbing.'},
+    {t:'Weight limit and proper use',d:'The rolling ladder has a 300 lb weight limit. One person at a time only. Never use the ladder as a bridge between two points or lean it against the racks.'},
+    {t:'Moving the rolling ladder safely',d:'Always fully descend before moving the ladder. Never move the ladder while someone is on it. Unlock wheels, reposition, re-lock before climbing again.'},
+    {t:'Inspecting the rolling ladder',d:'Check rungs for damage, grease, or debris before climbing. Verify all four wheels roll and lock correctly. Report any damage to Daniel immediately — do not use a damaged ladder.'},
+  ],
+  'Rack Safety':[
+    {t:'Never climb the racks',d:'Racks are not designed to be climbed under any circumstances. Always use the rolling ladder for high picks. Climbing racks can cause collapse and serious injury.'},
+    {t:'Inspect racks for damage daily',d:'Walk the 4 aisles at the start of each shift. Look for bent uprights, damaged beams, or missing safety clips. Report any damage immediately — do not load a damaged rack.'},
+    {t:'Weight limits per shelf level',d:'Never overload a rack shelf. Heavier items always go on lower levels. Distribute weight evenly across the beam. If unsure about a load, ask Daniel before placing it.'},
+    {t:'Aisle clearance — keep aisles clear',d:'All 4 aisles must remain clear at all times. Never leave pallets, boxes, or equipment in an aisle. Clear pathways prevent accidents and allow safe emergency exit.'},
+    {t:'Safe loading and unloading from racks',d:'Face the rack when placing or removing items. Never reach blindly into a shelf. Use both hands for heavy items. Make sure items are fully seated on the beam before releasing.'},
+  ],
+  'General Warehouse':[
+    {t:'Proper lifting technique',d:'Bend at the knees, not the waist. Keep the load close to your body. Never twist while lifting — pivot your feet instead. Ask for help or use equipment for loads over 50 lbs.'},
+    {t:'Slip, trip, and fall prevention',d:'Report spills immediately and place wet floor signs. Keep work areas and aisles clear of boxes and debris. Wear slip-resistant footwear. Watch for uneven surfaces near the dock.'},
+    {t:'Emergency exits and evacuation',d:'Know all emergency exits in the warehouse. Never block exits with pallets, equipment, or product. In an emergency, exit calmly and meet at the designated assembly point outside.'},
+    {t:'Maintaining good housekeeping',d:'A clean warehouse is a safe warehouse. Break down cardboard immediately after unpacking. Return equipment to its designated spot. Clean your workstation at the end of every shift.'},
+    {t:'Reporting unsafe conditions',d:'Every associate is responsible for safety. If you see something unsafe — a damaged rack, a spill, broken equipment — report it to Daniel immediately. Never assume someone else will handle it.'},
+  ],
+};
+function renderLibrary(){
+  const el=document.getElementById('libraryPanel');
+  el.innerHTML=Object.entries(SAFETY_LIBRARY).map(([cat,topics])=>`<div class="topic-cat"><div class="topic-cat-title"><i class="ti ti-tag"></i>${cat}</div><div class="topic-chips">${topics.map(tp=>`<button class="topic-chip" onclick="applyTopic(${JSON.stringify(tp.t)},${JSON.stringify(tp.d)})">${tp.t}</button>`).join('')}</div></div>`).join('');
+}
+async function applyTopic(title,detail){
+  setSyncing();
+  await sb.from('safety_topic').upsert({date:todayStr,topic:title,detail},{onConflict:'date'});
+  await sb.from('safety_ack').delete().eq('date',todayStr);
+  document.getElementById('libraryPanel').classList.add('hidden');
+  await loadSafety();setSynced();
+}
+document.getElementById('togSafety').onclick=function(){document.getElementById('safetyForm').classList.toggle('hidden');document.getElementById('libraryPanel').classList.add('hidden');};
+document.getElementById('togLibrary').onclick=function(){const p=document.getElementById('libraryPanel');p.classList.toggle('hidden');if(!p.classList.contains('hidden'))renderLibrary();document.getElementById('safetyForm').classList.add('hidden');};
 
 // ── SAFETY ──────────────────────────────────────────────────────
 async function loadSafety(){
@@ -448,8 +758,7 @@ async function loadSafety(){
   loadAck();
 }
 async function saveSafety(){
-  const topic=document.getElementById('sTopic').value.trim();
-  const detail=document.getElementById('sDetail2').value.trim();
+  const topic=document.getElementById('sTopic').value.trim();const detail=document.getElementById('sDetail2').value.trim();
   if(!topic)return;setSyncing();
   await sb.from('safety_topic').upsert({date:todayStr,topic,detail},{onConflict:'date'});
   await sb.from('safety_ack').delete().eq('date',todayStr);
@@ -457,16 +766,10 @@ async function saveSafety(){
   document.getElementById('safetyForm').classList.add('hidden');
   await loadSafety();setSynced();
 }
-
-// ── ACK ─────────────────────────────────────────────────────────
 async function loadAck(){
   const {data}=await sb.from('safety_ack').select('name').eq('date',todayStr);
   const acked=(data||[]).map(r=>r.name);
-  document.getElementById('ackGrid').innerHTML=TEAM.map(m=>`
-    <button class="ack-btn ${acked.includes(m.name)?'acked':''}" onclick="toggleAck('${m.name}')">
-      <i class="ti ${acked.includes(m.name)?'ti-circle-check':'ti-circle'}"></i>
-      <span>${m.name.split(' ')[0]}</span>
-    </button>`).join('');
+  document.getElementById('ackGrid').innerHTML=TEAM.map(m=>`<button class="ack-btn ${acked.includes(m.name)?'acked':''}" onclick="toggleAck('${m.name}')"><i class="ti ${acked.includes(m.name)?'ti-circle-check':'ti-circle'}"></i><span>${m.name.split(' ')[0]}</span></button>`).join('');
   const count=acked.length;const total=TEAM.length;
   document.getElementById('ackBadge').textContent=`${count} / ${total} acknowledged`;
   document.getElementById('ackBadge').className=`badge ${count===total?'b-green':'b-amber'}`;
@@ -485,25 +788,10 @@ async function toggleAck(name){
 async function loadTeam(){
   const {data}=await sb.from('team_status').select('*').eq('date',todayStr);
   const statusMap={};(data||[]).forEach(r=>statusMap[r.name]=r.status);
-  document.getElementById('teamList').innerHTML=TEAM.map(m=>{
-    const st=statusMap[m.name]||'on';
-    return`<div class="row">
-      <div class="av ${m.av}">${m.initials}</div>
-      <div style="flex:1"><div class="txt bold">${m.name}</div><div class="txt-xs">${statusLabel[st]}</div></div>
-      <select onchange="saveTeamStatus('${m.name}',this.value)" style="font-size:12px;padding:4px 8px;border:0.5px solid rgba(0,0,0,0.15);border-radius:7px;background:#f5f4f1;color:#1a1a18;font-family:inherit">
-        <option value="on" ${st==='on'?'selected':''}>On shift</option>
-        <option value="break" ${st==='break'?'selected':''}>On break</option>
-        <option value="off" ${st==='off'?'selected':''}>Off today</option>
-      </select>
-      <div class="dot" style="background:${statusDot[st]}"></div>
-    </div>`;}).join('');
+  document.getElementById('teamList').innerHTML=TEAM.map(m=>{const st=statusMap[m.name]||'on';return`<div class="row"><div class="av ${m.av}">${m.initials}</div><div style="flex:1"><div class="txt bold">${m.name}</div><div class="txt-xs">${statusLabel[st]}</div></div><select onchange="saveTeamStatus('${m.name}',this.value)" style="font-size:12px;padding:4px 8px;border:0.5px solid rgba(0,0,0,0.15);border-radius:7px;background:#f5f4f1;color:#1a1a18;font-family:inherit"><option value="on" ${st==='on'?'selected':''}>On shift</option><option value="break" ${st==='break'?'selected':''}>On break</option><option value="off" ${st==='off'?'selected':''}>Off today</option></select><div class="dot" style="background:${statusDot[st]}"></div></div>`;}).join('');
   setSynced();
 }
-async function saveTeamStatus(name,status){
-  setSyncing();
-  await sb.from('team_status').upsert({date:todayStr,name,status},{onConflict:'date,name'});
-  await loadTeam();
-}
+async function saveTeamStatus(name,status){setSyncing();await sb.from('team_status').upsert({date:todayStr,name,status},{onConflict:'date,name'});await loadTeam();}
 
 // ── ANNOUNCEMENTS ───────────────────────────────────────────────
 const tagCls={urgent:'b-red',info:'b-blue',general:'b-gray',resolved:'b-green'};
@@ -512,25 +800,12 @@ async function loadAnns(){
   const el=document.getElementById('annList');
   document.getElementById('annCount').textContent=(data||[]).length;
   if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No announcements.</p>';return;}
-  el.innerHTML=data.map(a=>`
-    <div class="ann-item">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
-        <span class="badge ${tagCls[a.tag]||'b-gray'}">${a.tag}</span>
-        <span class="txt-xs" style="margin-left:auto">${new Date(a.created_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</span>
-        <button class="del" onclick="delAnn('${a.id}')"><i class="ti ti-x"></i></button>
-      </div>
-      <div class="txt-sm">${a.text}</div>
-    </div>`).join('');
+  el.innerHTML=data.map(a=>`<div class="ann-item"><div style="display:flex;align-items:center;gap:6px;margin-bottom:5px"><span class="badge ${tagCls[a.tag]||'b-gray'}">${a.tag}</span><span class="txt-xs" style="margin-left:auto">${new Date(a.created_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</span><button class="del" onclick="delAnn('${a.id}')"><i class="ti ti-x"></i></button></div><div class="txt-sm">${a.text}</div></div>`).join('');
   setSynced();
 }
-async function addAnn(){
-  const tag=document.getElementById('aTag').value;const text=document.getElementById('aText').value.trim();
-  if(!text)return;setSyncing();
-  await sb.from('announcements').insert({tag,text});
-  document.getElementById('aText').value='';document.getElementById('annForm').classList.add('hidden');
-  await loadAnns();
-}
+async function addAnn(){const tag=document.getElementById('aTag').value;const text=document.getElementById('aText').value.trim();if(!text)return;setSyncing();await sb.from('announcements').insert({tag,text});document.getElementById('aText').value='';document.getElementById('annForm').classList.add('hidden');await loadAnns();}
 async function delAnn(id){setSyncing();await sb.from('announcements').delete().eq('id',id);await loadAnns();}
+document.getElementById('togAnn').onclick=function(){document.getElementById('annForm').classList.toggle('hidden');};
 
 // ── WORKLOAD ────────────────────────────────────────────────────
 async function loadWorkload(){
@@ -538,22 +813,12 @@ async function loadWorkload(){
   const el=document.getElementById('workloadList');
   document.getElementById('workloadCount').textContent=(data||[]).length+' items';
   if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No workload posted yet.</p>';return;}
-  el.innerHTML=data.map(w=>`
-    <div class="workload-item" style="display:flex;align-items:center;gap:10px">
-      <i class="ti ti-point-filled" style="color:var(--blue);font-size:10px;flex-shrink:0"></i>
-      <span class="txt" style="flex:1">${w.text}</span>
-      <button class="del" onclick="delWorkload('${w.id}')"><i class="ti ti-x"></i></button>
-    </div>`).join('');
+  el.innerHTML=data.map(w=>`<div class="workload-item" style="display:flex;align-items:center;gap:10px"><i class="ti ti-point-filled" style="color:var(--blue);font-size:10px;flex-shrink:0"></i><span class="txt" style="flex:1">${w.text}</span><button class="del" onclick="delWorkload('${w.id}')"><i class="ti ti-x"></i></button></div>`).join('');
   setSynced();
 }
-async function addWorkload(){
-  const text=document.getElementById('wText').value.trim();
-  if(!text)return;setSyncing();
-  await sb.from('workload').insert({date:todayStr,text});
-  document.getElementById('wText').value='';document.getElementById('workloadForm').classList.add('hidden');
-  await loadWorkload();
-}
+async function addWorkload(){const text=document.getElementById('wText').value.trim();if(!text)return;setSyncing();await sb.from('workload').insert({date:todayStr,text});document.getElementById('wText').value='';document.getElementById('workloadForm').classList.add('hidden');await loadWorkload();}
 async function delWorkload(id){setSyncing();await sb.from('workload').delete().eq('id',id);await loadWorkload();}
+document.getElementById('togWorkload').onclick=function(){document.getElementById('workloadForm').classList.toggle('hidden');};
 
 // ── ERRORS ──────────────────────────────────────────────────────
 async function loadErrors(){
@@ -562,31 +827,13 @@ async function loadErrors(){
   const open=(data||[]).filter(e=>e.status==='open').length;
   document.getElementById('errCount').textContent=open+' open';
   if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No errors logged today.</p>';return;}
-  el.innerHTML=data.map(e=>`
-    <div class="err-item">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap">
-        <span class="badge b-red">${e.type}</span>
-        ${e.who?`<span class="txt-xs">${e.who}</span>`:''}
-        <button class="status-pill ${e.status==='open'?'s-open':e.status==='resolved'?'s-resolved':'s-inprog'}" onclick="cycleErr('${e.id}','${e.status}')">${e.status}</button>
-        <span class="txt-xs" style="margin-left:auto">${new Date(e.created_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</span>
-        <button class="del" onclick="delErr('${e.id}')"><i class="ti ti-x"></i></button>
-      </div>
-      <div class="txt-sm">${e.description}</div>
-    </div>`).join('');
+  el.innerHTML=data.map(e=>`<div class="err-item"><div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap"><span class="badge b-red">${e.type}</span>${e.who?`<span class="txt-xs">${e.who}</span>`:''}<button class="status-pill ${e.status==='open'?'s-open':e.status==='resolved'?'s-resolved':'s-inprog'}" onclick="cycleErr('${e.id}','${e.status}')">${e.status}</button><span class="txt-xs" style="margin-left:auto">${new Date(e.created_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</span><button class="del" onclick="delErr('${e.id}')"><i class="ti ti-x"></i></button></div><div class="txt-sm">${e.description}</div></div>`).join('');
   setSynced();
 }
-async function cycleErr(id,current){
-  const s=['open','in progress','resolved'];const next=s[(s.indexOf(current)+1)%3];
-  setSyncing();await sb.from('errors').update({status:next}).eq('id',id);await loadErrors();
-}
+async function cycleErr(id,current){const s=['open','in progress','resolved'];const next=s[(s.indexOf(current)+1)%3];setSyncing();await sb.from('errors').update({status:next}).eq('id',id);await loadErrors();}
 async function delErr(id){setSyncing();await sb.from('errors').delete().eq('id',id);await loadErrors();}
-async function addError(){
-  const type=document.getElementById('eType').value;const who=document.getElementById('eWho').value;const desc=document.getElementById('eDesc').value.trim();
-  if(!type||!desc)return;setSyncing();
-  await sb.from('errors').insert({date:todayStr,type,who,description:desc,status:'open'});
-  document.getElementById('eType').value='';document.getElementById('eWho').value='';document.getElementById('eDesc').value='';
-  document.getElementById('errForm').classList.add('hidden');await loadErrors();
-}
+async function addError(){const type=document.getElementById('eType').value;const who=document.getElementById('eWho').value;const desc=document.getElementById('eDesc').value.trim();if(!type||!desc)return;setSyncing();await sb.from('errors').insert({date:todayStr,type,who,description:desc,status:'open'});document.getElementById('eType').value='';document.getElementById('eWho').value='';document.getElementById('eDesc').value='';document.getElementById('errForm').classList.add('hidden');await loadErrors();}
+document.getElementById('togErr').onclick=function(){document.getElementById('errForm').classList.toggle('hidden');};
 
 // ── KUDOS ───────────────────────────────────────────────────────
 const kudoAv={'Aberham Ordaz':'av0','Carson Cole':'av1','Gio Rodriguez':'av2','Jon Tolbert':'av3','Lani Rodriguez':'av5','Natalie Orenday':'av4','The whole team':'av1'};
@@ -596,149 +843,91 @@ async function loadKudos(){
   const el=document.getElementById('kudoList');
   document.getElementById('kudoCount').textContent=(data||[]).length+' today';
   if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No kudos yet — be the first!</p>';return;}
-  el.innerHTML=data.map(k=>`
-    <div class="kudo-item">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
-        <div class="av ${kudoAv[k.who]||'av0'}" style="width:28px;height:28px;font-size:10px">${kudoIn[k.who]||'?'}</div>
-        <div class="txt bold">${k.who}</div>
-        <span class="badge b-purple" style="margin-left:auto">${new Date(k.created_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</span>
-        <button class="del" onclick="delKudo('${k.id}')"><i class="ti ti-x"></i></button>
-      </div>
-      <div class="txt-sm" style="padding-left:36px">"${k.msg}"</div>
-      ${k.from_name?`<div class="txt-xs" style="padding-left:36px;margin-top:3px">— ${k.from_name}</div>`:''}
-    </div>`).join('');
+  el.innerHTML=data.map(k=>`<div class="kudo-item"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><div class="av ${kudoAv[k.who]||'av0'}" style="width:28px;height:28px;font-size:10px">${kudoIn[k.who]||'?'}</div><div class="txt bold">${k.who}</div><span class="badge b-purple" style="margin-left:auto">${new Date(k.created_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</span><button class="del" onclick="delKudo('${k.id}')"><i class="ti ti-x"></i></button></div><div class="txt-sm" style="padding-left:36px">"${k.msg}"</div>${k.from_name?`<div class="txt-xs" style="padding-left:36px;margin-top:3px">— ${k.from_name}</div>`:''}</div>`).join('');
   setSynced();
 }
-async function addKudo(){
-  const who=document.getElementById('kWho').value;const from_name=document.getElementById('kFrom').value.trim();const msg=document.getElementById('kMsg').value.trim();
-  if(!who||!msg)return;setSyncing();
-  await sb.from('kudos').insert({date:todayStr,who,from_name,msg});
-  document.getElementById('kWho').value='';document.getElementById('kFrom').value='';document.getElementById('kMsg').value='';
-  document.getElementById('kudoForm').classList.add('hidden');await loadKudos();
-}
+async function addKudo(){const who=document.getElementById('kWho').value;const from_name=document.getElementById('kFrom').value.trim();const msg=document.getElementById('kMsg').value.trim();if(!who||!msg)return;setSyncing();await sb.from('kudos').insert({date:todayStr,who,from_name,msg});document.getElementById('kWho').value='';document.getElementById('kFrom').value='';document.getElementById('kMsg').value='';document.getElementById('kudoForm').classList.add('hidden');await loadKudos();}
 async function delKudo(id){setSyncing();await sb.from('kudos').delete().eq('id',id);await loadKudos();}
+document.getElementById('togKudo').onclick=function(){document.getElementById('kudoForm').classList.toggle('hidden');};
 
 // ── PERFORMANCE ─────────────────────────────────────────────────
 let dailyGoal=200;
 let perfData=TEAM.map(m=>({name:m.name.split(' ')[0],initials:m.initials,av:m.av,fullName:m.name,am:0,pm:0}));
-
 async function loadPerf(){
   const {data}=await sb.from('performance').select('*').eq('date',todayStr);
   const goalRow=data&&data.find(r=>r.name==='__goal__');
   if(goalRow){dailyGoal=goalRow.am;document.getElementById('pmGoal').textContent=dailyGoal;document.getElementById('goalInput').value=dailyGoal;}
-  perfData=TEAM.map(m=>{
-    const row=data&&data.find(r=>r.name===m.name);
-    return{name:m.name.split(' ')[0],initials:m.initials,av:m.av,fullName:m.name,am:row?row.am:0,pm:row?row.pm:0};
-  });
+  perfData=TEAM.map(m=>{const row=data&&data.find(r=>r.name===m.name);return{name:m.name.split(' ')[0],initials:m.initials,av:m.av,fullName:m.name,am:row?row.am:0,pm:row?row.pm:0};});
   renderPerf();calcPerf();setSynced();
 }
-function renderPerf(){
-  document.getElementById('perfRows').innerHTML=perfData.map((p,i)=>`
-    <div class="perf-row">
-      <div class="av ${p.av}" style="width:28px;height:28px;font-size:10px">${p.initials}</div>
-      <div class="txt">${p.name}</div>
-      <input class="perf-input" type="number" min="0" step="1" value="${p.am}" oninput="perfData[${i}].am=parseInt(this.value)||0;calcPerf()"/>
-      <input class="perf-input" type="number" min="0" step="1" value="${p.pm}" oninput="perfData[${i}].pm=parseInt(this.value)||0;calcPerf()"/>
-      <div class="row-total" id="pt${i}">${p.am+p.pm}</div>
-    </div>`).join('');
-}
+function renderPerf(){document.getElementById('perfRows').innerHTML=perfData.map((p,i)=>`<div class="perf-row"><div class="av ${p.av}" style="width:28px;height:28px;font-size:10px">${p.initials}</div><div class="txt">${p.name}</div><input class="perf-input" type="number" min="0" step="1" value="${p.am}" oninput="perfData[${i}].am=parseInt(this.value)||0;calcPerf()"/><input class="perf-input" type="number" min="0" step="1" value="${p.pm}" oninput="perfData[${i}].pm=parseInt(this.value)||0;calcPerf()"/><div class="row-total" id="pt${i}">${p.am+p.pm}</div></div>`).join('');}
 function calcPerf(){
   let total=0,top='—',topN=0;
-  perfData.forEach((p,i)=>{
-    const t=p.am+p.pm;total+=t;
-    const el=document.getElementById('pt'+i);if(el)el.textContent=t;
-    if(t>topN){topN=t;top=p.name;}
-  });
+  perfData.forEach((p,i)=>{const t=p.am+p.pm;total+=t;const el=document.getElementById('pt'+i);if(el)el.textContent=t;if(t>topN){topN=t;top=p.name;}});
   const active=perfData.filter(p=>p.am+p.pm>0).length||1;
-  document.getElementById('pmTotal').textContent=total;
-  document.getElementById('pmTop').textContent=topN>0?top:'—';
-  document.getElementById('pmAvg').textContent=Math.round(total/active);
-  document.getElementById('totalBadge').textContent='Team total: '+total;
+  document.getElementById('pmTotal').textContent=total;document.getElementById('pmTop').textContent=topN>0?top:'—';
+  document.getElementById('pmAvg').textContent=Math.round(total/active);document.getElementById('totalBadge').textContent='Team total: '+total;
   updateGoalBar(total);
 }
-function updateGoalBar(total){
-  const pct=Math.min(Math.round(total/dailyGoal*100),100);
-  const fill=document.getElementById('goalBarFill');
-  fill.style.width=pct+'%';fill.style.background=pct>=100?'#1D9E75':pct>=75?'#BA7517':'#378ADD';
-  document.getElementById('goalBarPct').textContent=pct>10?pct+'%':'';
-  document.getElementById('goalMetaLeft').textContent=`${total} of ${dailyGoal} orders`;
-  document.getElementById('goalMetaRight').textContent=`${pct}% of daily goal`;
-}
-async function savePerf(){
-  setSyncing();
-  const upserts=perfData.map(p=>({date:todayStr,name:p.fullName,am:p.am,pm:p.pm}));
-  upserts.push({date:todayStr,name:'__goal__',am:dailyGoal,pm:0});
-  await sb.from('performance').upsert(upserts,{onConflict:'date,name'});
-  setSynced();alert('Performance saved!');
-}
-async function setGoal(){
-  dailyGoal=parseInt(document.getElementById('goalInput').value)||200;
-  document.getElementById('pmGoal').textContent=dailyGoal;
-  calcPerf();await savePerf();
+function updateGoalBar(total){const pct=Math.min(Math.round(total/dailyGoal*100),100);const fill=document.getElementById('goalBarFill');fill.style.width=pct+'%';fill.style.background=pct>=100?'#1D9E75':pct>=75?'#BA7517':'#378ADD';document.getElementById('goalBarPct').textContent=pct>10?pct+'%':'';document.getElementById('goalMetaLeft').textContent=`${total} of ${dailyGoal} orders`;document.getElementById('goalMetaRight').textContent=`${pct}% of daily goal`;}
+async function savePerf(){setSyncing();const upserts=perfData.map(p=>({date:todayStr,name:p.fullName,am:p.am,pm:p.pm}));upserts.push({date:todayStr,name:'__goal__',am:dailyGoal,pm:0});await sb.from('performance').upsert(upserts,{onConflict:'date,name'});setSynced();alert('Performance saved!');}
+async function setGoal(){dailyGoal=parseInt(document.getElementById('goalInput').value)||200;document.getElementById('pmGoal').textContent=dailyGoal;calcPerf();await savePerf();}
+
+// ── WEEKLY CHART ────────────────────────────────────────────────
+async function loadWeeklyChart(){
+  const d=new Date();const day=d.getDay();const monday=new Date(d);monday.setDate(d.getDate()-((day+6)%7));
+  const days=['Mon','Tue','Wed','Thu','Fri'];
+  const dates=days.map((_,i)=>{const dd=new Date(monday);dd.setDate(monday.getDate()+i);return dd.toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'});});
+  const weekLabel=new Date(dates[0]+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})+' – '+new Date(dates[4]+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  document.getElementById('chartWeekLabel').textContent='Week of '+weekLabel;
+  const {data}=await sb.from('performance').select('*').gte('date',dates[0]).lte('date',dates[4]);
+  const actuals=dates.map(dt=>{const rows=(data||[]).filter(r=>r.date===dt&&r.name!=='__goal__');return rows.reduce((s,r)=>s+(r.am+r.pm),0);});
+  const goalVal=(data||[]).find(r=>r.name==='__goal__')?.am||dailyGoal;
+  const maxVal=Math.max(goalVal,...actuals,1);const chartH=160;
+  let weekTotal=0,bestDay='—',bestN=0,daysHit=0;
+  actuals.forEach((v,i)=>{if(v>0){weekTotal+=v;if(v>bestN){bestN=v;bestDay=days[i];}if(v>=goalVal)daysHit++;}});
+  document.getElementById('chartWeekTotal').textContent=weekTotal.toLocaleString();
+  document.getElementById('chartWeekGoal').textContent=(goalVal*5).toLocaleString();
+  document.getElementById('chartBestDay').textContent=bestDay;
+  document.getElementById('chartDaysHit').textContent=daysHit+' / 5';
+  const wrap=document.getElementById('chartBars');wrap.innerHTML='';wrap.style.height=chartH+'px';
+  const goalPct=(goalVal/maxVal)*100;
+  const goalLineEl=document.createElement('div');goalLineEl.className='goal-line-h';goalLineEl.style.bottom=(goalPct/100*chartH+2)+'px';goalLineEl.innerHTML=`<span class="goal-line-label">Goal: ${goalVal}</span>`;
+  days.forEach((day,i)=>{const v=actuals[i];const h=v>0?Math.round((v/maxVal)*chartH):0;const color=v===0?'#F1EFE8':v>=goalVal?'#1D9E75':'#378ADD';const col=document.createElement('div');col.className='bar-col';col.innerHTML=`<div class="bar-val-label">${v>0?v:''}</div><div class="bar-body" style="height:${h}px;background:${color}"></div><div class="bar-day-label">${day}</div>`;wrap.appendChild(col);});
+  wrap.appendChild(goalLineEl);
 }
 
-// ── PERFORMANCE HISTORY ─────────────────────────────────────────
-let histDates=[];
-let selectedHistDate=null;
-
+// ── HISTORY ─────────────────────────────────────────────────────
+let histDates=[],selectedHistDate=null;
 async function loadHistory(){
   const {data}=await sb.from('performance').select('date').neq('name','__goal__').order('date',{ascending:false});
-  if(!data||!data.length){
-    document.getElementById('histNav').innerHTML='';
-    document.getElementById('histContent').innerHTML='<p class="txt-sm" style="padding:8px 0">No history yet — data will appear here as days are saved.</p>';
-    return;
-  }
-  // get unique dates, last 14
+  if(!data||!data.length){document.getElementById('histNav').innerHTML='';document.getElementById('histContent').innerHTML='<p class="txt-sm" style="padding:8px 0">No history yet.</p>';return;}
   histDates=[...new Set(data.map(r=>r.date))].slice(0,14);
-  if(!selectedHistDate||!histDates.includes(selectedHistDate)) selectedHistDate=histDates[0];
-  renderHistNav();
-  loadHistDay(selectedHistDate);
+  if(!selectedHistDate||!histDates.includes(selectedHistDate))selectedHistDate=histDates[0];
+  renderHistNav();loadHistDay(selectedHistDate);
 }
-
-function renderHistNav(){
-  document.getElementById('histNav').innerHTML=histDates.map(d=>{
-    const label=new Date(d+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-    return`<button class="hist-date-btn ${d===selectedHistDate?'active':''}" onclick="selectHistDate('${d}')">${label}</button>`;
-  }).join('');
-}
-
-function selectHistDate(d){
-  selectedHistDate=d;
-  renderHistNav();
-  loadHistDay(d);
-}
-
+function renderHistNav(){document.getElementById('histNav').innerHTML=histDates.map(d=>{const label=new Date(d+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});return`<button class="hist-date-btn ${d===selectedHistDate?'active':''}" onclick="selectHistDate('${d}')">${label}</button>`;}).join('');}
+function selectHistDate(d){selectedHistDate=d;renderHistNav();loadHistDay(d);}
 async function loadHistDay(date){
   document.getElementById('histContent').innerHTML='<div class="loading">Loading...</div>';
   const {data}=await sb.from('performance').select('*').eq('date',date).neq('name','__goal__');
-  if(!data||!data.length){
-    document.getElementById('histContent').innerHTML='<p class="txt-sm" style="padding:8px 0">No data for this day.</p>';
-    return;
-  }
+  if(!data||!data.length){document.getElementById('histContent').innerHTML='<p class="txt-sm" style="padding:8px 0">No data for this day.</p>';return;}
   const goalRow=await sb.from('performance').select('am').eq('date',date).eq('name','__goal__').single();
-  const goal=goalRow.data?goalRow.data.am:200;
-  const total=data.reduce((s,r)=>s+(r.am+r.pm),0);
-  const pct=Math.min(Math.round(total/goal*100),100);
-  const barColor=pct>=100?'#1D9E75':pct>=75?'#BA7517':'#378ADD';
-  document.getElementById('histContent').innerHTML=`
-    <div style="margin-bottom:14px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px">
-        <span>${total} of ${goal} orders &nbsp;·&nbsp; ${pct}% of goal</span>
-      </div>
-      <div style="width:100%;height:16px;background:var(--bg);border-radius:var(--radius-md);overflow:hidden">
-        <div style="width:${pct}%;height:100%;background:${barColor};border-radius:var(--radius-md)"></div>
-      </div>
-    </div>
-    <table class="hist-table">
-      <thead><tr><th>Associate</th><th>AM</th><th>PM</th><th>Total</th></tr></thead>
-      <tbody>
-        ${data.sort((a,b)=>(b.am+b.pm)-(a.am+a.pm)).map(r=>`
-          <tr><td>${r.name}</td><td>${r.am}</td><td>${r.pm}</td><td style="font-weight:600">${r.am+r.pm}</td></tr>
-        `).join('')}
-        <tr class="total-row"><td>Team total</td><td colspan="2"></td><td>${total}</td></tr>
-      </tbody>
-    </table>`;
+  const goal=goalRow.data?goalRow.data.am:200;const total=data.reduce((s,r)=>s+(r.am+r.pm),0);const pct=Math.min(Math.round(total/goal*100),100);const barColor=pct>=100?'#1D9E75':pct>=75?'#BA7517':'#378ADD';
+  document.getElementById('histContent').innerHTML=`<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px"><span>${total} of ${goal} orders &nbsp;·&nbsp; ${pct}% of goal</span></div><div style="width:100%;height:16px;background:var(--bg);border-radius:var(--radius-md);overflow:hidden"><div style="width:${pct}%;height:100%;background:${barColor};border-radius:var(--radius-md)"></div></div></div><table class="hist-table"><thead><tr><th>Associate</th><th>AM</th><th>PM</th><th>Total</th></tr></thead><tbody>${data.sort((a,b)=>(b.am+b.pm)-(a.am+a.pm)).map(r=>`<tr><td>${r.name}</td><td>${r.am}</td><td>${r.pm}</td><td style="font-weight:600">${r.am+r.pm}</td></tr>`).join('')}<tr class="total-row"><td>Team total</td><td colspan="2"></td><td>${total}</td></tr></tbody></table>`;
 }
+
+// ── CLEANUP ─────────────────────────────────────────────────────
+const TASKS=['Cardboard break down','Hallway trash bags','Station trash cans','Sweep Hallways','Sweep stations'];
+const TASK_ICONS=['ti-box','ti-trash','ti-trash','ti-arrows-right','ti-arrows-right'];
+function getWeekNumber(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+3-(d.getDay()+6)%7);const w1=new Date(d.getFullYear(),0,4);return 1+Math.round(((d-w1)/86400000-3+(w1.getDay()+6)%7)/7);}
+function getWeekOf(){const d=new Date();const day=d.getDay();const diff=d.getDate()-day+(day===0?-6:1);const mon=new Date(d.setDate(diff));return mon.toLocaleDateString('en-US',{month:'short',day:'numeric'});}
+const weekNum=getWeekNumber();document.getElementById('weekBadge').textContent='Week of '+getWeekOf();
+let cleanupAssignments=TASKS.map((task,i)=>({task,icon:TASK_ICONS[i],assigneeIdx:(i+weekNum)%TEAM.length}));
+function renderCleanup(){document.getElementById('cleanupList').innerHTML=cleanupAssignments.map(c=>`<div class="cleanup-row"><div class="cleanup-task"><div class="cleanup-icon"><i class="ti ${c.icon}"></i></div><div class="txt bold">${c.task}</div></div><div style="display:flex;align-items:center;gap:8px"><div class="av ${TEAM[c.assigneeIdx].av}" style="width:28px;height:28px;font-size:10px">${TEAM[c.assigneeIdx].initials}</div><div class="txt" style="white-space:nowrap">${TEAM[c.assigneeIdx].name.split(' ')[0]}</div></div></div>`).join('');}
+function rotateCleanup(){cleanupAssignments=cleanupAssignments.map(c=>({...c,assigneeIdx:(c.assigneeIdx+1)%TEAM.length}));renderCleanup();}
+function applyOverride(){const task=document.getElementById('oTask').value;const who=document.getElementById('oWho').value;if(!task||!who)return;const idx=TEAM.findIndex(m=>m.name===who);const tIdx=cleanupAssignments.findIndex(c=>c.task===task);if(idx>=0&&tIdx>=0)cleanupAssignments[tIdx].assigneeIdx=idx;document.getElementById('oTask').value='';document.getElementById('oWho').value='';document.getElementById('overrideForm').classList.add('hidden');renderCleanup();}
+renderCleanup();
 
 // ── REALTIME ────────────────────────────────────────────────────
 sb.channel('board-changes')
@@ -747,15 +936,20 @@ sb.channel('board-changes')
   .on('postgres_changes',{event:'*',schema:'public',table:'errors'},()=>loadErrors())
   .on('postgres_changes',{event:'*',schema:'public',table:'kudos'},()=>loadKudos())
   .on('postgres_changes',{event:'*',schema:'public',table:'team_status'},()=>loadTeam())
-  .on('postgres_changes',{event:'*',schema:'public',table:'performance'},()=>{loadPerf();loadHistory();})
+  .on('postgres_changes',{event:'*',schema:'public',table:'performance'},()=>{loadPerf();loadWeeklyChart();loadHistory();})
   .on('postgres_changes',{event:'*',schema:'public',table:'safety_topic'},()=>loadSafety())
   .on('postgres_changes',{event:'*',schema:'public',table:'safety_ack'},()=>loadAck())
+  .on('postgres_changes',{event:'*',schema:'public',table:'incident'},()=>loadIncident())
+  .on('postgres_changes',{event:'*',schema:'public',table:'priority_orders'},()=>loadPriority())
+  .on('postgres_changes',{event:'*',schema:'public',table:'suggestions'},()=>loadSugg())
+  .on('postgres_changes',{event:'*',schema:'public',table:'birthdays'},()=>loadBdays())
   .subscribe();
 
 // ── INIT ────────────────────────────────────────────────────────
 async function init(){
-  await Promise.all([loadSafety(),loadAnns(),loadWorkload(),loadErrors(),loadKudos(),loadTeam(),loadPerf(),loadHistory()]);
+  await Promise.all([loadWeather(),loadIncident(),loadPriority(),loadSafety(),loadAnns(),loadBdays(),loadWorkload(),loadErrors(),loadKudos(),loadSugg(),loadTeam(),loadPerf(),loadWeeklyChart(),loadHistory()]);
   setSynced();
+  setInterval(loadWeather,10*60*1000); // refresh weather every 10 min
 }
 init();
 </script>
