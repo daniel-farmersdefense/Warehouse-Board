@@ -116,7 +116,17 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .break-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:0.5px solid var(--border)}
 .break-row:last-child{border-bottom:none}
 .break-label{font-size:12px;color:var(--text-muted)}
-.break-time{font-size:13px;font-weight:600;color:var(--text);background:var(--blue-bg);color:var(--blue-text);padding:2px 10px;border-radius:20px}
+.break-time{font-size:13px;font-weight:600;background:var(--blue-bg);color:var(--blue-text);padding:2px 10px;border-radius:20px}
+/* HISTORY */
+.hist-nav{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.hist-date-btn{font-size:12px;padding:5px 12px;border:0.5px solid var(--border-mid);border-radius:var(--radius-md);background:transparent;color:var(--text);cursor:pointer;font-family:inherit}
+.hist-date-btn:hover{background:var(--bg)}
+.hist-date-btn.active{background:var(--text);color:var(--bg)}
+.hist-table{width:100%;border-collapse:collapse;font-size:13px}
+.hist-table th{text-align:left;font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;padding:0 8px 8px;border-bottom:0.5px solid var(--border-mid)}
+.hist-table td{padding:10px 8px;border-bottom:0.5px solid var(--border);color:var(--text)}
+.hist-table tr:last-child td{border-bottom:none}
+.hist-table .total-row td{font-weight:600;background:var(--bg);border-radius:var(--radius-md)}
 .footer{text-align:center;padding:2rem;font-size:12px;color:var(--text-hint)}
 .loading{text-align:center;padding:20px;font-size:13px;color:var(--text-muted)}
 @media(max-width:600px){.topbar{padding:0 1rem}.container{padding:1rem}.perf-hdr,.perf-row{grid-template-columns:28px 1fr 48px 48px 48px;gap:4px}.break-grid{grid-template-columns:1fr}}
@@ -304,7 +314,18 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     <button class="btn btn-ghost" onclick="savePerf()"><i class="ti ti-device-floppy"></i> Save performance</button>
   </div>
 
-  <!-- 8. WEEKLY CLEANUP ASSIGNMENTS -->
+  <!-- 8. PERFORMANCE HISTORY -->
+  <div class="card full">
+    <div class="ch">
+      <i class="ti ti-calendar-stats" style="color:#185FA5"></i>
+      <h2>Performance history</h2>
+      <span class="badge b-blue">Last 14 days</span>
+    </div>
+    <div class="hist-nav" id="histNav"></div>
+    <div id="histContent"><div class="loading">Loading history...</div></div>
+  </div>
+
+  <!-- 9. WEEKLY CLEANUP ASSIGNMENTS -->
   <div class="card">
     <div class="ch">
       <i class="ti ti-trash" style="color:#0F6E56"></i>
@@ -330,7 +351,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 9. TEAM STATUS -->
+  <!-- 10. TEAM STATUS -->
   <div class="card">
     <div class="ch">
       <i class="ti ti-users" style="color:#534AB7"></i>
@@ -348,9 +369,13 @@ const SUPABASE_URL = 'https://pwtacpqguobhbmyrhfwi.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_yAVs5dAKMQvVAvwMcgRCnA_at6y44wQ';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// ── PACIFIC TIME DATE (fixes the reset bug) ─────────────────────
+function getPacificDateStr() {
+  return new Date().toLocaleDateString('en-CA', {timeZone: 'America/Los_Angeles'});
+}
+const todayStr = getPacificDateStr();
 const today = new Date();
-const todayStr = today.toISOString().slice(0,10);
-const dateStr = today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+const dateStr = today.toLocaleDateString('en-US', {weekday:'long',month:'long',day:'numeric',year:'numeric',timeZone:'America/Los_Angeles'});
 document.getElementById('dateBadge').textContent = dateStr;
 document.getElementById('safetyDate').textContent = dateStr;
 document.getElementById('footerYear').textContent = today.getFullYear();
@@ -366,20 +391,15 @@ const TEAM=[
 const statusDot={on:'#1D9E75',off:'#888780',break:'#EF9F27'};
 const statusLabel={on:'On shift',off:'Off today',break:'On break'};
 
-function setSynced(){
-  document.getElementById('syncDot').className='sync-dot live';
-  document.getElementById('syncLabel').textContent='Live';
-}
-function setSyncing(){
-  document.getElementById('syncDot').className='sync-dot';
-  document.getElementById('syncLabel').textContent='Syncing...';
-}
+function setSynced(){document.getElementById('syncDot').className='sync-dot live';document.getElementById('syncLabel').textContent='Live';}
+function setSyncing(){document.getElementById('syncDot').className='sync-dot';document.getElementById('syncLabel').textContent='Syncing...';}
 
 const togMap={togSafety:'safetyForm',togErr:'errForm',togKudo:'kudoForm',togAnn:'annForm',togWorkload:'workloadForm'};
 Object.keys(togMap).forEach(id=>{
   document.getElementById(id).onclick=function(){document.getElementById(togMap[id]).classList.toggle('hidden');};
 });
 
+// ── CLEANUP ─────────────────────────────────────────────────────
 const TASKS=['Cardboard break down','Hallway trash bags','Station trash cans','Sweep Hallways','Sweep stations'];
 const TASK_ICONS=['ti-box','ti-trash','ti-trash','ti-arrows-right','ti-arrows-right'];
 function getWeekNumber(){
@@ -421,19 +441,16 @@ function applyOverride(){
 }
 renderCleanup();
 
+// ── SAFETY ──────────────────────────────────────────────────────
 async function loadSafety(){
   const {data}=await sb.from('safety_topic').select('*').eq('date',todayStr).single();
-  if(data){
-    document.getElementById('safetyTopic').textContent=data.topic;
-    document.getElementById('safetyDetail').textContent=data.detail;
-  }
+  if(data){document.getElementById('safetyTopic').textContent=data.topic;document.getElementById('safetyDetail').textContent=data.detail;}
   loadAck();
 }
 async function saveSafety(){
   const topic=document.getElementById('sTopic').value.trim();
   const detail=document.getElementById('sDetail2').value.trim();
-  if(!topic)return;
-  setSyncing();
+  if(!topic)return;setSyncing();
   await sb.from('safety_topic').upsert({date:todayStr,topic,detail},{onConflict:'date'});
   await sb.from('safety_ack').delete().eq('date',todayStr);
   document.getElementById('sTopic').value='';document.getElementById('sDetail2').value='';
@@ -441,6 +458,7 @@ async function saveSafety(){
   await loadSafety();setSynced();
 }
 
+// ── ACK ─────────────────────────────────────────────────────────
 async function loadAck(){
   const {data}=await sb.from('safety_ack').select('name').eq('date',todayStr);
   const acked=(data||[]).map(r=>r.name);
@@ -449,8 +467,7 @@ async function loadAck(){
       <i class="ti ${acked.includes(m.name)?'ti-circle-check':'ti-circle'}"></i>
       <span>${m.name.split(' ')[0]}</span>
     </button>`).join('');
-  const count=acked.length;
-  const total=TEAM.length;
+  const count=acked.length;const total=TEAM.length;
   document.getElementById('ackBadge').textContent=`${count} / ${total} acknowledged`;
   document.getElementById('ackBadge').className=`badge ${count===total?'b-green':'b-amber'}`;
   document.getElementById('ackSummary').textContent=count===total?'All associates have acknowledged today\'s safety topic.':count===0?'Tap your name above to acknowledge you\'ve read today\'s topic.':`${total-count} associate${total-count>1?'s':''} yet to acknowledge.`;
@@ -464,6 +481,7 @@ async function toggleAck(name){
   await loadAck();
 }
 
+// ── TEAM STATUS ─────────────────────────────────────────────────
 async function loadTeam(){
   const {data}=await sb.from('team_status').select('*').eq('date',todayStr);
   const statusMap={};(data||[]).forEach(r=>statusMap[r.name]=r.status);
@@ -487,6 +505,7 @@ async function saveTeamStatus(name,status){
   await loadTeam();
 }
 
+// ── ANNOUNCEMENTS ───────────────────────────────────────────────
 const tagCls={urgent:'b-red',info:'b-blue',general:'b-gray',resolved:'b-green'};
 async function loadAnns(){
   const {data}=await sb.from('announcements').select('*').order('created_at',{ascending:false});
@@ -513,11 +532,12 @@ async function addAnn(){
 }
 async function delAnn(id){setSyncing();await sb.from('announcements').delete().eq('id',id);await loadAnns();}
 
+// ── WORKLOAD ────────────────────────────────────────────────────
 async function loadWorkload(){
   const {data}=await sb.from('workload').select('*').eq('date',todayStr).order('created_at');
   const el=document.getElementById('workloadList');
   document.getElementById('workloadCount').textContent=(data||[]).length+' items';
-  if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No workload posted yet — add today\'s work items above.</p>';return;}
+  if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No workload posted yet.</p>';return;}
   el.innerHTML=data.map(w=>`
     <div class="workload-item" style="display:flex;align-items:center;gap:10px">
       <i class="ti ti-point-filled" style="color:var(--blue);font-size:10px;flex-shrink:0"></i>
@@ -530,12 +550,12 @@ async function addWorkload(){
   const text=document.getElementById('wText').value.trim();
   if(!text)return;setSyncing();
   await sb.from('workload').insert({date:todayStr,text});
-  document.getElementById('wText').value='';
-  document.getElementById('workloadForm').classList.add('hidden');
+  document.getElementById('wText').value='';document.getElementById('workloadForm').classList.add('hidden');
   await loadWorkload();
 }
 async function delWorkload(id){setSyncing();await sb.from('workload').delete().eq('id',id);await loadWorkload();}
 
+// ── ERRORS ──────────────────────────────────────────────────────
 async function loadErrors(){
   const {data}=await sb.from('errors').select('*').eq('date',todayStr).order('created_at',{ascending:false});
   const el=document.getElementById('errList');
@@ -568,6 +588,7 @@ async function addError(){
   document.getElementById('errForm').classList.add('hidden');await loadErrors();
 }
 
+// ── KUDOS ───────────────────────────────────────────────────────
 const kudoAv={'Aberham Ordaz':'av0','Carson Cole':'av1','Gio Rodriguez':'av2','Jon Tolbert':'av3','Lani Rodriguez':'av5','Natalie Orenday':'av4','The whole team':'av1'};
 const kudoIn={'Aberham Ordaz':'AO','Carson Cole':'CC','Gio Rodriguez':'GR','Jon Tolbert':'JT','Lani Rodriguez':'LR','Natalie Orenday':'NO','The whole team':'ALL'};
 async function loadKudos(){
@@ -597,6 +618,7 @@ async function addKudo(){
 }
 async function delKudo(id){setSyncing();await sb.from('kudos').delete().eq('id',id);await loadKudos();}
 
+// ── PERFORMANCE ─────────────────────────────────────────────────
 let dailyGoal=200;
 let perfData=TEAM.map(m=>({name:m.name.split(' ')[0],initials:m.initials,av:m.av,fullName:m.name,am:0,pm:0}));
 
@@ -655,19 +677,84 @@ async function setGoal(){
   calcPerf();await savePerf();
 }
 
+// ── PERFORMANCE HISTORY ─────────────────────────────────────────
+let histDates=[];
+let selectedHistDate=null;
+
+async function loadHistory(){
+  const {data}=await sb.from('performance').select('date').neq('name','__goal__').order('date',{ascending:false});
+  if(!data||!data.length){
+    document.getElementById('histNav').innerHTML='';
+    document.getElementById('histContent').innerHTML='<p class="txt-sm" style="padding:8px 0">No history yet — data will appear here as days are saved.</p>';
+    return;
+  }
+  // get unique dates, last 14
+  histDates=[...new Set(data.map(r=>r.date))].slice(0,14);
+  if(!selectedHistDate||!histDates.includes(selectedHistDate)) selectedHistDate=histDates[0];
+  renderHistNav();
+  loadHistDay(selectedHistDate);
+}
+
+function renderHistNav(){
+  document.getElementById('histNav').innerHTML=histDates.map(d=>{
+    const label=new Date(d+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+    return`<button class="hist-date-btn ${d===selectedHistDate?'active':''}" onclick="selectHistDate('${d}')">${label}</button>`;
+  }).join('');
+}
+
+function selectHistDate(d){
+  selectedHistDate=d;
+  renderHistNav();
+  loadHistDay(d);
+}
+
+async function loadHistDay(date){
+  document.getElementById('histContent').innerHTML='<div class="loading">Loading...</div>';
+  const {data}=await sb.from('performance').select('*').eq('date',date).neq('name','__goal__');
+  if(!data||!data.length){
+    document.getElementById('histContent').innerHTML='<p class="txt-sm" style="padding:8px 0">No data for this day.</p>';
+    return;
+  }
+  const goalRow=await sb.from('performance').select('am').eq('date',date).eq('name','__goal__').single();
+  const goal=goalRow.data?goalRow.data.am:200;
+  const total=data.reduce((s,r)=>s+(r.am+r.pm),0);
+  const pct=Math.min(Math.round(total/goal*100),100);
+  const barColor=pct>=100?'#1D9E75':pct>=75?'#BA7517':'#378ADD';
+  document.getElementById('histContent').innerHTML=`
+    <div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px">
+        <span>${total} of ${goal} orders &nbsp;·&nbsp; ${pct}% of goal</span>
+      </div>
+      <div style="width:100%;height:16px;background:var(--bg);border-radius:var(--radius-md);overflow:hidden">
+        <div style="width:${pct}%;height:100%;background:${barColor};border-radius:var(--radius-md)"></div>
+      </div>
+    </div>
+    <table class="hist-table">
+      <thead><tr><th>Associate</th><th>AM</th><th>PM</th><th>Total</th></tr></thead>
+      <tbody>
+        ${data.sort((a,b)=>(b.am+b.pm)-(a.am+a.pm)).map(r=>`
+          <tr><td>${r.name}</td><td>${r.am}</td><td>${r.pm}</td><td style="font-weight:600">${r.am+r.pm}</td></tr>
+        `).join('')}
+        <tr class="total-row"><td>Team total</td><td colspan="2"></td><td>${total}</td></tr>
+      </tbody>
+    </table>`;
+}
+
+// ── REALTIME ────────────────────────────────────────────────────
 sb.channel('board-changes')
   .on('postgres_changes',{event:'*',schema:'public',table:'announcements'},()=>loadAnns())
   .on('postgres_changes',{event:'*',schema:'public',table:'workload'},()=>loadWorkload())
   .on('postgres_changes',{event:'*',schema:'public',table:'errors'},()=>loadErrors())
   .on('postgres_changes',{event:'*',schema:'public',table:'kudos'},()=>loadKudos())
   .on('postgres_changes',{event:'*',schema:'public',table:'team_status'},()=>loadTeam())
-  .on('postgres_changes',{event:'*',schema:'public',table:'performance'},()=>loadPerf())
+  .on('postgres_changes',{event:'*',schema:'public',table:'performance'},()=>{loadPerf();loadHistory();})
   .on('postgres_changes',{event:'*',schema:'public',table:'safety_topic'},()=>loadSafety())
   .on('postgres_changes',{event:'*',schema:'public',table:'safety_ack'},()=>loadAck())
   .subscribe();
 
+// ── INIT ────────────────────────────────────────────────────────
 async function init(){
-  await Promise.all([loadSafety(),loadAnns(),loadWorkload(),loadErrors(),loadKudos(),loadTeam(),loadPerf()]);
+  await Promise.all([loadSafety(),loadAnns(),loadWorkload(),loadErrors(),loadKudos(),loadTeam(),loadPerf(),loadHistory()]);
   setSynced();
 }
 init();
