@@ -98,8 +98,8 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .hidden{display:none}
 .del{background:none;border:none;cursor:pointer;color:var(--text-hint);font-size:14px;padding:3px 5px;border-radius:5px;flex-shrink:0}
 .del:hover{color:var(--red-text);background:var(--red-bg)}
-.err-item,.kudo-item,.ann-item{padding:10px 0;border-bottom:0.5px solid var(--border)}
-.err-item:last-child,.kudo-item:last-child,.ann-item:last-child{border-bottom:none}
+.err-item,.kudo-item,.ann-item,.workload-item{padding:10px 0;border-bottom:0.5px solid var(--border)}
+.err-item:last-child,.kudo-item:last-child,.ann-item:last-child,.workload-item:last-child{border-bottom:none}
 .status-pill{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;cursor:pointer;border:none;font-family:inherit}
 .s-open{background:var(--red-bg);color:var(--red-text)}
 .s-resolved{background:var(--green-bg);color:var(--green-text)}
@@ -110,9 +110,16 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .cleanup-task{display:flex;align-items:center;gap:10px}
 .cleanup-icon{width:32px;height:32px;border-radius:var(--radius-md);background:var(--teal-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .cleanup-icon i{font-size:16px;color:var(--teal-text)}
+.break-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.break-card{background:var(--bg);border-radius:var(--radius-md);padding:14px}
+.break-card .shift-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.break-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:0.5px solid var(--border)}
+.break-row:last-child{border-bottom:none}
+.break-label{font-size:12px;color:var(--text-muted)}
+.break-time{font-size:13px;font-weight:600;color:var(--text);background:var(--blue-bg);color:var(--blue-text);padding:2px 10px;border-radius:20px}
 .footer{text-align:center;padding:2rem;font-size:12px;color:var(--text-hint)}
 .loading{text-align:center;padding:20px;font-size:13px;color:var(--text-muted)}
-@media(max-width:600px){.topbar{padding:0 1rem}.container{padding:1rem}.perf-hdr,.perf-row{grid-template-columns:28px 1fr 48px 48px 48px;gap:4px}}
+@media(max-width:600px){.topbar{padding:0 1rem}.container{padding:1rem}.perf-hdr,.perf-row{grid-template-columns:28px 1fr 48px 48px 48px;gap:4px}.break-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -172,26 +179,45 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 3. DAILY TASKS -->
+  <!-- 3. DAILY WORKLOAD -->
   <div class="card full">
     <div class="ch">
-      <i class="ti ti-checklist" style="color:#1D9E75"></i>
-      <h2>Daily tasks</h2>
-      <span class="badge b-green" id="taskCount">0 open</span>
+      <i class="ti ti-layout-list" style="color:#185FA5"></i>
+      <h2>Daily workload</h2>
+      <span class="badge b-blue" id="workloadCount">0 items</span>
     </div>
-    <div id="taskList"><div class="loading">Loading...</div></div>
-    <div class="tog" id="togTask"><i class="ti ti-plus"></i> Add task</div>
-    <div class="add-form hidden" id="taskForm">
-      <input type="text" id="tText" placeholder="Task description…"/>
-      <select id="tAssign">
-        <option value="">Assign to…</option>
-        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Orenday</option><option>Team</option>
-      </select>
-      <button class="btn" onclick="addTask()"><i class="ti ti-plus"></i> Add task</button>
+    <div id="workloadList"><div class="loading">Loading...</div></div>
+    <div class="tog" id="togWorkload"><i class="ti ti-plus"></i> Add workload item</div>
+    <div class="add-form hidden" id="workloadForm">
+      <input type="text" id="wText" placeholder="e.g. 240 orders to pick, receiving 3 pallets from FedEx…"/>
+      <button class="btn" onclick="addWorkload()"><i class="ti ti-plus"></i> Add item</button>
     </div>
   </div>
 
-  <!-- 4. ERRORS & CORRECTIONS -->
+  <!-- 4. BREAK SCHEDULE -->
+  <div class="card full">
+    <div class="ch">
+      <i class="ti ti-coffee" style="color:#534AB7"></i>
+      <h2>Break schedule</h2>
+      <span class="badge b-purple">Today's schedule</span>
+    </div>
+    <div class="break-grid">
+      <div class="break-card">
+        <div class="shift-title"><i class="ti ti-sun" style="color:#BA7517"></i> 7:00 AM Shift</div>
+        <div class="break-row"><span class="break-label">1st Break</span><span class="break-time">9:30 AM</span></div>
+        <div class="break-row"><span class="break-label">Lunch</span><span class="break-time">12:00 PM</span></div>
+        <div class="break-row"><span class="break-label">2nd Break</span><span class="break-time">2:30 PM</span></div>
+      </div>
+      <div class="break-card">
+        <div class="shift-title"><i class="ti ti-sun" style="color:#BA7517"></i> 8:00 AM Shift</div>
+        <div class="break-row"><span class="break-label">1st Break</span><span class="break-time">10:00 AM</span></div>
+        <div class="break-row"><span class="break-label">Lunch</span><span class="break-time">12:30 PM</span></div>
+        <div class="break-row"><span class="break-label">2nd Break</span><span class="break-time">3:00 PM</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. ERRORS & CORRECTIONS -->
   <div class="card">
     <div class="ch">
       <i class="ti ti-alert-triangle" style="color:#A32D2D"></i>
@@ -216,7 +242,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 5. STAFF KUDOS -->
+  <!-- 6. STAFF KUDOS -->
   <div class="card">
     <div class="ch">
       <i class="ti ti-star" style="color:#534AB7"></i>
@@ -236,7 +262,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 6. PERFORMANCE LOG -->
+  <!-- 7. PERFORMANCE LOG -->
   <div class="card full">
     <div class="ch">
       <i class="ti ti-trending-up" style="color:#1D9E75"></i>
@@ -278,7 +304,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     <button class="btn btn-ghost" onclick="savePerf()"><i class="ti ti-device-floppy"></i> Save performance</button>
   </div>
 
-  <!-- 7. WEEKLY CLEANUP ASSIGNMENTS -->
+  <!-- 8. WEEKLY CLEANUP ASSIGNMENTS -->
   <div class="card">
     <div class="ch">
       <i class="ti ti-trash" style="color:#0F6E56"></i>
@@ -304,7 +330,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 8. TEAM STATUS -->
+  <!-- 9. TEAM STATUS -->
   <div class="card">
     <div class="ch">
       <i class="ti ti-users" style="color:#534AB7"></i>
@@ -349,7 +375,7 @@ function setSyncing(){
   document.getElementById('syncLabel').textContent='Syncing...';
 }
 
-const togMap={togSafety:'safetyForm',togErr:'errForm',togKudo:'kudoForm',togAnn:'annForm',togTask:'taskForm'};
+const togMap={togSafety:'safetyForm',togErr:'errForm',togKudo:'kudoForm',togAnn:'annForm',togWorkload:'workloadForm'};
 Object.keys(togMap).forEach(id=>{
   document.getElementById(id).onclick=function(){document.getElementById(togMap[id]).classList.toggle('hidden');};
 });
@@ -487,30 +513,28 @@ async function addAnn(){
 }
 async function delAnn(id){setSyncing();await sb.from('announcements').delete().eq('id',id);await loadAnns();}
 
-async function loadTasks(){
-  const {data}=await sb.from('tasks').select('*').eq('date',todayStr).order('created_at');
-  const el=document.getElementById('taskList');
-  const open=(data||[]).filter(t=>!t.done).length;
-  document.getElementById('taskCount').textContent=open+' open';
-  if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No tasks yet.</p>';return;}
-  el.innerHTML=data.map(t=>`
-    <div class="row">
-      <input type="checkbox" ${t.done?'checked':''} onchange="toggleTask('${t.id}',${!t.done})" style="accent-color:#1D9E75;width:16px;height:16px;cursor:pointer;flex-shrink:0">
-      <span class="txt" style="flex:1;${t.done?'text-decoration:line-through;color:#9a9a96':''}">${t.text}</span>
-      ${t.assignee?`<span class="badge b-gray">${t.assignee.split(' ')[0]}</span>`:''}
-      <button class="del" onclick="delTask('${t.id}')"><i class="ti ti-x"></i></button>
+async function loadWorkload(){
+  const {data}=await sb.from('workload').select('*').eq('date',todayStr).order('created_at');
+  const el=document.getElementById('workloadList');
+  document.getElementById('workloadCount').textContent=(data||[]).length+' items';
+  if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No workload posted yet — add today\'s work items above.</p>';return;}
+  el.innerHTML=data.map(w=>`
+    <div class="workload-item" style="display:flex;align-items:center;gap:10px">
+      <i class="ti ti-point-filled" style="color:var(--blue);font-size:10px;flex-shrink:0"></i>
+      <span class="txt" style="flex:1">${w.text}</span>
+      <button class="del" onclick="delWorkload('${w.id}')"><i class="ti ti-x"></i></button>
     </div>`).join('');
   setSynced();
 }
-async function addTask(){
-  const text=document.getElementById('tText').value.trim();const assignee=document.getElementById('tAssign').value;
+async function addWorkload(){
+  const text=document.getElementById('wText').value.trim();
   if(!text)return;setSyncing();
-  await sb.from('tasks').insert({date:todayStr,text,assignee,done:false});
-  document.getElementById('tText').value='';document.getElementById('tAssign').value='';
-  document.getElementById('taskForm').classList.add('hidden');await loadTasks();
+  await sb.from('workload').insert({date:todayStr,text});
+  document.getElementById('wText').value='';
+  document.getElementById('workloadForm').classList.add('hidden');
+  await loadWorkload();
 }
-async function toggleTask(id,done){setSyncing();await sb.from('tasks').update({done}).eq('id',id);await loadTasks();}
-async function delTask(id){setSyncing();await sb.from('tasks').delete().eq('id',id);await loadTasks();}
+async function delWorkload(id){setSyncing();await sb.from('workload').delete().eq('id',id);await loadWorkload();}
 
 async function loadErrors(){
   const {data}=await sb.from('errors').select('*').eq('date',todayStr).order('created_at',{ascending:false});
@@ -633,7 +657,7 @@ async function setGoal(){
 
 sb.channel('board-changes')
   .on('postgres_changes',{event:'*',schema:'public',table:'announcements'},()=>loadAnns())
-  .on('postgres_changes',{event:'*',schema:'public',table:'tasks'},()=>loadTasks())
+  .on('postgres_changes',{event:'*',schema:'public',table:'workload'},()=>loadWorkload())
   .on('postgres_changes',{event:'*',schema:'public',table:'errors'},()=>loadErrors())
   .on('postgres_changes',{event:'*',schema:'public',table:'kudos'},()=>loadKudos())
   .on('postgres_changes',{event:'*',schema:'public',table:'team_status'},()=>loadTeam())
@@ -643,7 +667,7 @@ sb.channel('board-changes')
   .subscribe();
 
 async function init(){
-  await Promise.all([loadSafety(),loadAnns(),loadTasks(),loadErrors(),loadKudos(),loadTeam(),loadPerf()]);
+  await Promise.all([loadSafety(),loadAnns(),loadWorkload(),loadErrors(),loadKudos(),loadTeam(),loadPerf()]);
   setSynced();
 }
 init();
