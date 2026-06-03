@@ -139,6 +139,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .topic-chips{display:flex;flex-wrap:wrap;gap:6px}
 .topic-chip{font-size:12px;padding:5px 12px;border:0.5px solid var(--border-mid);border-radius:20px;cursor:pointer;background:var(--bg);color:var(--text);font-family:inherit;transition:all 0.15s}
 .topic-chip:hover{background:var(--amber-bg);border-color:var(--amber);color:var(--amber-text)}
+.topic-chip.selected{background:var(--amber-bg);border-color:var(--amber);color:var(--amber-text);font-weight:600}
 .chart-outer{position:relative;padding-bottom:28px;margin-bottom:8px}
 .chart-wrap{display:flex;align-items:flex-end;gap:6px;height:180px;position:relative}
 .goal-line-h{position:absolute;left:0;right:0;border-top:2px dashed var(--red);pointer-events:none}
@@ -214,23 +215,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 2. PRIORITY ORDERS -->
-  <div class="card full">
-    <div class="ch">
-      <i class="ti ti-flag-filled" style="color:#A32D2D"></i>
-      <h2>Priority orders</h2>
-      <span class="badge b-red" id="priorityCount">0 active</span>
-    </div>
-    <div id="priorityList"><div class="loading">Loading...</div></div>
-    <div class="tog" id="togPriority"><i class="ti ti-plus"></i> Flag a priority order</div>
-    <div class="add-form hidden" id="priorityForm">
-      <input type="text" id="pRef" placeholder="Order # or reference…"/>
-      <textarea id="pDetail" placeholder="Why is this urgent? Customer name, deadline, special instructions…"></textarea>
-      <button class="btn" onclick="addPriority()"><i class="ti ti-flag-filled"></i> Flag order</button>
-    </div>
-  </div>
-
-  <!-- 3. DAILY SAFETY TOPIC -->
+  <!-- 2. DAILY SAFETY TOPIC — moved above priority orders -->
   <div class="card full">
     <div class="ch">
       <i class="ti ti-shield-check" style="color:#854F0B"></i>
@@ -248,12 +233,33 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
       <div class="tog" id="togSafety" style="margin-top:0"><i class="ti ti-edit"></i> Write custom topic</div>
       <div class="tog" id="togLibrary" style="margin-top:0"><i class="ti ti-books"></i> Pick from library</div>
     </div>
-    <div class="add-form hidden" id="safetyForm">
-      <input type="text" id="sTopic" placeholder="Safety topic title…"/>
-      <textarea id="sDetail2" placeholder="Key points, reminders, or action items…"></textarea>
-      <button class="btn" onclick="saveSafety()"><i class="ti ti-shield-check"></i> Save topic</button>
-    </div>
+    <!-- Library panel — picking a topic now fills the form fields -->
     <div class="hidden" id="libraryPanel" style="margin-top:12px"></div>
+    <!-- Edit form — auto-filled when picking from library -->
+    <div class="add-form hidden" id="safetyForm" style="margin-top:12px">
+      <input type="text" id="sTopic" placeholder="Safety topic title…"/>
+      <textarea id="sDetail2" rows="4" placeholder="Key points, reminders, or action items…"></textarea>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" onclick="saveSafety()"><i class="ti ti-shield-check"></i> Post to board</button>
+        <button class="btn btn-ghost" onclick="clearSafetyForm()"><i class="ti ti-x"></i> Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. PRIORITY ORDERS -->
+  <div class="card full">
+    <div class="ch">
+      <i class="ti ti-flag-filled" style="color:#A32D2D"></i>
+      <h2>Priority orders</h2>
+      <span class="badge b-red" id="priorityCount">0 active</span>
+    </div>
+    <div id="priorityList"><div class="loading">Loading...</div></div>
+    <div class="tog" id="togPriority"><i class="ti ti-plus"></i> Flag a priority order</div>
+    <div class="add-form hidden" id="priorityForm">
+      <input type="text" id="pRef" placeholder="Order # or reference…"/>
+      <textarea id="pDetail" placeholder="Why is this urgent? Customer name, deadline, special instructions…"></textarea>
+      <button class="btn" onclick="addPriority()"><i class="ti ti-flag-filled"></i> Flag order</button>
+    </div>
   </div>
 
   <!-- 4. ANNOUNCEMENTS -->
@@ -283,10 +289,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     <div id="bdayList"><div class="loading">Loading...</div></div>
     <div class="tog" id="togBday"><i class="ti ti-plus"></i> Add birthday</div>
     <div class="add-form hidden" id="bdayForm">
-      <select id="bWho">
-        <option value="">Select team member…</option>
-        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Orenday</option>
-      </select>
+      <select id="bWho"><option value="">Select team member…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Orenday</option></select>
       <input type="text" id="bDate" placeholder="Birthday (MM/DD e.g. 03/15)…"/>
       <button class="btn" onclick="addBday()"><i class="ti ti-cake"></i> Save birthday</button>
     </div>
@@ -301,10 +304,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     <div id="kudoList"><div class="loading">Loading...</div></div>
     <div class="tog" id="togKudo"><i class="ti ti-plus"></i> Give kudos</div>
     <div class="add-form hidden" id="kudoForm">
-      <select id="kWho">
-        <option value="">Recognizing…</option>
-        <option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Orenday</option><option>The whole team</option>
-      </select>
+      <select id="kWho"><option value="">Recognizing…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Orenday</option><option>The whole team</option></select>
       <input type="text" id="kFrom" placeholder="Your name (from)…"/>
       <textarea id="kMsg" placeholder="What did they do great?…"></textarea>
       <button class="btn" onclick="addKudo()"><i class="ti ti-star"></i> Post kudos</button>
@@ -420,9 +420,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
       <div class="met"><div class="lbl">Best day</div><div class="val" style="font-size:16px;padding-top:5px" id="chartBestDay">—</div></div>
       <div class="met"><div class="lbl">Days hit goal</div><div class="val" id="chartDaysHit">0 / 5</div></div>
     </div>
-    <div class="chart-outer">
-      <div class="chart-wrap" id="chartBars"></div>
-    </div>
+    <div class="chart-outer"><div class="chart-wrap" id="chartBars"></div></div>
     <div class="chart-legend">
       <div class="legend-item"><div class="legend-swatch" style="background:#1D9E75"></div> Hit goal</div>
       <div class="legend-item"><div class="legend-swatch" style="background:#378ADD"></div> Below goal</div>
@@ -505,32 +503,17 @@ const WEATHER_DESC={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast
 async function loadWeather(){
   try{
     const geo=await fetch('https://geocoding-api.open-meteo.com/v1/search?name=Watsonville&country=US&count=1');
-    const gd=await geo.json();
-    const {latitude:lat,longitude:lon}=gd.results[0];
+    const gd=await geo.json();const{latitude:lat,longitude:lon}=gd.results[0];
     const wx=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FLos_Angeles`);
-    const wd=await wx.json();
-    const c=wd.current;const code=c.weather_code;
+    const wd=await wx.json();const c=wd.current;const code=c.weather_code;
     document.getElementById('weatherBadge').textContent=Math.round(c.temperature_2m)+'°F';
-    document.getElementById('weatherContent').innerHTML=`
-      <div class="weather-main">
-        <div class="weather-icon">${WEATHER_ICONS[code]||'🌡'}</div>
-        <div>
-          <div class="weather-temp">${Math.round(c.temperature_2m)}°F</div>
-          <div class="weather-desc">${WEATHER_DESC[code]||'Unknown'}</div>
-          <div class="weather-loc">Watsonville, CA 95076</div>
-        </div>
-      </div>
-      <div class="weather-details">
-        <div class="weather-detail"><div class="wd-val">${c.relative_humidity_2m}%</div><div class="wd-lbl">Humidity</div></div>
-        <div class="weather-detail"><div class="wd-val">${Math.round(c.wind_speed_10m)} mph</div><div class="wd-lbl">Wind</div></div>
-        <div class="weather-detail"><div class="wd-val">${new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</div><div class="wd-lbl">Updated</div></div>
-      </div>`;
+    document.getElementById('weatherContent').innerHTML=`<div class="weather-main"><div class="weather-icon">${WEATHER_ICONS[code]||'🌡'}</div><div><div class="weather-temp">${Math.round(c.temperature_2m)}°F</div><div class="weather-desc">${WEATHER_DESC[code]||'Unknown'}</div><div class="weather-loc">Watsonville, CA 95076</div></div></div><div class="weather-details"><div class="weather-detail"><div class="wd-val">${c.relative_humidity_2m}%</div><div class="wd-lbl">Humidity</div></div><div class="weather-detail"><div class="wd-val">${Math.round(c.wind_speed_10m)} mph</div><div class="wd-lbl">Wind</div></div><div class="weather-detail"><div class="wd-val">${new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</div><div class="wd-lbl">Updated</div></div></div>`;
   }catch(e){document.getElementById('weatherContent').innerHTML='<p class="txt-sm" style="padding:8px 0">Weather unavailable.</p>';}
 }
 
 // ── INCIDENT ────────────────────────────────────────────────────
 async function loadIncident(){
-  const {data}=await sb.from('incident').select('*').order('last_reset',{ascending:false}).limit(1).single();
+  const{data}=await sb.from('incident').select('*').order('last_reset',{ascending:false}).limit(1).single();
   let days=0,record=0;
   if(data){const last=new Date(data.last_reset);days=Math.floor((new Date()-last)/(1000*60*60*24));record=data.record_days||0;}
   document.getElementById('incidentDays').textContent=days;
@@ -542,7 +525,7 @@ async function loadIncident(){
 async function resetIncident(){
   if(!confirm('Report a workplace incident and reset the counter to 0?'))return;
   setSyncing();
-  const {data:existing}=await sb.from('incident').select('*').limit(1).single();
+  const{data:existing}=await sb.from('incident').select('*').limit(1).single();
   const last=existing?new Date(existing.last_reset):new Date();
   const days=Math.floor((new Date()-last)/(1000*60*60*24));
   const newRecord=Math.max(days,existing?existing.record_days||0:0);
@@ -550,38 +533,6 @@ async function resetIncident(){
   else{await sb.from('incident').insert({last_reset:new Date().toISOString(),record_days:0});}
   await loadIncident();setSynced();
 }
-
-// ── PRIORITY ORDERS ─────────────────────────────────────────────
-async function loadPriority(){
-  const {data}=await sb.from('priority_orders').select('*').eq('date',todayStr).order('created_at',{ascending:false});
-  const el=document.getElementById('priorityList');
-  const active=(data||[]).filter(p=>p.status==='pending').length;
-  document.getElementById('priorityCount').textContent=active+' active';
-  document.getElementById('priorityCount').className=`badge ${active>0?'b-red':'b-green'}`;
-  if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No priority orders flagged today.</p>';return;}
-  el.innerHTML=data.map(p=>`
-    <div class="priority-item ${p.status==='done'?'done':''}">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap">
-        <i class="ti ti-flag-filled" style="color:${p.status==='done'?'#1D9E75':'#A32D2D'};font-size:14px"></i>
-        <span class="txt bold">${p.order_ref}</span>
-        <button class="status-pill ${p.status==='pending'?'s-pending':'s-done'}" onclick="cyclePriority('${p.id}','${p.status}')">${p.status}</button>
-        <span class="txt-xs" style="margin-left:auto">${new Date(p.created_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</span>
-        <button class="del" onclick="delPriority('${p.id}')"><i class="ti ti-x"></i></button>
-      </div>
-      <div class="txt-sm">${p.detail}</div>
-    </div>`).join('');
-  setSynced();
-}
-async function cyclePriority(id,current){setSyncing();await sb.from('priority_orders').update({status:current==='pending'?'done':'pending'}).eq('id',id);await loadPriority();}
-async function delPriority(id){setSyncing();await sb.from('priority_orders').delete().eq('id',id);await loadPriority();}
-async function addPriority(){
-  const ref=document.getElementById('pRef').value.trim();const detail=document.getElementById('pDetail').value.trim();
-  if(!ref||!detail)return;setSyncing();
-  await sb.from('priority_orders').insert({date:todayStr,order_ref:ref,detail,status:'pending'});
-  document.getElementById('pRef').value='';document.getElementById('pDetail').value='';
-  document.getElementById('priorityForm').classList.add('hidden');await loadPriority();
-}
-document.getElementById('togPriority').onclick=function(){document.getElementById('priorityForm').classList.toggle('hidden');};
 
 // ── SAFETY LIBRARY ──────────────────────────────────────────────
 const SAFETY_LIBRARY={
@@ -614,22 +565,51 @@ const SAFETY_LIBRARY={
     {t:'Reporting unsafe conditions',d:'Every associate is responsible for safety. If you see something unsafe — a damaged rack, a spill, broken equipment — report it to Daniel immediately. Never assume someone else will handle it.'},
   ],
 };
-function renderLibrary(){
-  document.getElementById('libraryPanel').innerHTML=Object.entries(SAFETY_LIBRARY).map(([cat,topics])=>`<div class="topic-cat"><div class="topic-cat-title"><i class="ti ti-tag"></i>${cat}</div><div class="topic-chips">${topics.map(tp=>`<button class="topic-chip" onclick="applyTopic(${JSON.stringify(tp.t)},${JSON.stringify(tp.d)})">${tp.t}</button>`).join('')}</div></div>`).join('');
-}
-async function applyTopic(title,detail){
-  setSyncing();
-  await sb.from('safety_topic').upsert({date:todayStr,topic:title,detail},{onConflict:'date'});
-  await sb.from('safety_ack').delete().eq('date',todayStr);
-  document.getElementById('libraryPanel').classList.add('hidden');
-  await loadSafety();setSynced();
-}
-document.getElementById('togSafety').onclick=function(){document.getElementById('safetyForm').classList.toggle('hidden');document.getElementById('libraryPanel').classList.add('hidden');};
-document.getElementById('togLibrary').onclick=function(){const p=document.getElementById('libraryPanel');p.classList.toggle('hidden');if(!p.classList.contains('hidden'))renderLibrary();document.getElementById('safetyForm').classList.add('hidden');};
 
-// ── SAFETY ──────────────────────────────────────────────────────
+function renderLibrary(){
+  document.getElementById('libraryPanel').innerHTML=Object.entries(SAFETY_LIBRARY).map(([cat,topics])=>`
+    <div class="topic-cat">
+      <div class="topic-cat-title"><i class="ti ti-tag"></i>${cat}</div>
+      <div class="topic-chips">
+        ${topics.map(tp=>`<button class="topic-chip" onclick="fillFromLibrary(${JSON.stringify(tp.t)},${JSON.stringify(tp.d)},this)">${tp.t}</button>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function fillFromLibrary(title,detail,btn){
+  // highlight selected chip
+  document.querySelectorAll('.topic-chip').forEach(c=>c.classList.remove('selected'));
+  btn.classList.add('selected');
+  // fill the form fields
+  document.getElementById('sTopic').value=title;
+  document.getElementById('sDetail2').value=detail;
+  // show the edit form so Daniel can review/edit before posting
+  document.getElementById('safetyForm').classList.remove('hidden');
+  // scroll the form into view smoothly
+  document.getElementById('safetyForm').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function clearSafetyForm(){
+  document.getElementById('sTopic').value='';
+  document.getElementById('sDetail2').value='';
+  document.getElementById('safetyForm').classList.add('hidden');
+  document.getElementById('libraryPanel').classList.add('hidden');
+  document.querySelectorAll('.topic-chip').forEach(c=>c.classList.remove('selected'));
+}
+
+document.getElementById('togSafety').onclick=function(){
+  document.getElementById('safetyForm').classList.toggle('hidden');
+  document.getElementById('libraryPanel').classList.add('hidden');
+  document.querySelectorAll('.topic-chip').forEach(c=>c.classList.remove('selected'));
+};
+document.getElementById('togLibrary').onclick=function(){
+  const p=document.getElementById('libraryPanel');
+  p.classList.toggle('hidden');
+  if(!p.classList.contains('hidden'))renderLibrary();
+};
+
 async function loadSafety(){
-  const {data}=await sb.from('safety_topic').select('*').eq('date',todayStr).single();
+  const{data}=await sb.from('safety_topic').select('*').eq('date',todayStr).single();
   if(data){document.getElementById('safetyTopic').textContent=data.topic;document.getElementById('safetyDetail').textContent=data.detail;}
   loadAck();
 }
@@ -638,12 +618,11 @@ async function saveSafety(){
   if(!topic)return;setSyncing();
   await sb.from('safety_topic').upsert({date:todayStr,topic,detail},{onConflict:'date'});
   await sb.from('safety_ack').delete().eq('date',todayStr);
-  document.getElementById('sTopic').value='';document.getElementById('sDetail2').value='';
-  document.getElementById('safetyForm').classList.add('hidden');
+  clearSafetyForm();
   await loadSafety();setSynced();
 }
 async function loadAck(){
-  const {data}=await sb.from('safety_ack').select('name').eq('date',todayStr);
+  const{data}=await sb.from('safety_ack').select('name').eq('date',todayStr);
   const acked=(data||[]).map(r=>r.name);
   document.getElementById('ackGrid').innerHTML=TEAM.map(m=>`<button class="ack-btn ${acked.includes(m.name)?'acked':''}" onclick="toggleAck('${m.name}')"><i class="ti ${acked.includes(m.name)?'ti-circle-check':'ti-circle'}"></i><span>${m.name.split(' ')[0]}</span></button>`).join('');
   const count=acked.length;const total=TEAM.length;
@@ -654,15 +633,37 @@ async function loadAck(){
 }
 async function toggleAck(name){
   setSyncing();
-  const {data}=await sb.from('safety_ack').select('id').eq('date',todayStr).eq('name',name).single();
+  const{data}=await sb.from('safety_ack').select('id').eq('date',todayStr).eq('name',name).single();
   if(data){await sb.from('safety_ack').delete().eq('id',data.id);}
   else{await sb.from('safety_ack').insert({date:todayStr,name});}
   await loadAck();
 }
 
+// ── PRIORITY ORDERS ─────────────────────────────────────────────
+async function loadPriority(){
+  const{data}=await sb.from('priority_orders').select('*').eq('date',todayStr).order('created_at',{ascending:false});
+  const el=document.getElementById('priorityList');
+  const active=(data||[]).filter(p=>p.status==='pending').length;
+  document.getElementById('priorityCount').textContent=active+' active';
+  document.getElementById('priorityCount').className=`badge ${active>0?'b-red':'b-green'}`;
+  if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No priority orders flagged today.</p>';return;}
+  el.innerHTML=data.map(p=>`<div class="priority-item ${p.status==='done'?'done':''}"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap"><i class="ti ti-flag-filled" style="color:${p.status==='done'?'#1D9E75':'#A32D2D'};font-size:14px"></i><span class="txt bold">${p.order_ref}</span><button class="status-pill ${p.status==='pending'?'s-pending':'s-done'}" onclick="cyclePriority('${p.id}','${p.status}')">${p.status}</button><span class="txt-xs" style="margin-left:auto">${new Date(p.created_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</span><button class="del" onclick="delPriority('${p.id}')"><i class="ti ti-x"></i></button></div><div class="txt-sm">${p.detail}</div></div>`).join('');
+  setSynced();
+}
+async function cyclePriority(id,current){setSyncing();await sb.from('priority_orders').update({status:current==='pending'?'done':'pending'}).eq('id',id);await loadPriority();}
+async function delPriority(id){setSyncing();await sb.from('priority_orders').delete().eq('id',id);await loadPriority();}
+async function addPriority(){
+  const ref=document.getElementById('pRef').value.trim();const detail=document.getElementById('pDetail').value.trim();
+  if(!ref||!detail)return;setSyncing();
+  await sb.from('priority_orders').insert({date:todayStr,order_ref:ref,detail,status:'pending'});
+  document.getElementById('pRef').value='';document.getElementById('pDetail').value='';
+  document.getElementById('priorityForm').classList.add('hidden');await loadPriority();
+}
+document.getElementById('togPriority').onclick=function(){document.getElementById('priorityForm').classList.toggle('hidden');};
+
 // ── TEAM STATUS ─────────────────────────────────────────────────
 async function loadTeam(){
-  const {data}=await sb.from('team_status').select('*').eq('date',todayStr);
+  const{data}=await sb.from('team_status').select('*').eq('date',todayStr);
   const statusMap={};(data||[]).forEach(r=>statusMap[r.name]=r.status);
   document.getElementById('teamList').innerHTML=TEAM.map(m=>{const st=statusMap[m.name]||'on';return`<div class="row"><div class="av ${m.av}">${m.initials}</div><div style="flex:1"><div class="txt bold">${m.name}</div><div class="txt-xs">${statusLabel[st]}</div></div><select onchange="saveTeamStatus('${m.name}',this.value)" style="font-size:12px;padding:4px 8px;border:0.5px solid rgba(0,0,0,0.15);border-radius:7px;background:#f5f4f1;color:#1a1a18;font-family:inherit"><option value="on" ${st==='on'?'selected':''}>On shift</option><option value="break" ${st==='break'?'selected':''}>On break</option><option value="off" ${st==='off'?'selected':''}>Off today</option></select><div class="dot" style="background:${statusDot[st]}"></div></div>`;}).join('');
   setSynced();
@@ -672,7 +673,7 @@ async function saveTeamStatus(name,status){setSyncing();await sb.from('team_stat
 // ── ANNOUNCEMENTS ───────────────────────────────────────────────
 const tagCls={urgent:'b-red',info:'b-blue',general:'b-gray',resolved:'b-green'};
 async function loadAnns(){
-  const {data}=await sb.from('announcements').select('*').order('created_at',{ascending:false});
+  const{data}=await sb.from('announcements').select('*').order('created_at',{ascending:false});
   const el=document.getElementById('annList');
   document.getElementById('annCount').textContent=(data||[]).length;
   if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No announcements.</p>';return;}
@@ -683,51 +684,30 @@ async function addAnn(){const tag=document.getElementById('aTag').value;const te
 async function delAnn(id){setSyncing();await sb.from('announcements').delete().eq('id',id);await loadAnns();}
 document.getElementById('togAnn').onclick=function(){document.getElementById('annForm').classList.toggle('hidden');};
 
-// ── BIRTHDAYS — fixed: delete then insert instead of upsert ─────
+// ── BIRTHDAYS ───────────────────────────────────────────────────
 async function loadBdays(){
-  const {data}=await sb.from('birthdays').select('*').order('name');
+  const{data}=await sb.from('birthdays').select('*').order('name');
   const el=document.getElementById('bdayList');const soonEl=document.getElementById('bdaySoon');
-  if(!data||!data.length){
-    el.innerHTML='<p class="txt-sm" style="padding:8px 0">No birthdays added yet — tap "Add birthday" to get started.</p>';
-    soonEl.innerHTML='';
-    document.getElementById('bdayBadge').textContent='None added yet';
-    document.getElementById('bdayBadge').className='badge b-gray';
-    return;
-  }
+  if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No birthdays added yet.</p>';soonEl.innerHTML='';document.getElementById('bdayBadge').textContent='None added yet';document.getElementById('bdayBadge').className='badge b-gray';return;}
   const now=new Date();const thisYear=now.getFullYear();
-  const upcoming=data.map(b=>{
-    const parts=b.birthday.split('-');const month=parseInt(parts[1]);const day=parseInt(parts[2]);
-    let bday=new Date(thisYear,month-1,day);if(bday<now)bday=new Date(thisYear+1,month-1,day);
-    return{...b,daysUntil:Math.ceil((bday-now)/(1000*60*60*24)),month,day};
-  }).sort((a,b)=>a.daysUntil-b.daysUntil);
+  const upcoming=data.map(b=>{const parts=b.birthday.split('-');const month=parseInt(parts[1]);const day=parseInt(parts[2]);let bday=new Date(thisYear,month-1,day);if(bday<now)bday=new Date(thisYear+1,month-1,day);return{...b,daysUntil:Math.ceil((bday-now)/(1000*60*60*24)),month,day};}).sort((a,b)=>a.daysUntil-b.daysUntil);
   const next=upcoming[0];
-  if(next.daysUntil<=7){
-    soonEl.innerHTML=`<div class="bday-soon"><div class="bday-name">🎂 ${next.daysUntil===0?'Today is':'Coming up:'} ${next.name}'s birthday!</div><div class="bday-date">${next.daysUntil===0?'Happy birthday!':next.daysUntil===1?'Tomorrow!':'In '+next.daysUntil+' days'}</div></div>`;
-    document.getElementById('bdayBadge').textContent=next.daysUntil===0?'🎂 Today!':'🎂 In '+next.daysUntil+' days';
-    document.getElementById('bdayBadge').className='badge b-purple';
-  } else {
-    soonEl.innerHTML='';
-    document.getElementById('bdayBadge').textContent='Next: '+new Date(thisYear,next.month-1,next.day).toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    document.getElementById('bdayBadge').className='badge b-gray';
-  }
+  if(next.daysUntil<=7){soonEl.innerHTML=`<div class="bday-soon"><div class="bday-name">🎂 ${next.daysUntil===0?'Today is':'Coming up:'} ${next.name}'s birthday!</div><div class="bday-date">${next.daysUntil===0?'Happy birthday!':next.daysUntil===1?'Tomorrow!':'In '+next.daysUntil+' days'}</div></div>`;document.getElementById('bdayBadge').textContent=next.daysUntil===0?'🎂 Today!':'🎂 In '+next.daysUntil+' days';document.getElementById('bdayBadge').className='badge b-purple';}
+  else{soonEl.innerHTML='';document.getElementById('bdayBadge').textContent='Next: '+new Date(thisYear,next.month-1,next.day).toLocaleDateString('en-US',{month:'short',day:'numeric'});document.getElementById('bdayBadge').className='badge b-gray';}
   el.innerHTML=upcoming.map(b=>`<div class="bday-item" style="display:flex;align-items:center;gap:10px"><i class="ti ti-cake" style="color:#534AB7;font-size:16px;flex-shrink:0"></i><div style="flex:1"><div class="txt bold">${b.name}</div><div class="txt-xs">${new Date(thisYear,b.month-1,b.day).toLocaleDateString('en-US',{month:'long',day:'numeric'})} &nbsp;·&nbsp; in ${b.daysUntil} days</div></div><button class="del" onclick="delBday('${b.id}')"><i class="ti ti-x"></i></button></div>`).join('');
   setSynced();
 }
 async function addBday(){
   const who=document.getElementById('bWho').value;const dateInput=document.getElementById('bDate').value.trim();
   if(!who||!dateInput)return;
-  const parts=dateInput.split('/');
-  if(parts.length!==2||!parts[0]||!parts[1])return alert('Please use MM/DD format e.g. 03/15');
-  const month=parts[0].padStart(2,'0');const day=parts[1].padStart(2,'0');
-  const birthday=`2000-${month}-${day}`;
+  const parts=dateInput.split('/');if(parts.length!==2||!parts[0]||!parts[1])return alert('Please use MM/DD format e.g. 03/15');
+  const birthday=`2000-${parts[0].padStart(2,'0')}-${parts[1].padStart(2,'0')}`;
   setSyncing();
-  // delete existing entry for this person first, then insert fresh
   await sb.from('birthdays').delete().eq('name',who);
-  const {error}=await sb.from('birthdays').insert({name:who,birthday});
+  const{error}=await sb.from('birthdays').insert({name:who,birthday});
   if(error){alert('Error saving birthday: '+error.message);setSynced();return;}
   document.getElementById('bWho').value='';document.getElementById('bDate').value='';
-  document.getElementById('bdayForm').classList.add('hidden');
-  await loadBdays();setSynced();
+  document.getElementById('bdayForm').classList.add('hidden');await loadBdays();setSynced();
 }
 async function delBday(id){setSyncing();await sb.from('birthdays').delete().eq('id',id);await loadBdays();setSynced();}
 document.getElementById('togBday').onclick=function(){document.getElementById('bdayForm').classList.toggle('hidden');};
@@ -736,7 +716,7 @@ document.getElementById('togBday').onclick=function(){document.getElementById('b
 const kudoAv={'Aberham Ordaz':'av0','Carson Cole':'av1','Gio Rodriguez':'av2','Jon Tolbert':'av3','Lani Rodriguez':'av5','Natalie Orenday':'av4','The whole team':'av1'};
 const kudoIn={'Aberham Ordaz':'AO','Carson Cole':'CC','Gio Rodriguez':'GR','Jon Tolbert':'JT','Lani Rodriguez':'LR','Natalie Orenday':'NO','The whole team':'ALL'};
 async function loadKudos(){
-  const {data}=await sb.from('kudos').select('*').eq('date',todayStr).order('created_at',{ascending:false});
+  const{data}=await sb.from('kudos').select('*').eq('date',todayStr).order('created_at',{ascending:false});
   const el=document.getElementById('kudoList');
   document.getElementById('kudoCount').textContent=(data||[]).length+' today';
   if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No kudos yet — be the first!</p>';return;}
@@ -749,7 +729,7 @@ document.getElementById('togKudo').onclick=function(){document.getElementById('k
 
 // ── WORKLOAD ────────────────────────────────────────────────────
 async function loadWorkload(){
-  const {data}=await sb.from('workload').select('*').eq('date',todayStr).order('created_at');
+  const{data}=await sb.from('workload').select('*').eq('date',todayStr).order('created_at');
   const el=document.getElementById('workloadList');
   document.getElementById('workloadCount').textContent=(data||[]).length+' items';
   if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No workload posted yet.</p>';return;}
@@ -762,7 +742,7 @@ document.getElementById('togWorkload').onclick=function(){document.getElementByI
 
 // ── SUGGESTIONS ─────────────────────────────────────────────────
 async function loadSugg(){
-  const {data}=await sb.from('suggestions').select('*').order('created_at',{ascending:false});
+  const{data}=await sb.from('suggestions').select('*').order('created_at',{ascending:false});
   const el=document.getElementById('suggList');
   const newCount=(data||[]).filter(s=>s.status==='new').length;
   document.getElementById('suggCount').textContent=newCount+' new';
@@ -776,21 +756,16 @@ async function delSugg(id){setSyncing();await sb.from('suggestions').delete().eq
 async function addSugg(){const text=document.getElementById('sText').value.trim();const signed_by=document.getElementById('sFrom').value.trim();if(!text)return;setSyncing();await sb.from('suggestions').insert({text,signed_by:signed_by||null,status:'new'});document.getElementById('sText').value='';document.getElementById('sFrom').value='';document.getElementById('suggForm').classList.add('hidden');await loadSugg();}
 document.getElementById('togSugg').onclick=function(){document.getElementById('suggForm').classList.toggle('hidden');};
 
-// ── PERFORMANCE — individual save per person ─────────────────────
+// ── PERFORMANCE ─────────────────────────────────────────────────
 let dailyGoal=200;
 let perfData=TEAM.map(m=>({name:m.name.split(' ')[0],initials:m.initials,av:m.av,fullName:m.name,am:0,pm:0}));
-
 async function loadPerf(){
-  const {data}=await sb.from('performance').select('*').eq('date',todayStr);
+  const{data}=await sb.from('performance').select('*').eq('date',todayStr);
   const goalRow=data&&data.find(r=>r.name==='__goal__');
   if(goalRow){dailyGoal=goalRow.am;document.getElementById('pmGoal').textContent=dailyGoal;document.getElementById('goalInput').value=dailyGoal;}
-  perfData=TEAM.map(m=>{
-    const row=data&&data.find(r=>r.name===m.name);
-    return{name:m.name.split(' ')[0],initials:m.initials,av:m.av,fullName:m.name,am:row?row.am:0,pm:row?row.pm:0};
-  });
+  perfData=TEAM.map(m=>{const row=data&&data.find(r=>r.name===m.name);return{name:m.name.split(' ')[0],initials:m.initials,av:m.av,fullName:m.name,am:row?row.am:0,pm:row?row.pm:0};});
   renderPerf();calcPerf();setSynced();
 }
-
 function renderPerf(){
   document.getElementById('perfRows').innerHTML=perfData.map((p,i)=>`
     <div class="perf-row">
@@ -802,20 +777,15 @@ function renderPerf(){
       <button class="save-row-btn" id="savebtn${i}" onclick="saveSinglePerf(${i})">💾 Save</button>
     </div>`).join('');
 }
-
 async function saveSinglePerf(i){
-  const p=perfData[i];
-  const btn=document.getElementById('savebtn'+i);
+  const p=perfData[i];const btn=document.getElementById('savebtn'+i);
   btn.textContent='Saving…';btn.disabled=true;
-  const {error}=await sb.from('performance').upsert({date:todayStr,name:p.fullName,am:p.am,pm:p.pm},{onConflict:'date,name'});
+  const{error}=await sb.from('performance').upsert({date:todayStr,name:p.fullName,am:p.am,pm:p.pm},{onConflict:'date,name'});
   if(error){btn.textContent='❌ Error';btn.disabled=false;return;}
   btn.textContent='✅ Saved';btn.className='save-row-btn saved';
   setTimeout(()=>{btn.textContent='💾 Save';btn.className='save-row-btn';btn.disabled=false;},2000);
-  calcPerf();
-  // refresh charts
-  loadWeeklyChart();loadHistory();
+  calcPerf();loadWeeklyChart();loadHistory();
 }
-
 function calcPerf(){
   let total=0,top='—',topN=0;
   perfData.forEach((p,i)=>{const t=p.am+p.pm;total+=t;const el=document.getElementById('pt'+i);if(el)el.textContent=t;if(t>topN){topN=t;top=p.name;}});
@@ -825,8 +795,7 @@ function calcPerf(){
   updateGoalBar(total);
 }
 function updateGoalBar(total){
-  const pct=Math.min(Math.round(total/dailyGoal*100),100);
-  const fill=document.getElementById('goalBarFill');
+  const pct=Math.min(Math.round(total/dailyGoal*100),100);const fill=document.getElementById('goalBarFill');
   fill.style.width=pct+'%';fill.style.background=pct>=100?'#1D9E75':pct>=75?'#BA7517':'#378ADD';
   document.getElementById('goalBarPct').textContent=pct>10?pct+'%':'';
   document.getElementById('goalMetaLeft').textContent=`${total} of ${dailyGoal} orders`;
@@ -834,8 +803,7 @@ function updateGoalBar(total){
 }
 async function setGoal(){
   dailyGoal=parseInt(document.getElementById('goalInput').value)||200;
-  document.getElementById('pmGoal').textContent=dailyGoal;
-  calcPerf();
+  document.getElementById('pmGoal').textContent=dailyGoal;calcPerf();
   await sb.from('performance').upsert({date:todayStr,name:'__goal__',am:dailyGoal,pm:0},{onConflict:'date,name'});
 }
 
@@ -846,7 +814,7 @@ async function loadWeeklyChart(){
   const dates=days.map((_,i)=>{const dd=new Date(monday);dd.setDate(monday.getDate()+i);return dd.toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'});});
   const weekLabel=new Date(dates[0]+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})+' – '+new Date(dates[4]+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
   document.getElementById('chartWeekLabel').textContent='Week of '+weekLabel;
-  const {data}=await sb.from('performance').select('*').gte('date',dates[0]).lte('date',dates[4]);
+  const{data}=await sb.from('performance').select('*').gte('date',dates[0]).lte('date',dates[4]);
   const actuals=dates.map(dt=>{const rows=(data||[]).filter(r=>r.date===dt&&r.name!=='__goal__');return rows.reduce((s,r)=>s+(r.am+r.pm),0);});
   const goalVal=(data||[]).find(r=>r.name==='__goal__')?.am||dailyGoal;
   const maxVal=Math.max(goalVal,...actuals,1);const chartH=160;
@@ -866,7 +834,7 @@ async function loadWeeklyChart(){
 // ── HISTORY ─────────────────────────────────────────────────────
 let histDates=[],selectedHistDate=null;
 async function loadHistory(){
-  const {data}=await sb.from('performance').select('date').neq('name','__goal__').order('date',{ascending:false});
+  const{data}=await sb.from('performance').select('date').neq('name','__goal__').order('date',{ascending:false});
   if(!data||!data.length){document.getElementById('histNav').innerHTML='';document.getElementById('histContent').innerHTML='<p class="txt-sm" style="padding:8px 0">No history yet.</p>';return;}
   histDates=[...new Set(data.map(r=>r.date))].slice(0,14);
   if(!selectedHistDate||!histDates.includes(selectedHistDate))selectedHistDate=histDates[0];
@@ -876,7 +844,7 @@ function renderHistNav(){document.getElementById('histNav').innerHTML=histDates.
 function selectHistDate(d){selectedHistDate=d;renderHistNav();loadHistDay(d);}
 async function loadHistDay(date){
   document.getElementById('histContent').innerHTML='<div class="loading">Loading...</div>';
-  const {data}=await sb.from('performance').select('*').eq('date',date).neq('name','__goal__');
+  const{data}=await sb.from('performance').select('*').eq('date',date).neq('name','__goal__');
   if(!data||!data.length){document.getElementById('histContent').innerHTML='<p class="txt-sm" style="padding:8px 0">No data for this day.</p>';return;}
   const goalRow=await sb.from('performance').select('am').eq('date',date).eq('name','__goal__').single();
   const goal=goalRow.data?goalRow.data.am:200;const total=data.reduce((s,r)=>s+(r.am+r.pm),0);const pct=Math.min(Math.round(total/goal*100),100);const barColor=pct>=100?'#1D9E75':pct>=75?'#BA7517':'#378ADD';
@@ -911,7 +879,7 @@ sb.channel('board-changes')
   .subscribe();
 
 async function init(){
-  await Promise.all([loadWeather(),loadIncident(),loadPriority(),loadSafety(),loadAnns(),loadBdays(),loadKudos(),loadWorkload(),loadSugg(),loadTeam(),loadPerf(),loadWeeklyChart(),loadHistory()]);
+  await Promise.all([loadWeather(),loadIncident(),loadSafety(),loadPriority(),loadAnns(),loadBdays(),loadKudos(),loadWorkload(),loadSugg(),loadTeam(),loadPerf(),loadWeeklyChart(),loadHistory()]);
   setSynced();
   setInterval(loadWeather,10*60*1000);
 }
