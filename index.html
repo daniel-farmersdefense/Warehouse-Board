@@ -262,6 +262,21 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
+  <!-- 6. DAILY WORKLOAD -->
+  <div class="card full">
+    <div class="ch">
+      <i class="ti ti-layout-list" style="color:#185FA5"></i>
+      <h2>Daily workload</h2>
+      <span class="badge b-blue" id="workloadCount">0 items</span>
+    </div>
+    <div id="workloadList"><div class="loading">Loading...</div></div>
+    <div class="tog" id="togWorkload"><i class="ti ti-plus"></i> Add workload item</div>
+    <div class="add-form hidden" id="workloadForm">
+      <input type="text" id="wText" placeholder="e.g. 240 orders to pick, receiving 3 pallets from FedEx…"/>
+      <button class="btn" onclick="addWorkload()"><i class="ti ti-plus"></i> Add item</button>
+    </div>
+  </div>
+  
   <!-- 4. ANNOUNCEMENTS -->
   <div class="card full">
     <div class="ch">
@@ -311,20 +326,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 6. DAILY WORKLOAD -->
-  <div class="card full">
-    <div class="ch">
-      <i class="ti ti-layout-list" style="color:#185FA5"></i>
-      <h2>Daily workload</h2>
-      <span class="badge b-blue" id="workloadCount">0 items</span>
-    </div>
-    <div id="workloadList"><div class="loading">Loading...</div></div>
-    <div class="tog" id="togWorkload"><i class="ti ti-plus"></i> Add workload item</div>
-    <div class="add-form hidden" id="workloadForm">
-      <input type="text" id="wText" placeholder="e.g. 240 orders to pick, receiving 3 pallets from FedEx…"/>
-      <button class="btn" onclick="addWorkload()"><i class="ti ti-plus"></i> Add item</button>
-    </div>
-  </div>
+  
 
   <!-- 7. BREAK SCHEDULE -->
   <div class="card full">
