@@ -304,7 +304,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     <div id="bdayList"><div class="loading">Loading...</div></div>
     <div class="tog" id="togBday"><i class="ti ti-plus"></i> Add birthday</div>
     <div class="add-form hidden" id="bdayForm">
-      <select id="bWho"><option value="">Select team member…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Orenday</option></select>
+      <select id="bWho"><option value="">Select team member…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Oranday</option></select>
       <input type="text" id="bDate" placeholder="Birthday (MM/DD e.g. 03/15)…"/>
       <button class="btn" onclick="addBday()"><i class="ti ti-cake"></i> Save birthday</button>
     </div>
@@ -319,7 +319,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     <div id="kudoList"><div class="loading">Loading...</div></div>
     <div class="tog" id="togKudo"><i class="ti ti-plus"></i> Give kudos</div>
     <div class="add-form hidden" id="kudoForm">
-      <select id="kWho"><option value="">Recognizing…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Orenday</option><option>The whole team</option></select>
+      <select id="kWho"><option value="">Recognizing…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Oranday</option><option>The whole team</option></select>
       <input type="text" id="kFrom" placeholder="Your name (from)…"/>
       <textarea id="kMsg" placeholder="What did they do great?…"></textarea>
       <button class="btn" onclick="addKudo()"><i class="ti ti-star"></i> Post kudos</button>
@@ -456,7 +456,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
     <div class="add-form hidden" id="overrideForm">
       <select id="oTask"><option value="">Select task…</option><option>Cardboard break down</option><option>Hallway trash bags</option><option>Station trash cans</option><option>Sweep Hallways</option><option>Sweep stations</option></select>
-      <select id="oWho"><option value="">Assign to…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Orenday</option></select>
+      <select id="oWho"><option value="">Assign to…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Oranday</option></select>
       <button class="btn" onclick="applyOverride()"><i class="ti ti-check"></i> Apply</button>
     </div>
   </div>
@@ -492,7 +492,7 @@ const TEAM=[
   {initials:'GR',name:'Gio Rodriguez',av:'av2'},
   {initials:'JT',name:'Jon Tolbert',av:'av3'},
   {initials:'LR',name:'Lani Rodriguez',av:'av5'},
-  {initials:'NO',name:'Natalie Orenday',av:'av4'},
+  {initials:'NO',name:'Natalie Oranday',av:'av4'},
 ];
 const statusDot={on:'#1D9E75',off:'#888780',break:'#EF9F27'};
 const statusLabel={on:'On shift',off:'Off today',break:'On break'};
@@ -724,8 +724,8 @@ async function delBday(id){setSyncing();await sb.from('birthdays').delete().eq('
 document.getElementById('togBday').onclick=function(){document.getElementById('bdayForm').classList.toggle('hidden');};
 
 // ── KUDOS ───────────────────────────────────────────────────────
-const kudoAv={'Aberham Ordaz':'av0','Carson Cole':'av1','Gio Rodriguez':'av2','Jon Tolbert':'av3','Lani Rodriguez':'av5','Natalie Orenday':'av4','The whole team':'av1'};
-const kudoIn={'Aberham Ordaz':'AO','Carson Cole':'CC','Gio Rodriguez':'GR','Jon Tolbert':'JT','Lani Rodriguez':'LR','Natalie Orenday':'NO','The whole team':'ALL'};
+const kudoAv={'Aberham Ordaz':'av0','Carson Cole':'av1','Gio Rodriguez':'av2','Jon Tolbert':'av3','Lani Rodriguez':'av5','Natalie Oranday':'av4','The whole team':'av1'};
+const kudoIn={'Aberham Ordaz':'AO','Carson Cole':'CC','Gio Rodriguez':'GR','Jon Tolbert':'JT','Lani Rodriguez':'LR','Natalie Oranday':'NO','The whole team':'ALL'};
 async function loadKudos(){
   const{data}=await sb.from('kudos').select('*').eq('date',todayStr).order('created_at',{ascending:false});
   const el=document.getElementById('kudoList');
