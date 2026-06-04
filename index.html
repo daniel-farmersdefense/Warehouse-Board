@@ -569,13 +569,22 @@ const SAFETY_LIBRARY={
 };
 
 function renderLibrary(){
-  document.getElementById('libraryPanel').innerHTML=Object.entries(SAFETY_LIBRARY).map(([cat,topics])=>`
-    <div class="topic-cat">
-      <div class="topic-cat-title"><i class="ti ti-tag"></i>${cat}</div>
-      <div class="topic-chips">
-        ${topics.map(tp=>`<button class="topic-chip" onclick="fillFromLibrary(${JSON.stringify(tp.t)},${JSON.stringify(tp.d)},this)">${tp.t}</button>`).join('')}
-      </div>
-    </div>`).join('');
+  const panel=document.getElementById('libraryPanel');
+  panel.innerHTML='';
+  Object.entries(SAFETY_LIBRARY).forEach(([cat,topics])=>{
+    const catDiv=document.createElement('div');
+    catDiv.className='topic-cat';
+    catDiv.innerHTML=`<div class="topic-cat-title"><i class="ti ti-tag"></i>${cat}</div><div class="topic-chips" id="chips-${cat.replace(/\s/g,'_')}"></div>`;
+    panel.appendChild(catDiv);
+    const chipsDiv=catDiv.querySelector('.topic-chips');
+    topics.forEach(tp=>{
+      const btn=document.createElement('button');
+      btn.className='topic-chip';
+      btn.textContent=tp.t;
+      btn.onclick=function(){fillFromLibrary(tp.t,tp.d,btn);};
+      chipsDiv.appendChild(btn);
+    });
+  });
 }
 
 function fillFromLibrary(title,detail,btn){
