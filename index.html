@@ -101,8 +101,8 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .hidden{display:none}
 .del{background:none;border:none;cursor:pointer;color:var(--text-hint);font-size:14px;padding:3px 5px;border-radius:5px;flex-shrink:0}
 .del:hover{color:var(--red-text);background:var(--red-bg)}
-.kudo-item,.ann-item,.workload-item,.sugg-item,.priority-item,.bday-item{padding:10px 0;border-bottom:0.5px solid var(--border)}
-.kudo-item:last-child,.ann-item:last-child,.workload-item:last-child,.sugg-item:last-child,.priority-item:last-child,.bday-item:last-child{border-bottom:none}
+.kudo-item,.ann-item,.workload-item,.sugg-item,.priority-item,.bday-item,.ex-hist-item{padding:10px 0;border-bottom:0.5px solid var(--border)}
+.kudo-item:last-child,.ann-item:last-child,.workload-item:last-child,.sugg-item:last-child,.priority-item:last-child,.bday-item:last-child,.ex-hist-item:last-child{border-bottom:none}
 .status-pill{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;cursor:pointer;border:none;font-family:inherit}
 .s-pending{background:var(--amber-bg);color:var(--amber-text)}
 .s-done{background:var(--green-bg);color:var(--green-text)}
@@ -134,6 +134,9 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .incident-num{font-size:72px;font-weight:700;line-height:1;letter-spacing:-0.04em}
 .incident-label{font-size:13px;color:var(--text-muted);margin-top:6px}
 .incident-record{font-size:12px;color:var(--text-muted);margin-top:4px}
+.ex-box{background:var(--teal-bg);border-left:3px solid var(--green);padding:14px 16px;margin-bottom:12px}
+.ex-box .ex-main{font-size:22px;font-weight:600;color:#085041;margin-bottom:4px}
+.ex-box .ex-sub{font-size:13px;color:#0F6E56}
 .topic-cat{margin-bottom:14px}
 .topic-cat-title{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .topic-chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -215,7 +218,24 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 2. DAILY SAFETY TOPIC — moved above priority orders -->
+  <!-- 2. WEEKLY EXERCISE -->
+  <div class="card">
+    <div class="ch">
+      <i class="ti ti-trophy" style="color:#0F6E56"></i>
+      <h2>Weekly exercise</h2>
+      <span class="badge b-teal" id="exWeekBadge">This week</span>
+    </div>
+    <div id="exCurrent"><div class="loading">Loading...</div></div>
+    <div id="exHistory"></div>
+    <div class="tog" id="togEx"><i class="ti ti-edit"></i> Update this week's exercise</div>
+    <div class="add-form hidden" id="exForm">
+      <input type="text" id="exText" placeholder="e.g. 25 push ups, 20 squats, 30 second plank…"/>
+      <input type="text" id="exDetail" placeholder="Notes e.g. before each break, all shifts…"/>
+      <button class="btn" onclick="saveExercise()"><i class="ti ti-check"></i> Save</button>
+    </div>
+  </div>
+
+  <!-- 3. DAILY SAFETY TOPIC -->
   <div class="card full">
     <div class="ch">
       <i class="ti ti-shield-check" style="color:#854F0B"></i>
@@ -233,9 +253,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
       <div class="tog" id="togSafety" style="margin-top:0"><i class="ti ti-edit"></i> Write custom topic</div>
       <div class="tog" id="togLibrary" style="margin-top:0"><i class="ti ti-books"></i> Pick from library</div>
     </div>
-    <!-- Library panel — picking a topic now fills the form fields -->
     <div class="hidden" id="libraryPanel" style="margin-top:12px"></div>
-    <!-- Edit form — auto-filled when picking from library -->
     <div class="add-form hidden" id="safetyForm" style="margin-top:12px">
       <input type="text" id="sTopic" placeholder="Safety topic title…"/>
       <textarea id="sDetail2" rows="4" placeholder="Key points, reminders, or action items…"></textarea>
@@ -246,7 +264,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 3. PRIORITY ORDERS -->
+  <!-- 4. PRIORITY ORDERS -->
   <div class="card full">
     <div class="ch">
       <i class="ti ti-flag-filled" style="color:#A32D2D"></i>
@@ -262,7 +280,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 6. DAILY WORKLOAD -->
+  <!-- 5. DAILY WORKLOAD -->
   <div class="card full">
     <div class="ch">
       <i class="ti ti-layout-list" style="color:#185FA5"></i>
@@ -276,8 +294,8 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
       <button class="btn" onclick="addWorkload()"><i class="ti ti-plus"></i> Add item</button>
     </div>
   </div>
-  
-  <!-- 4. ANNOUNCEMENTS -->
+
+  <!-- 6. ANNOUNCEMENTS -->
   <div class="card full">
     <div class="ch">
       <i class="ti ti-speakerphone" style="color:#993C1D"></i>
@@ -293,7 +311,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 5. BIRTHDAYS + KUDOS -->
+  <!-- 7. BIRTHDAYS + KUDOS -->
   <div class="card">
     <div class="ch">
       <i class="ti ti-cake" style="color:#534AB7"></i>
@@ -326,9 +344,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  
-
-  <!-- 7. BREAK SCHEDULE -->
+  <!-- 8. BREAK SCHEDULE -->
   <div class="card full">
     <div class="ch">
       <i class="ti ti-coffee" style="color:#534AB7"></i>
@@ -351,7 +367,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 8. EMPLOYEE SUGGESTIONS -->
+  <!-- 9. EMPLOYEE SUGGESTIONS -->
   <div class="card full">
     <div class="ch">
       <i class="ti ti-bulb" style="color:#BA7517"></i>
@@ -367,7 +383,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 9. PERFORMANCE LOG -->
+  <!-- 10. PERFORMANCE LOG -->
   <div class="card full">
     <div class="ch">
       <i class="ti ti-trending-up" style="color:#1D9E75"></i>
@@ -409,7 +425,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 10. WEEKLY CHART -->
+  <!-- 11. WEEKLY CHART -->
   <div class="card full">
     <div class="ch">
       <i class="ti ti-chart-bar" style="color:#185FA5"></i>
@@ -431,7 +447,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 11. PERFORMANCE HISTORY -->
+  <!-- 12. PERFORMANCE HISTORY -->
   <div class="card full">
     <div class="ch">
       <i class="ti ti-calendar-stats" style="color:#185FA5"></i>
@@ -442,7 +458,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     <div id="histContent"><div class="loading">Loading history...</div></div>
   </div>
 
-  <!-- 12. WEEKLY CLEANUP -->
+  <!-- 13. WEEKLY CLEANUP -->
   <div class="card">
     <div class="ch">
       <i class="ti ti-trash" style="color:#0F6E56"></i>
@@ -461,7 +477,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 13. TEAM STATUS -->
+  <!-- 14. TEAM STATUS -->
   <div class="card">
     <div class="ch">
       <i class="ti ti-users" style="color:#534AB7"></i>
@@ -485,6 +501,12 @@ const dateStr=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long'
 document.getElementById('dateBadge').textContent=dateStr;
 document.getElementById('safetyDate').textContent=dateStr;
 document.getElementById('footerYear').textContent=new Date().getFullYear();
+
+function getWeekStart(){
+  const d=new Date();const day=d.getDay();const diff=d.getDate()-((day+6)%7);
+  const mon=new Date(d);mon.setDate(diff);return mon.toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'});
+}
+const weekStart=getWeekStart();
 
 const TEAM=[
   {initials:'AO',name:'Aberham Ordaz',av:'av0'},
@@ -536,6 +558,45 @@ async function resetIncident(){
   await loadIncident();setSynced();
 }
 
+// ── WEEKLY EXERCISE ──────────────────────────────────────────────
+async function loadExercise(){
+  const{data}=await sb.from('exercise').select('*').order('week_of',{ascending:false}).limit(6);
+  const current=data&&data[0];
+  const weekLabel=new Date(weekStart+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  document.getElementById('exWeekBadge').textContent='Week of '+weekLabel;
+  if(current){
+    document.getElementById('exCurrent').innerHTML=`
+      <div class="ex-box">
+        <div class="ex-main">${current.exercise}</div>
+        ${current.detail?`<div class="ex-sub">${current.detail}</div>`:''}
+      </div>`;
+  } else {
+    document.getElementById('exCurrent').innerHTML='<p class="txt-sm" style="padding:8px 0">No exercise posted yet — tap below to add this week\'s exercise.</p>';
+  }
+  const history=data&&data.slice(1);
+  if(history&&history.length){
+    const histLabel='<div class="txt-xs" style="margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em;font-weight:600">Previous weeks</div>';
+    document.getElementById('exHistory').innerHTML=histLabel+history.map(e=>{
+      const wLabel=new Date(e.week_of+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+      return`<div class="ex-hist-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px"><span class="txt-xs">${wLabel}</span><span class="txt-sm">${e.exercise}</span></div>`;
+    }).join('');
+  } else {
+    document.getElementById('exHistory').innerHTML='';
+  }
+  setSynced();
+}
+async function saveExercise(){
+  const exercise=document.getElementById('exText').value.trim();
+  const detail=document.getElementById('exDetail').value.trim();
+  if(!exercise)return;setSyncing();
+  await sb.from('exercise').delete().eq('week_of',weekStart);
+  await sb.from('exercise').insert({week_of:weekStart,exercise,detail});
+  document.getElementById('exText').value='';document.getElementById('exDetail').value='';
+  document.getElementById('exForm').classList.add('hidden');
+  await loadExercise();setSynced();
+}
+document.getElementById('togEx').onclick=function(){document.getElementById('exForm').classList.toggle('hidden');};
+
 // ── SAFETY LIBRARY ──────────────────────────────────────────────
 const SAFETY_LIBRARY={
   'Pallet Jack Safety':[
@@ -567,7 +628,6 @@ const SAFETY_LIBRARY={
     {t:'Reporting unsafe conditions',d:'Every associate is responsible for safety. If you see something unsafe — a damaged rack, a spill, broken equipment — report it to Daniel immediately. Never assume someone else will handle it.'},
   ],
 };
-
 function renderLibrary(){
   const panel=document.getElementById('libraryPanel');
   panel.innerHTML='';
@@ -586,38 +646,21 @@ function renderLibrary(){
     });
   });
 }
-
 function fillFromLibrary(title,detail,btn){
-  // highlight selected chip
   document.querySelectorAll('.topic-chip').forEach(c=>c.classList.remove('selected'));
   btn.classList.add('selected');
-  // fill the form fields
   document.getElementById('sTopic').value=title;
   document.getElementById('sDetail2').value=detail;
-  // show the edit form so Daniel can review/edit before posting
   document.getElementById('safetyForm').classList.remove('hidden');
-  // scroll the form into view smoothly
   document.getElementById('safetyForm').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
-
 function clearSafetyForm(){
-  document.getElementById('sTopic').value='';
-  document.getElementById('sDetail2').value='';
-  document.getElementById('safetyForm').classList.add('hidden');
-  document.getElementById('libraryPanel').classList.add('hidden');
+  document.getElementById('sTopic').value='';document.getElementById('sDetail2').value='';
+  document.getElementById('safetyForm').classList.add('hidden');document.getElementById('libraryPanel').classList.add('hidden');
   document.querySelectorAll('.topic-chip').forEach(c=>c.classList.remove('selected'));
 }
-
-document.getElementById('togSafety').onclick=function(){
-  document.getElementById('safetyForm').classList.toggle('hidden');
-  document.getElementById('libraryPanel').classList.add('hidden');
-  document.querySelectorAll('.topic-chip').forEach(c=>c.classList.remove('selected'));
-};
-document.getElementById('togLibrary').onclick=function(){
-  const p=document.getElementById('libraryPanel');
-  p.classList.toggle('hidden');
-  if(!p.classList.contains('hidden'))renderLibrary();
-};
+document.getElementById('togSafety').onclick=function(){document.getElementById('safetyForm').classList.toggle('hidden');document.getElementById('libraryPanel').classList.add('hidden');document.querySelectorAll('.topic-chip').forEach(c=>c.classList.remove('selected'));};
+document.getElementById('togLibrary').onclick=function(){const p=document.getElementById('libraryPanel');p.classList.toggle('hidden');if(!p.classList.contains('hidden'))renderLibrary();};
 
 async function loadSafety(){
   const{data}=await sb.from('safety_topic').select('*').eq('date',todayStr).single();
@@ -629,8 +672,7 @@ async function saveSafety(){
   if(!topic)return;setSyncing();
   await sb.from('safety_topic').upsert({date:todayStr,topic,detail},{onConflict:'date'});
   await sb.from('safety_ack').delete().eq('date',todayStr);
-  clearSafetyForm();
-  await loadSafety();setSynced();
+  clearSafetyForm();await loadSafety();setSynced();
 }
 async function loadAck(){
   const{data}=await sb.from('safety_ack').select('name').eq('date',todayStr);
@@ -782,8 +824,8 @@ function renderPerf(){
     <div class="perf-row">
       <div class="av ${p.av}" style="width:28px;height:28px;font-size:10px">${p.initials}</div>
       <div class="txt">${p.name}</div>
-      <input class="perf-input" type="number" min="0" step="1" value="${p.am}" id="am${i}" oninput="perfData[${i}].am=parseInt(this.value)||0;calcPerf()"/>
-      <input class="perf-input" type="number" min="0" step="1" value="${p.pm}" id="pm${i}" oninput="perfData[${i}].pm=parseInt(this.value)||0;calcPerf()"/>
+      <input class="perf-input" type="number" min="0" step="1" value="${p.am}" oninput="perfData[${i}].am=parseInt(this.value)||0;calcPerf()"/>
+      <input class="perf-input" type="number" min="0" step="1" value="${p.pm}" oninput="perfData[${i}].pm=parseInt(this.value)||0;calcPerf()"/>
       <div class="row-total" id="pt${i}">${p.am+p.pm}</div>
       <button class="save-row-btn" id="savebtn${i}" onclick="saveSinglePerf(${i})">💾 Save</button>
     </div>`).join('');
@@ -887,10 +929,11 @@ sb.channel('board-changes')
   .on('postgres_changes',{event:'*',schema:'public',table:'priority_orders'},()=>loadPriority())
   .on('postgres_changes',{event:'*',schema:'public',table:'suggestions'},()=>loadSugg())
   .on('postgres_changes',{event:'*',schema:'public',table:'birthdays'},()=>loadBdays())
+  .on('postgres_changes',{event:'*',schema:'public',table:'exercise'},()=>loadExercise())
   .subscribe();
 
 async function init(){
-  await Promise.all([loadWeather(),loadIncident(),loadSafety(),loadPriority(),loadAnns(),loadBdays(),loadKudos(),loadWorkload(),loadSugg(),loadTeam(),loadPerf(),loadWeeklyChart(),loadHistory()]);
+  await Promise.all([loadWeather(),loadIncident(),loadExercise(),loadSafety(),loadPriority(),loadWorkload(),loadAnns(),loadBdays(),loadKudos(),loadSugg(),loadTeam(),loadPerf(),loadWeeklyChart(),loadHistory()]);
   setSynced();
   setInterval(loadWeather,10*60*1000);
 }
