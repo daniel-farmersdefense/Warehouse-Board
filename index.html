@@ -24,15 +24,42 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;position:relative;overflow-x:hidden}
 
-/* ── AREA CODE BACKGROUND ── */
-body::before{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:var(--bg);
-}
-.area-codes{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.ac{position:absolute;font-weight:900;letter-spacing:-0.05em;line-height:1;
-  color:transparent;-webkit-text-stroke:2.5px #b8bfcc;user-select:none}
-
+<!-- AREA CODE BACKGROUND -->
+<div class="area-codes" aria-hidden="true">
+  <!-- Row 1 — top of page -->
+  <div class="ac" style="font-size:200px;top:20px;left:-20px;transform:rotate(-7deg)">408</div>
+  <div class="ac" style="font-size:180px;top:10px;left:30%;transform:rotate(4deg)">831</div>
+  <div class="ac" style="font-size:190px;top:30px;right:-10px;transform:rotate(-5deg)">313</div>
+  <!-- Row 2 -->
+  <div class="ac" style="font-size:170px;top:280px;left:-10px;transform:rotate(6deg)">828</div>
+  <div class="ac" style="font-size:160px;top:260px;left:38%;transform:rotate(-4deg)">760</div>
+  <div class="ac" style="font-size:180px;top:250px;right:-15px;transform:rotate(5deg)">209</div>
+  <!-- Row 3 -->
+  <div class="ac" style="font-size:190px;top:560px;left:-20px;transform:rotate(-6deg)">313</div>
+  <div class="ac" style="font-size:170px;top:540px;left:32%;transform:rotate(5deg)">408</div>
+  <div class="ac" style="font-size:160px;top:550px;right:-10px;transform:rotate(-4deg)">831</div>
+  <!-- Row 4 -->
+  <div class="ac" style="font-size:175px;top:840px;left:-15px;transform:rotate(4deg)">760</div>
+  <div class="ac" style="font-size:165px;top:820px;left:35%;transform:rotate(-5deg)">209</div>
+  <div class="ac" style="font-size:185px;top:830px;right:-10px;transform:rotate(6deg)">828</div>
+  <!-- Row 5 -->
+  <div class="ac" style="font-size:180px;top:1120px;left:-20px;transform:rotate(-5deg)">831</div>
+  <div class="ac" style="font-size:170px;top:1100px;left:33%;transform:rotate(4deg)">313</div>
+  <div class="ac" style="font-size:160px;top:1110px;right:-10px;transform:rotate(-6deg)">408</div>
+  <!-- Row 6 -->
+  <div class="ac" style="font-size:175px;top:1400px;left:-15px;transform:rotate(5deg)">209</div>
+  <div class="ac" style="font-size:165px;top:1380px;left:36%;transform:rotate(-4deg)">828</div>
+  <div class="ac" style="font-size:185px;top:1390px;right:-10px;transform:rotate(6deg)">760</div>
+  <!-- Row 7 -->
+  <div class="ac" style="font-size:180px;top:1680px;left:-20px;transform:rotate(-6deg)">313</div>
+  <div class="ac" style="font-size:170px;top:1660px;left:32%;transform:rotate(5deg)">408</div>
+  <div class="ac" style="font-size:160px;top:1670px;right:-10px;transform:rotate(-4deg)">831</div>
+  <!-- Row 8 -->
+  <div class="ac" style="font-size:175px;top:1960px;left:-15px;transform:rotate(4deg)">760</div>
+  <div class="ac" style="font-size:165px;top:1940px;left:35%;transform:rotate(-5deg)">209</div>
+  <div class="ac" style="font-size:185px;top:1950px;right:-10px;transform:rotate(6deg)">828</div>
+</div>
+  
 /* ── TOPBAR ── */
 .topbar{background:#1e2430;border-bottom:3px solid var(--blue);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
 .topbar-logo{font-size:18px;font-weight:700;letter-spacing:-0.02em;color:#ffffff}
