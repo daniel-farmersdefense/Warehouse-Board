@@ -23,44 +23,8 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;position:relative;overflow-x:hidden}
-
-<!-- AREA CODE BACKGROUND -->
-<div class="area-codes" aria-hidden="true">
-  <!-- Row 1 — top of page -->
-  <div class="ac" style="font-size:200px;top:20px;left:-20px;transform:rotate(-7deg)">408</div>
-  <div class="ac" style="font-size:180px;top:10px;left:30%;transform:rotate(4deg)">831</div>
-  <div class="ac" style="font-size:190px;top:30px;right:-10px;transform:rotate(-5deg)">313</div>
-  <!-- Row 2 -->
-  <div class="ac" style="font-size:170px;top:280px;left:-10px;transform:rotate(6deg)">828</div>
-  <div class="ac" style="font-size:160px;top:260px;left:38%;transform:rotate(-4deg)">760</div>
-  <div class="ac" style="font-size:180px;top:250px;right:-15px;transform:rotate(5deg)">209</div>
-  <!-- Row 3 -->
-  <div class="ac" style="font-size:190px;top:560px;left:-20px;transform:rotate(-6deg)">313</div>
-  <div class="ac" style="font-size:170px;top:540px;left:32%;transform:rotate(5deg)">408</div>
-  <div class="ac" style="font-size:160px;top:550px;right:-10px;transform:rotate(-4deg)">831</div>
-  <!-- Row 4 -->
-  <div class="ac" style="font-size:175px;top:840px;left:-15px;transform:rotate(4deg)">760</div>
-  <div class="ac" style="font-size:165px;top:820px;left:35%;transform:rotate(-5deg)">209</div>
-  <div class="ac" style="font-size:185px;top:830px;right:-10px;transform:rotate(6deg)">828</div>
-  <!-- Row 5 -->
-  <div class="ac" style="font-size:180px;top:1120px;left:-20px;transform:rotate(-5deg)">831</div>
-  <div class="ac" style="font-size:170px;top:1100px;left:33%;transform:rotate(4deg)">313</div>
-  <div class="ac" style="font-size:160px;top:1110px;right:-10px;transform:rotate(-6deg)">408</div>
-  <!-- Row 6 -->
-  <div class="ac" style="font-size:175px;top:1400px;left:-15px;transform:rotate(5deg)">209</div>
-  <div class="ac" style="font-size:165px;top:1380px;left:36%;transform:rotate(-4deg)">828</div>
-  <div class="ac" style="font-size:185px;top:1390px;right:-10px;transform:rotate(6deg)">760</div>
-  <!-- Row 7 -->
-  <div class="ac" style="font-size:180px;top:1680px;left:-20px;transform:rotate(-6deg)">313</div>
-  <div class="ac" style="font-size:170px;top:1660px;left:32%;transform:rotate(5deg)">408</div>
-  <div class="ac" style="font-size:160px;top:1670px;right:-10px;transform:rotate(-4deg)">831</div>
-  <!-- Row 8 -->
-  <div class="ac" style="font-size:175px;top:1960px;left:-15px;transform:rotate(4deg)">760</div>
-  <div class="ac" style="font-size:165px;top:1940px;left:35%;transform:rotate(-5deg)">209</div>
-  <div class="ac" style="font-size:185px;top:1950px;right:-10px;transform:rotate(6deg)">828</div>
-</div>
-  
-/* ── TOPBAR ── */
+.area-codes{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.ac{position:absolute;font-weight:900;letter-spacing:-0.05em;line-height:1;color:transparent;-webkit-text-stroke:2.5px #b8bfcc;user-select:none}
 .topbar{background:#1e2430;border-bottom:3px solid var(--blue);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
 .topbar-logo{font-size:18px;font-weight:700;letter-spacing:-0.02em;color:#ffffff}
 .topbar-logo span{color:#4a9eff}
@@ -69,13 +33,9 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .sync-dot{width:7px;height:7px;border-radius:50%;background:#888;display:inline-block;margin-right:6px;transition:background 0.3s}
 .sync-dot.live{background:var(--green)}
 .sync-status{font-size:11px;color:rgba(255,255,255,0.45);display:flex;align-items:center;background:rgba(29,158,117,0.1);border:1px solid rgba(29,158,117,0.2);padding:3px 10px;border-radius:20px}
-
-/* ── LAYOUT ── */
 .container{max-width:1100px;margin:0 auto;padding:2rem 1.5rem;position:relative;z-index:1}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
 .full{grid-column:1/-1}
-
-/* ── CARDS ── */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;backdrop-filter:blur(4px)}
 .card-blue{border-top:3px solid var(--blue)}
 .card-green{border-top:3px solid var(--green)}
@@ -84,7 +44,6 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .card-purple{border-top:3px solid var(--purple)}
 .card-teal{border-top:3px solid #0F6E56}
 .card-gray{border-top:3px solid #888780}
-
 .ch{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);flex-wrap:wrap}
 .ch i{font-size:18px}
 .ch h2{font-size:13px;font-weight:700;color:var(--text);flex:1;letter-spacing:0.03em;text-transform:uppercase}
@@ -96,8 +55,6 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .b-purple{background:var(--purple-bg);color:var(--purple-text)}
 .b-gray{background:var(--gray-bg);color:var(--gray-text)}
 .b-teal{background:var(--teal-bg);color:var(--teal-text)}
-
-/* ── SAFETY ── */
 .safety-box{background:var(--amber-bg);border-left:3px solid var(--amber);padding:14px 16px;margin-bottom:12px;border-radius:0}
 .safety-box .s-title{font-size:15px;font-weight:600;color:#412402;margin-bottom:6px}
 .safety-box .s-detail{font-size:13px;color:var(--amber-text);line-height:1.65}
@@ -106,8 +63,6 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .ack-btn.acked{background:var(--green-bg);border-color:#97C459;color:var(--green-text)}
 .ack-btn i{font-size:16px}
 .ack-summary{font-size:12px;color:var(--text-muted);margin-top:10px}
-
-/* ── PERFORMANCE ── */
 .metric-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:16px}
 .met{background:var(--bg);border-radius:var(--radius-md);padding:12px 14px;border:1px solid var(--border)}
 .met .lbl{font-size:11px;color:var(--text-muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.04em}
@@ -129,8 +84,6 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .save-row-btn{font-size:11px;font-weight:600;padding:5px 8px;border:1px solid var(--border-mid);border-radius:var(--radius-md);background:var(--text);color:var(--bg);cursor:pointer;font-family:inherit;white-space:nowrap;transition:opacity 0.15s}
 .save-row-btn:hover{opacity:0.8}
 .save-row-btn.saved{background:var(--green);border-color:var(--green)}
-
-/* ── AVATARS ── */
 .av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
 .av0{background:var(--blue-bg);color:var(--blue-text)}
 .av1{background:var(--teal-bg);color:var(--teal-text)}
@@ -138,8 +91,6 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .av3{background:var(--amber-bg);color:var(--amber-text)}
 .av4{background:var(--coral-bg);color:var(--coral-text)}
 .av5{background:var(--pink-bg);color:var(--pink-text)}
-
-/* ── MISC ── */
 .row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
 .row:last-child{border-bottom:none}
 .txt{font-size:14px;color:var(--text)}
@@ -234,20 +185,31 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 </head>
 <body>
 
-<!-- AREA CODE BACKGROUND -->
 <div class="area-codes" aria-hidden="true">
-  <div class="ac" style="font-size:220px;top:-40px;left:-30px;transform:rotate(-8deg)">408</div>
-  <div class="ac" style="font-size:180px;top:30px;right:-20px;transform:rotate(6deg)">831</div>
-  <div class="ac" style="font-size:190px;top:320px;left:5px;transform:rotate(-5deg)">828</div>
-  <div class="ac" style="font-size:240px;top:600px;right:10px;transform:rotate(8deg)">313</div>
-  <div class="ac" style="font-size:160px;top:500px;left:35%;transform:rotate(-4deg)">760</div>
-  <div class="ac" style="font-size:170px;top:900px;left:-10px;transform:rotate(5deg)">209</div>
-  <div class="ac" style="font-size:140px;top:1100px;right:5%;transform:rotate(-6deg)">408</div>
-  <div class="ac" style="font-size:150px;top:1400px;left:20%;transform:rotate(4deg)">831</div>
-  <div class="ac" style="font-size:130px;top:1600px;right:15%;transform:rotate(-7deg)">313</div>
-  <div class="ac" style="font-size:160px;top:1800px;left:5px;transform:rotate(6deg)">209</div>
-  <div class="ac" style="font-size:140px;top:2000px;right:10%;transform:rotate(-4deg)">760</div>
-  <div class="ac" style="font-size:180px;top:2200px;left:30%;transform:rotate(5deg)">828</div>
+  <div class="ac" style="font-size:200px;top:20px;left:-20px;transform:rotate(-7deg)">408</div>
+  <div class="ac" style="font-size:180px;top:10px;left:30%;transform:rotate(4deg)">831</div>
+  <div class="ac" style="font-size:190px;top:30px;right:-10px;transform:rotate(-5deg)">313</div>
+  <div class="ac" style="font-size:170px;top:280px;left:-10px;transform:rotate(6deg)">828</div>
+  <div class="ac" style="font-size:160px;top:260px;left:38%;transform:rotate(-4deg)">760</div>
+  <div class="ac" style="font-size:180px;top:250px;right:-15px;transform:rotate(5deg)">209</div>
+  <div class="ac" style="font-size:190px;top:560px;left:-20px;transform:rotate(-6deg)">313</div>
+  <div class="ac" style="font-size:170px;top:540px;left:32%;transform:rotate(5deg)">408</div>
+  <div class="ac" style="font-size:160px;top:550px;right:-10px;transform:rotate(-4deg)">831</div>
+  <div class="ac" style="font-size:175px;top:840px;left:-15px;transform:rotate(4deg)">760</div>
+  <div class="ac" style="font-size:165px;top:820px;left:35%;transform:rotate(-5deg)">209</div>
+  <div class="ac" style="font-size:185px;top:830px;right:-10px;transform:rotate(6deg)">828</div>
+  <div class="ac" style="font-size:180px;top:1120px;left:-20px;transform:rotate(-5deg)">831</div>
+  <div class="ac" style="font-size:170px;top:1100px;left:33%;transform:rotate(4deg)">313</div>
+  <div class="ac" style="font-size:160px;top:1110px;right:-10px;transform:rotate(-6deg)">408</div>
+  <div class="ac" style="font-size:175px;top:1400px;left:-15px;transform:rotate(5deg)">209</div>
+  <div class="ac" style="font-size:165px;top:1380px;left:36%;transform:rotate(-4deg)">828</div>
+  <div class="ac" style="font-size:185px;top:1390px;right:-10px;transform:rotate(6deg)">760</div>
+  <div class="ac" style="font-size:180px;top:1680px;left:-20px;transform:rotate(-6deg)">313</div>
+  <div class="ac" style="font-size:170px;top:1660px;left:32%;transform:rotate(5deg)">408</div>
+  <div class="ac" style="font-size:160px;top:1670px;right:-10px;transform:rotate(-4deg)">831</div>
+  <div class="ac" style="font-size:175px;top:1960px;left:-15px;transform:rotate(4deg)">760</div>
+  <div class="ac" style="font-size:165px;top:1940px;left:35%;transform:rotate(-5deg)">209</div>
+  <div class="ac" style="font-size:185px;top:1950px;right:-10px;transform:rotate(6deg)">828</div>
 </div>
 
 <div class="topbar">
@@ -267,40 +229,23 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 <div class="container">
 <div class="grid">
 
-  <!-- 1. WEATHER -->
   <div class="card card-blue">
-    <div class="ch">
-      <i class="ti ti-cloud" style="color:var(--blue)"></i>
-      <h2>Weather</h2>
-      <span class="badge b-blue" id="weatherBadge">Loading…</span>
-    </div>
+    <div class="ch"><i class="ti ti-cloud" style="color:var(--blue)"></i><h2>Weather</h2><span class="badge b-blue" id="weatherBadge">Loading…</span></div>
     <div id="weatherContent"><div class="loading">Fetching weather...</div></div>
   </div>
 
-  <!-- 2. INCIDENT COUNTER -->
   <div class="card card-red">
-    <div class="ch">
-      <i class="ti ti-alert-octagon" style="color:var(--red)"></i>
-      <h2>Days since last incident</h2>
-      <span class="badge b-green" id="incidentBadge">Safe streak</span>
-    </div>
+    <div class="ch"><i class="ti ti-alert-octagon" style="color:var(--red)"></i><h2>Days since last incident</h2><span class="badge b-green" id="incidentBadge">Safe streak</span></div>
     <div class="incident-big">
       <div class="incident-num" id="incidentDays">0</div>
       <div class="incident-label">days without a workplace incident</div>
       <div class="incident-record" id="incidentRecord"></div>
     </div>
-    <div style="margin-top:14px">
-      <button class="btn btn-ghost btn-sm" onclick="resetIncident()"><i class="ti ti-refresh"></i> Report incident</button>
-    </div>
+    <div style="margin-top:14px"><button class="btn btn-ghost btn-sm" onclick="resetIncident()"><i class="ti ti-refresh"></i> Report incident</button></div>
   </div>
 
-  <!-- 3. WEEKLY EXERCISE -->
   <div class="card card-teal">
-    <div class="ch">
-      <i class="ti ti-trophy" style="color:#0F6E56"></i>
-      <h2>Weekly exercise</h2>
-      <span class="badge b-teal" id="exWeekBadge">This week</span>
-    </div>
+    <div class="ch"><i class="ti ti-trophy" style="color:#0F6E56"></i><h2>Weekly exercise</h2><span class="badge b-teal" id="exWeekBadge">This week</span></div>
     <div id="exCurrent"><div class="loading">Loading...</div></div>
     <div id="exHistory"></div>
     <div class="tog" id="togEx"><i class="ti ti-edit"></i> Update this week's exercise</div>
@@ -311,18 +256,9 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 4. DAILY SAFETY TOPIC -->
   <div class="card card-amber full">
-    <div class="ch">
-      <i class="ti ti-shield-check" style="color:var(--amber)"></i>
-      <h2>Daily safety topic</h2>
-      <span class="badge b-amber" id="safetyDate"></span>
-      <span class="badge b-amber" id="ackBadge">0 / 6 acknowledged</span>
-    </div>
-    <div class="safety-box">
-      <div class="s-title" id="safetyTopic">Forklift pedestrian zones — always check mirrors before reversing</div>
-      <div class="s-detail" id="safetyDetail">Remind all associates: sound the horn at every intersection. Pedestrians always have right of way. Yellow floor markings define safe walking corridors — keep them clear at all times.</div>
-    </div>
+    <div class="ch"><i class="ti ti-shield-check" style="color:var(--amber)"></i><h2>Daily safety topic</h2><span class="badge b-amber" id="safetyDate"></span><span class="badge b-amber" id="ackBadge">0 / 6 acknowledged</span></div>
+    <div class="safety-box"><div class="s-title" id="safetyTopic">Pallet jack speed control</div><div class="s-detail" id="safetyDetail">Always walk at a safe pace when operating the pallet jack. Never ride on the forks. Keep your feet clear of the wheels at all times.</div></div>
     <div class="ack-grid" id="ackGrid"></div>
     <div class="ack-summary" id="ackSummary"></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
@@ -340,13 +276,8 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 5. PRIORITY ORDERS -->
   <div class="card card-red full">
-    <div class="ch">
-      <i class="ti ti-flag-filled" style="color:var(--red)"></i>
-      <h2>Priority orders</h2>
-      <span class="badge b-red" id="priorityCount">0 active</span>
-    </div>
+    <div class="ch"><i class="ti ti-flag-filled" style="color:var(--red)"></i><h2>Priority orders</h2><span class="badge b-red" id="priorityCount">0 active</span></div>
     <div id="priorityList"><div class="loading">Loading...</div></div>
     <div class="tog" id="togPriority"><i class="ti ti-plus"></i> Flag a priority order</div>
     <div class="add-form hidden" id="priorityForm">
@@ -356,13 +287,8 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 6. DAILY WORKLOAD -->
   <div class="card card-blue full">
-    <div class="ch">
-      <i class="ti ti-layout-list" style="color:var(--blue)"></i>
-      <h2>Daily workload</h2>
-      <span class="badge b-blue" id="workloadCount">0 items</span>
-    </div>
+    <div class="ch"><i class="ti ti-layout-list" style="color:var(--blue)"></i><h2>Daily workload</h2><span class="badge b-blue" id="workloadCount">0 items</span></div>
     <div id="workloadList"><div class="loading">Loading...</div></div>
     <div class="tog" id="togWorkload"><i class="ti ti-plus"></i> Add workload item</div>
     <div class="add-form hidden" id="workloadForm">
@@ -371,13 +297,8 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 7. ANNOUNCEMENTS -->
   <div class="card card-gray full">
-    <div class="ch">
-      <i class="ti ti-speakerphone" style="color:#5F5E5A"></i>
-      <h2>Announcements</h2>
-      <span class="badge b-gray" id="annCount">0</span>
-    </div>
+    <div class="ch"><i class="ti ti-speakerphone" style="color:#5F5E5A"></i><h2>Announcements</h2><span class="badge b-gray" id="annCount">0</span></div>
     <div id="annList"><div class="loading">Loading...</div></div>
     <div class="tog" id="togAnn"><i class="ti ti-plus"></i> Post announcement</div>
     <div class="add-form hidden" id="annForm">
@@ -387,13 +308,8 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 8. BIRTHDAYS + KUDOS -->
   <div class="card card-purple">
-    <div class="ch">
-      <i class="ti ti-cake" style="color:var(--purple)"></i>
-      <h2>Team birthdays</h2>
-      <span class="badge b-purple" id="bdayBadge">Loading…</span>
-    </div>
+    <div class="ch"><i class="ti ti-cake" style="color:var(--purple)"></i><h2>Team birthdays</h2><span class="badge b-purple" id="bdayBadge">Loading…</span></div>
     <div id="bdaySoon"></div>
     <div id="bdayList"><div class="loading">Loading...</div></div>
     <div class="tog" id="togBday"><i class="ti ti-plus"></i> Add birthday</div>
@@ -405,11 +321,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
   </div>
 
   <div class="card card-purple">
-    <div class="ch">
-      <i class="ti ti-star" style="color:var(--purple)"></i>
-      <h2>Staff kudos</h2>
-      <span class="badge b-purple" id="kudoCount">0 today</span>
-    </div>
+    <div class="ch"><i class="ti ti-star" style="color:var(--purple)"></i><h2>Staff kudos</h2><span class="badge b-purple" id="kudoCount">0 today</span></div>
     <div id="kudoList"><div class="loading">Loading...</div></div>
     <div class="tog" id="togKudo"><i class="ti ti-plus"></i> Give kudos</div>
     <div class="add-form hidden" id="kudoForm">
@@ -420,13 +332,8 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 9. BREAK SCHEDULE -->
   <div class="card card-blue full">
-    <div class="ch">
-      <i class="ti ti-coffee" style="color:var(--blue)"></i>
-      <h2>Break schedule</h2>
-      <span class="badge b-blue">Today's schedule</span>
-    </div>
+    <div class="ch"><i class="ti ti-coffee" style="color:var(--blue)"></i><h2>Break schedule</h2><span class="badge b-blue">Today's schedule</span></div>
     <div class="break-grid">
       <div class="break-card">
         <div class="shift-title"><i class="ti ti-sun" style="color:var(--amber)"></i> 7:00 AM Shift</div>
@@ -443,13 +350,8 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 10. EMPLOYEE SUGGESTIONS -->
   <div class="card card-amber full">
-    <div class="ch">
-      <i class="ti ti-bulb" style="color:var(--amber)"></i>
-      <h2>Employee suggestions</h2>
-      <span class="badge b-amber" id="suggCount">0 new</span>
-    </div>
+    <div class="ch"><i class="ti ti-bulb" style="color:var(--amber)"></i><h2>Employee suggestions</h2><span class="badge b-amber" id="suggCount">0 new</span></div>
     <div id="suggList"><div class="loading">Loading...</div></div>
     <div class="tog" id="togSugg"><i class="ti ti-plus"></i> Submit a suggestion</div>
     <div class="add-form hidden" id="suggForm">
@@ -459,13 +361,8 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 11. PERFORMANCE LOG -->
   <div class="card card-green full">
-    <div class="ch">
-      <i class="ti ti-trending-up" style="color:var(--green)"></i>
-      <h2>Performance log — orders completed today</h2>
-      <span class="badge b-green" id="totalBadge">Team total: 0</span>
-    </div>
+    <div class="ch"><i class="ti ti-trending-up" style="color:var(--green)"></i><h2>Performance log — orders completed today</h2><span class="badge b-green" id="totalBadge">Team total: 0</span></div>
     <div class="metric-g">
       <div class="met"><div class="lbl">Team total</div><div class="val" id="pmTotal">0</div></div>
       <div class="met"><div class="lbl">Daily goal</div><div class="val" id="pmGoal">200</div></div>
@@ -473,15 +370,8 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
       <div class="met"><div class="lbl">Avg per person</div><div class="val" id="pmAvg">0</div></div>
     </div>
     <div class="goal-bar-wrap">
-      <div class="goal-bar-track">
-        <div class="goal-bar-fill" id="goalBarFill" style="width:0%;background:var(--blue)">
-          <span class="goal-bar-pct" id="goalBarPct"></span>
-        </div>
-      </div>
-      <div class="goal-meta">
-        <span id="goalMetaLeft">0 of 200 orders</span>
-        <span id="goalMetaRight">0% of daily goal</span>
-      </div>
+      <div class="goal-bar-track"><div class="goal-bar-fill" id="goalBarFill" style="width:0%;background:var(--blue)"><span class="goal-bar-pct" id="goalBarPct"></span></div></div>
+      <div class="goal-meta"><span id="goalMetaLeft">0 of 200 orders</span><span id="goalMetaRight">0% of daily goal</span></div>
     </div>
     <div class="goal-edit">
       <span class="txt-xs">Daily goal:</span>
@@ -490,24 +380,15 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
     <div style="margin:16px 0 6px">
       <div class="perf-hdr">
-        <div></div>
-        <div class="col-lbl" style="text-align:left">Associate</div>
-        <div class="col-lbl">AM</div>
-        <div class="col-lbl">PM</div>
-        <div class="col-lbl">Total</div>
-        <div class="col-lbl">Save</div>
+        <div></div><div class="col-lbl" style="text-align:left">Associate</div>
+        <div class="col-lbl">AM</div><div class="col-lbl">PM</div><div class="col-lbl">Total</div><div class="col-lbl">Save</div>
       </div>
       <div id="perfRows"><div class="loading">Loading...</div></div>
     </div>
   </div>
 
-  <!-- 12. WEEKLY CHART -->
   <div class="card card-blue full">
-    <div class="ch">
-      <i class="ti ti-chart-bar" style="color:var(--blue)"></i>
-      <h2>Weekly goal vs actual</h2>
-      <span class="badge b-blue" id="chartWeekLabel"></span>
-    </div>
+    <div class="ch"><i class="ti ti-chart-bar" style="color:var(--blue)"></i><h2>Weekly goal vs actual</h2><span class="badge b-blue" id="chartWeekLabel"></span></div>
     <div class="metric-g">
       <div class="met"><div class="lbl">Week total</div><div class="val" id="chartWeekTotal">0</div></div>
       <div class="met"><div class="lbl">Week goal</div><div class="val" id="chartWeekGoal">—</div></div>
@@ -523,24 +404,14 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- 13. PERFORMANCE HISTORY -->
   <div class="card card-blue full">
-    <div class="ch">
-      <i class="ti ti-calendar-stats" style="color:var(--blue)"></i>
-      <h2>Performance history</h2>
-      <span class="badge b-blue">Last 14 days</span>
-    </div>
+    <div class="ch"><i class="ti ti-calendar-stats" style="color:var(--blue)"></i><h2>Performance history</h2><span class="badge b-blue">Last 14 days</span></div>
     <div class="hist-nav" id="histNav"></div>
     <div id="histContent"><div class="loading">Loading history...</div></div>
   </div>
 
-  <!-- 14. WEEKLY CLEANUP + TEAM STATUS -->
   <div class="card card-teal">
-    <div class="ch">
-      <i class="ti ti-trash" style="color:#0F6E56"></i>
-      <h2>Weekly cleanup</h2>
-      <span class="badge b-teal" id="weekBadge"></span>
-    </div>
+    <div class="ch"><i class="ti ti-trash" style="color:#0F6E56"></i><h2>Weekly cleanup</h2><span class="badge b-teal" id="weekBadge"></span></div>
     <div id="cleanupList"></div>
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn btn-ghost" onclick="rotateCleanup()"><i class="ti ti-rotate"></i> Rotate</button>
@@ -554,10 +425,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
   </div>
 
   <div class="card card-purple">
-    <div class="ch">
-      <i class="ti ti-users" style="color:var(--purple)"></i>
-      <h2>Team status</h2>
-    </div>
+    <div class="ch"><i class="ti ti-users" style="color:var(--purple)"></i><h2>Team status</h2></div>
     <div id="teamList"><div class="loading">Loading...</div></div>
   </div>
 
@@ -633,15 +501,11 @@ async function loadExercise(){
   const current=data&&data[0];
   const weekLabel=new Date(weekStart+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
   document.getElementById('exWeekBadge').textContent='Week of '+weekLabel;
-  if(current){
-    document.getElementById('exCurrent').innerHTML=`<div class="ex-box"><div class="ex-main">${current.exercise}</div>${current.detail?`<div class="ex-sub">${current.detail}</div>`:''}</div>`;
-  } else {
-    document.getElementById('exCurrent').innerHTML='<p class="txt-sm" style="padding:8px 0">No exercise posted yet.</p>';
-  }
+  if(current){document.getElementById('exCurrent').innerHTML=`<div class="ex-box"><div class="ex-main">${current.exercise}</div>${current.detail?`<div class="ex-sub">${current.detail}</div>`:''}</div>`;}
+  else{document.getElementById('exCurrent').innerHTML='<p class="txt-sm" style="padding:8px 0">No exercise posted yet.</p>';}
   const history=data&&data.slice(1);
-  if(history&&history.length){
-    document.getElementById('exHistory').innerHTML='<div class="txt-xs" style="margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em;font-weight:600">Previous weeks</div>'+history.map(e=>{const wLabel=new Date(e.week_of+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});return`<div class="ex-hist-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px"><span class="txt-xs">${wLabel}</span><span class="txt-sm">${e.exercise}</span></div>`;}).join('');
-  } else {document.getElementById('exHistory').innerHTML='';}
+  if(history&&history.length){document.getElementById('exHistory').innerHTML='<div class="txt-xs" style="margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em;font-weight:600">Previous weeks</div>'+history.map(e=>{const wLabel=new Date(e.week_of+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});return`<div class="ex-hist-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px"><span class="txt-xs">${wLabel}</span><span class="txt-sm">${e.exercise}</span></div>`;}).join('');}
+  else{document.getElementById('exHistory').innerHTML='';}
   setSynced();
 }
 async function saveExercise(){
