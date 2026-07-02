@@ -497,7 +497,7 @@ async function resetIncident(){
 }
 
 async function loadExercise(){
-  const{data}=await sb.from('exercise').select('*').order('week_of',{ascending:false}).limit(6);
+  const{data}=await sb.from('exercise').select('*').order('week_of',{ascending:false}).limit(3);
   const current=data&&data[0];
   const weekLabel=new Date(weekStart+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
   document.getElementById('exWeekBadge').textContent='Week of '+weekLabel;
