@@ -44,6 +44,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .card-purple{border-top:3px solid var(--purple)}
 .card-teal{border-top:3px solid #0F6E56}
 .card-gray{border-top:3px solid #888780}
+.card-coral{border-top:3px solid #C05A2A}
 .ch{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);flex-wrap:wrap}
 .ch i{font-size:18px}
 .ch h2{font-size:13px;font-weight:700;color:var(--text);flex:1;letter-spacing:0.03em;text-transform:uppercase}
@@ -55,6 +56,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .b-purple{background:var(--purple-bg);color:var(--purple-text)}
 .b-gray{background:var(--gray-bg);color:var(--gray-text)}
 .b-teal{background:var(--teal-bg);color:var(--teal-text)}
+.b-coral{background:#FAECE7;color:#712B13}
 .safety-box{background:var(--amber-bg);border-left:3px solid var(--amber);padding:14px 16px;margin-bottom:12px}
 .safety-box .s-title{font-size:15px;font-weight:600;color:#412402;margin-bottom:6px}
 .safety-box .s-detail{font-size:13px;color:var(--amber-text);line-height:1.65}
@@ -111,8 +113,8 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .hidden{display:none}
 .del{background:none;border:none;cursor:pointer;color:var(--text-hint);font-size:14px;padding:3px 5px;border-radius:5px;flex-shrink:0}
 .del:hover{color:var(--red-text);background:var(--red-bg)}
-.kudo-item,.ann-item,.workload-item,.sugg-item,.priority-item,.bday-item,.ex-hist-item{padding:10px 0;border-bottom:1px solid var(--border)}
-.kudo-item:last-child,.ann-item:last-child,.workload-item:last-child,.sugg-item:last-child,.priority-item:last-child,.bday-item:last-child,.ex-hist-item:last-child{border-bottom:none}
+.kudo-item,.ann-item,.workload-item,.sugg-item,.priority-item,.bday-item,.ex-hist-item,.timeoff-item{padding:10px 0;border-bottom:1px solid var(--border)}
+.kudo-item:last-child,.ann-item:last-child,.workload-item:last-child,.sugg-item:last-child,.priority-item:last-child,.bday-item:last-child,.ex-hist-item:last-child,.timeoff-item:last-child{border-bottom:none}
 .status-pill{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;cursor:pointer;border:none;font-family:inherit}
 .s-pending{background:var(--amber-bg);color:var(--amber-text)}
 .s-done{background:var(--green-bg);color:var(--green-text)}
@@ -178,6 +180,8 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .bday-soon .bday-date{font-size:12px;color:var(--purple-text);margin-top:2px}
 .priority-item{border-left:3px solid var(--red);padding-left:10px}
 .priority-item.done{border-left-color:var(--green);opacity:0.7}
+.timeoff-today{background:#FAECE7;border-left:3px solid #C05A2A;border-radius:var(--radius-md);padding:10px 14px;margin-bottom:10px}
+.timeoff-today-label{font-size:12px;font-weight:700;color:#712B13;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px}
 .footer{text-align:center;padding:1.5rem 2rem;font-size:12px;color:var(--text-hint);position:relative;z-index:1;letter-spacing:0.08em;text-transform:uppercase}
 .loading{text-align:center;padding:20px;font-size:13px;color:var(--text-muted)}
 @media(max-width:600px){.topbar{padding:0 1rem}.container{padding:1rem}.perf-hdr,.perf-row{grid-template-columns:28px 1fr 48px 48px 48px 70px;gap:4px}.break-grid{grid-template-columns:1fr}.ac{-webkit-text-stroke:1.5px #b8bfcc}}
@@ -329,6 +333,21 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
       <input type="text" id="kFrom" placeholder="Your name (from)…"/>
       <textarea id="kMsg" placeholder="What did they do great?…"></textarea>
       <button class="btn" onclick="addKudo()"><i class="ti ti-star"></i> Post kudos</button>
+    </div>
+  </div>
+
+  <!-- TIME OFF SCHEDULE -->
+  <div class="card card-coral">
+    <div class="ch"><i class="ti ti-calendar-off" style="color:#C05A2A"></i><h2>Time off schedule</h2><span class="badge b-coral" id="timeoffBadge">Upcoming</span></div>
+    <div id="timeoffToday"></div>
+    <div id="timeoffList"><div class="loading">Loading...</div></div>
+    <div class="tog" id="togTimeoff"><i class="ti ti-plus"></i> Add time off</div>
+    <div class="add-form hidden" id="timeoffForm">
+      <select id="toWho"><option value="">Select team member…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Oranday</option></select>
+      <input type="date" id="toStart"/>
+      <input type="date" id="toEnd"/>
+      <input type="text" id="toNote" placeholder="Note (optional — e.g. vacation, appointment)…"/>
+      <button class="btn" onclick="addTimeoff()"><i class="ti ti-calendar-off"></i> Add time off</button>
     </div>
   </div>
 
@@ -518,6 +537,62 @@ async function saveExercise(){
 }
 document.getElementById('togEx').onclick=function(){document.getElementById('exForm').classList.toggle('hidden');};
 
+// ── TIME OFF ─────────────────────────────────────────────────────
+async function loadTimeoff(){
+  const{data}=await sb.from('time_off').select('*').gte('end_date',todayStr).order('start_date',{ascending:true});
+  const el=document.getElementById('timeoffList');
+  const todayEl=document.getElementById('timeoffToday');
+  if(!data||!data.length){
+    el.innerHTML='<p class="txt-sm" style="padding:8px 0">No upcoming time off scheduled.</p>';
+    todayEl.innerHTML='';
+    document.getElementById('timeoffBadge').textContent='All hands on deck';
+    document.getElementById('timeoffBadge').className='badge b-green';
+    return;
+  }
+  const todayOff=data.filter(t=>t.start_date<=todayStr&&t.end_date>=todayStr);
+  if(todayOff.length){
+    todayEl.innerHTML=`<div class="timeoff-today"><div class="timeoff-today-label">⚠️ Out today</div>${todayOff.map(t=>`<div class="txt-sm bold">${t.name}</div>`).join('')}</div>`;
+    document.getElementById('timeoffBadge').textContent=todayOff.length+' out today';
+    document.getElementById('timeoffBadge').className='badge b-red';
+  } else {
+    todayEl.innerHTML='';
+    document.getElementById('timeoffBadge').textContent='Upcoming';
+    document.getElementById('timeoffBadge').className='badge b-coral';
+  }
+  el.innerHTML=data.map(t=>{
+    const start=new Date(t.start_date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const end=new Date(t.end_date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const dateRange=t.start_date===t.end_date?start:`${start} – ${end}`;
+    const isToday=t.start_date<=todayStr&&t.end_date>=todayStr;
+    return`<div class="timeoff-item">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <i class="ti ti-calendar-off" style="color:#C05A2A;font-size:14px;flex-shrink:0"></i>
+        <div style="flex:1">
+          <div class="txt bold">${t.name} ${isToday?'<span class="badge b-red" style="font-size:10px;margin-left:4px">Out today</span>':''}</div>
+          <div class="txt-xs">${dateRange}${t.note?' &nbsp;·&nbsp; '+t.note:''}</div>
+        </div>
+        <button class="del" onclick="delTimeoff('${t.id}')"><i class="ti ti-x"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+  setSynced();
+}
+async function addTimeoff(){
+  const who=document.getElementById('toWho').value;
+  const start=document.getElementById('toStart').value;
+  const end=document.getElementById('toEnd').value;
+  const note=document.getElementById('toNote').value.trim();
+  if(!who||!start||!end)return alert('Please fill in name, start date, and end date.');
+  if(end<start)return alert('End date cannot be before start date.');
+  setSyncing();
+  await sb.from('time_off').insert({name:who,start_date:start,end_date:end,note:note||null});
+  document.getElementById('toWho').value='';document.getElementById('toStart').value='';
+  document.getElementById('toEnd').value='';document.getElementById('toNote').value='';
+  document.getElementById('timeoffForm').classList.add('hidden');await loadTimeoff();setSynced();
+}
+async function delTimeoff(id){setSyncing();await sb.from('time_off').delete().eq('id',id);await loadTimeoff();setSynced();}
+document.getElementById('togTimeoff').onclick=function(){document.getElementById('timeoffForm').classList.toggle('hidden');};
+
 const SAFETY_LIBRARY={
   'Pallet Jack Safety':[
     {t:'Pallet jack speed control',d:'Always walk at a safe pace when operating the pallet jack. Never ride on the forks. Keep your feet clear of the wheels at all times, especially when turning.'},
@@ -570,7 +645,6 @@ const SAFETY_LIBRARY={
     {t:'Emergency exit routes and assembly point',d:'Every associate must know the emergency exit routes from every part of the warehouse — not just the nearest exit to where you normally work. Walk all exit routes during your first week and refresh your memory regularly. In any emergency: stay calm, do not grab personal belongings, exit quickly using the nearest safe route, and meet at the designated outdoor assembly point. Do a headcount. Do not re-enter the building for any reason until Daniel or emergency services say it is safe.'},
   ],
 };
-
 function renderLibrary(){
   const panel=document.getElementById('libraryPanel');panel.innerHTML='';
   Object.entries(SAFETY_LIBRARY).forEach(([cat,topics])=>{
@@ -843,10 +917,11 @@ sb.channel('board-changes')
   .on('postgres_changes',{event:'*',schema:'public',table:'suggestions'},()=>loadSugg())
   .on('postgres_changes',{event:'*',schema:'public',table:'birthdays'},()=>loadBdays())
   .on('postgres_changes',{event:'*',schema:'public',table:'exercise'},()=>loadExercise())
+  .on('postgres_changes',{event:'*',schema:'public',table:'time_off'},()=>loadTimeoff())
   .subscribe();
 
 async function init(){
-  await Promise.all([loadWeather(),loadIncident(),loadExercise(),loadSafety(),loadPriority(),loadWorkload(),loadAnns(),loadBdays(),loadKudos(),loadSugg(),loadTeam(),loadPerf(),loadWeeklyChart(),loadHistory()]);
+  await Promise.all([loadWeather(),loadIncident(),loadExercise(),loadSafety(),loadPriority(),loadWorkload(),loadAnns(),loadBdays(),loadKudos(),loadTimeoff(),loadSugg(),loadTeam(),loadPerf(),loadWeeklyChart(),loadHistory()]);
   setSynced();
   setInterval(loadWeather,10*60*1000);
 }
