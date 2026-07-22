@@ -178,6 +178,8 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .bday-soon{background:var(--purple-bg);border-left:3px solid var(--purple);border-radius:var(--radius-md);padding:10px 14px;margin-bottom:10px}
 .bday-soon .bday-name{font-size:15px;font-weight:600;color:var(--purple-text)}
 .bday-soon .bday-date{font-size:12px;color:var(--purple-text);margin-top:2px}
+.bday-celebrate{background:linear-gradient(135deg,#EEEDFE,#FDE8F0);border:2px solid var(--purple);border-radius:var(--radius-lg);padding:16px;margin-bottom:12px;text-align:center;animation:celebrate 2s ease-in-out infinite alternate}
+@keyframes celebrate{0%{transform:scale(1)}100%{transform:scale(1.02)}}
 .priority-item{border-left:3px solid var(--red);padding-left:10px}
 .priority-item.done{border-left-color:var(--green);opacity:0.7}
 .timeoff-today{background:#FAECE7;border-left:3px solid #C05A2A;border-radius:var(--radius-md);padding:10px 14px;margin-bottom:10px}
@@ -336,7 +338,6 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
   </div>
 
-  <!-- TIME OFF SCHEDULE -->
   <div class="card card-coral">
     <div class="ch"><i class="ti ti-calendar-off" style="color:#C05A2A"></i><h2>Time off schedule</h2><span class="badge b-coral" id="timeoffBadge">Upcoming</span></div>
     <div id="timeoffToday"></div>
@@ -537,62 +538,6 @@ async function saveExercise(){
 }
 document.getElementById('togEx').onclick=function(){document.getElementById('exForm').classList.toggle('hidden');};
 
-// ── TIME OFF ─────────────────────────────────────────────────────
-async function loadTimeoff(){
-  const{data}=await sb.from('time_off').select('*').gte('end_date',todayStr).order('start_date',{ascending:true});
-  const el=document.getElementById('timeoffList');
-  const todayEl=document.getElementById('timeoffToday');
-  if(!data||!data.length){
-    el.innerHTML='<p class="txt-sm" style="padding:8px 0">No upcoming time off scheduled.</p>';
-    todayEl.innerHTML='';
-    document.getElementById('timeoffBadge').textContent='All hands on deck';
-    document.getElementById('timeoffBadge').className='badge b-green';
-    return;
-  }
-  const todayOff=data.filter(t=>t.start_date<=todayStr&&t.end_date>=todayStr);
-  if(todayOff.length){
-    todayEl.innerHTML=`<div class="timeoff-today"><div class="timeoff-today-label">⚠️ Out today</div>${todayOff.map(t=>`<div class="txt-sm bold">${t.name}</div>`).join('')}</div>`;
-    document.getElementById('timeoffBadge').textContent=todayOff.length+' out today';
-    document.getElementById('timeoffBadge').className='badge b-red';
-  } else {
-    todayEl.innerHTML='';
-    document.getElementById('timeoffBadge').textContent='Upcoming';
-    document.getElementById('timeoffBadge').className='badge b-coral';
-  }
-  el.innerHTML=data.map(t=>{
-    const start=new Date(t.start_date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    const end=new Date(t.end_date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    const dateRange=t.start_date===t.end_date?start:`${start} – ${end}`;
-    const isToday=t.start_date<=todayStr&&t.end_date>=todayStr;
-    return`<div class="timeoff-item">
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-        <i class="ti ti-calendar-off" style="color:#C05A2A;font-size:14px;flex-shrink:0"></i>
-        <div style="flex:1">
-          <div class="txt bold">${t.name} ${isToday?'<span class="badge b-red" style="font-size:10px;margin-left:4px">Out today</span>':''}</div>
-          <div class="txt-xs">${dateRange}${t.note?' &nbsp;·&nbsp; '+t.note:''}</div>
-        </div>
-        <button class="del" onclick="delTimeoff('${t.id}')"><i class="ti ti-x"></i></button>
-      </div>
-    </div>`;
-  }).join('');
-  setSynced();
-}
-async function addTimeoff(){
-  const who=document.getElementById('toWho').value;
-  const start=document.getElementById('toStart').value;
-  const end=document.getElementById('toEnd').value;
-  const note=document.getElementById('toNote').value.trim();
-  if(!who||!start||!end)return alert('Please fill in name, start date, and end date.');
-  if(end<start)return alert('End date cannot be before start date.');
-  setSyncing();
-  await sb.from('time_off').insert({name:who,start_date:start,end_date:end,note:note||null});
-  document.getElementById('toWho').value='';document.getElementById('toStart').value='';
-  document.getElementById('toEnd').value='';document.getElementById('toNote').value='';
-  document.getElementById('timeoffForm').classList.add('hidden');await loadTimeoff();setSynced();
-}
-async function delTimeoff(id){setSyncing();await sb.from('time_off').delete().eq('id',id);await loadTimeoff();setSynced();}
-document.getElementById('togTimeoff').onclick=function(){document.getElementById('timeoffForm').classList.toggle('hidden');};
-
 const SAFETY_LIBRARY={
   'Pallet Jack Safety':[
     {t:'Pallet jack speed control',d:'Always walk at a safe pace when operating the pallet jack. Never ride on the forks. Keep your feet clear of the wheels at all times, especially when turning.'},
@@ -741,16 +686,44 @@ async function addAnn(){const tag=document.getElementById('aTag').value;const te
 async function delAnn(id){setSyncing();await sb.from('announcements').delete().eq('id',id);await loadAnns();}
 document.getElementById('togAnn').onclick=function(){document.getElementById('annForm').classList.toggle('hidden');};
 
+// ── BIRTHDAYS — with celebration on actual birthday ──────────────
 async function loadBdays(){
   const{data}=await sb.from('birthdays').select('*').order('name');
   const el=document.getElementById('bdayList');const soonEl=document.getElementById('bdaySoon');
-  if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No birthdays added yet.</p>';soonEl.innerHTML='';document.getElementById('bdayBadge').textContent='None added yet';document.getElementById('bdayBadge').className='badge b-gray';return;}
+  if(!data||!data.length){
+    el.innerHTML='<p class="txt-sm" style="padding:8px 0">No birthdays added yet.</p>';
+    soonEl.innerHTML='';
+    document.getElementById('bdayBadge').textContent='None added yet';
+    document.getElementById('bdayBadge').className='badge b-gray';
+    return;
+  }
   const now=new Date();const thisYear=now.getFullYear();
-  const upcoming=data.map(b=>{const parts=b.birthday.split('-');const month=parseInt(parts[1]);const day=parseInt(parts[2]);let bday=new Date(thisYear,month-1,day);if(bday<now)bday=new Date(thisYear+1,month-1,day);return{...b,daysUntil:Math.ceil((bday-now)/(1000*60*60*24)),month,day};}).sort((a,b)=>a.daysUntil-b.daysUntil);
+  const upcoming=data.map(b=>{
+    const parts=b.birthday.split('-');const month=parseInt(parts[1]);const day=parseInt(parts[2]);
+    const isToday=month-1===now.getMonth()&&day===now.getDate();
+    let bday=new Date(thisYear,month-1,day);
+    if(bday<now&&!isToday)bday=new Date(thisYear+1,month-1,day);
+    return{...b,daysUntil:isToday?0:Math.ceil((bday-now)/(1000*60*60*24)),month,day,isToday};
+  }).sort((a,b)=>a.daysUntil-b.daysUntil);
   const next=upcoming[0];
-  if(next.daysUntil<=7){soonEl.innerHTML=`<div class="bday-soon"><div class="bday-name">🎂 ${next.daysUntil===0?'Today is':'Coming up:'} ${next.name}'s birthday!</div><div class="bday-date">${next.daysUntil===0?'Happy birthday!':next.daysUntil===1?'Tomorrow!':'In '+next.daysUntil+' days'}</div></div>`;document.getElementById('bdayBadge').textContent=next.daysUntil===0?'🎂 Today!':'🎂 In '+next.daysUntil+' days';document.getElementById('bdayBadge').className='badge b-purple';}
-  else{soonEl.innerHTML='';document.getElementById('bdayBadge').textContent='Next: '+new Date(thisYear,next.month-1,next.day).toLocaleDateString('en-US',{month:'short',day:'numeric'});document.getElementById('bdayBadge').className='badge b-gray';}
-  el.innerHTML=upcoming.map(b=>`<div class="bday-item" style="display:flex;align-items:center;gap:10px"><i class="ti ti-cake" style="color:var(--purple);font-size:16px;flex-shrink:0"></i><div style="flex:1"><div class="txt bold">${b.name}</div><div class="txt-xs">${new Date(thisYear,b.month-1,b.day).toLocaleDateString('en-US',{month:'long',day:'numeric'})} &nbsp;·&nbsp; in ${b.daysUntil} days</div></div><button class="del" onclick="delBday('${b.id}')"><i class="ti ti-x"></i></button></div>`).join('');
+  if(next.isToday){
+    soonEl.innerHTML=`<div class="bday-celebrate">
+      <div style="font-size:40px;margin-bottom:8px">🎂🎉🎈</div>
+      <div style="font-size:20px;font-weight:700;color:var(--purple-text)">Happy Birthday ${next.name}!</div>
+      <div style="font-size:13px;color:var(--purple);margin-top:6px">Wishing you an amazing day from the whole team! 🎊</div>
+    </div>`;
+    document.getElementById('bdayBadge').textContent='🎂 Happy Birthday!';
+    document.getElementById('bdayBadge').className='badge b-purple';
+  } else if(next.daysUntil<=7){
+    soonEl.innerHTML=`<div class="bday-soon"><div class="bday-name">🎂 Coming up: ${next.name}'s birthday!</div><div class="bday-date">${next.daysUntil===1?'Tomorrow!':'In '+next.daysUntil+' days'}</div></div>`;
+    document.getElementById('bdayBadge').textContent='🎂 In '+next.daysUntil+' days';
+    document.getElementById('bdayBadge').className='badge b-purple';
+  } else {
+    soonEl.innerHTML='';
+    document.getElementById('bdayBadge').textContent='Next: '+new Date(thisYear,next.month-1,next.day).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    document.getElementById('bdayBadge').className='badge b-gray';
+  }
+  el.innerHTML=upcoming.map(b=>`<div class="bday-item" style="display:flex;align-items:center;gap:10px"><i class="ti ti-cake" style="color:var(--purple);font-size:16px;flex-shrink:0"></i><div style="flex:1"><div class="txt bold">${b.name}${b.isToday?' 🎂':''}</div><div class="txt-xs">${new Date(thisYear,b.month-1,b.day).toLocaleDateString('en-US',{month:'long',day:'numeric'})} &nbsp;·&nbsp; ${b.isToday?'Today!':'in '+b.daysUntil+' days'}</div></div><button class="del" onclick="delBday('${b.id}')"><i class="ti ti-x"></i></button></div>`).join('');
   setSynced();
 }
 async function addBday(){
@@ -781,6 +754,49 @@ async function loadKudos(){
 async function addKudo(){const who=document.getElementById('kWho').value;const from_name=document.getElementById('kFrom').value.trim();const msg=document.getElementById('kMsg').value.trim();if(!who||!msg)return;setSyncing();await sb.from('kudos').insert({date:todayStr,who,from_name,msg});document.getElementById('kWho').value='';document.getElementById('kFrom').value='';document.getElementById('kMsg').value='';document.getElementById('kudoForm').classList.add('hidden');await loadKudos();}
 async function delKudo(id){setSyncing();await sb.from('kudos').delete().eq('id',id);await loadKudos();}
 document.getElementById('togKudo').onclick=function(){document.getElementById('kudoForm').classList.toggle('hidden');};
+
+async function loadTimeoff(){
+  const{data}=await sb.from('time_off').select('*').gte('end_date',todayStr).order('start_date',{ascending:true});
+  const el=document.getElementById('timeoffList');const todayEl=document.getElementById('timeoffToday');
+  if(!data||!data.length){
+    el.innerHTML='<p class="txt-sm" style="padding:8px 0">No upcoming time off scheduled.</p>';
+    todayEl.innerHTML='';
+    document.getElementById('timeoffBadge').textContent='All hands on deck';
+    document.getElementById('timeoffBadge').className='badge b-green';
+    return;
+  }
+  const todayOff=data.filter(t=>t.start_date<=todayStr&&t.end_date>=todayStr);
+  if(todayOff.length){
+    todayEl.innerHTML=`<div class="timeoff-today"><div class="timeoff-today-label">⚠️ Out today</div>${todayOff.map(t=>`<div class="txt-sm bold">${t.name}</div>`).join('')}</div>`;
+    document.getElementById('timeoffBadge').textContent=todayOff.length+' out today';
+    document.getElementById('timeoffBadge').className='badge b-red';
+  } else {
+    todayEl.innerHTML='';
+    document.getElementById('timeoffBadge').textContent='Upcoming';
+    document.getElementById('timeoffBadge').className='badge b-coral';
+  }
+  el.innerHTML=data.map(t=>{
+    const start=new Date(t.start_date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const end=new Date(t.end_date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const dateRange=t.start_date===t.end_date?start:`${start} – ${end}`;
+    const isToday=t.start_date<=todayStr&&t.end_date>=todayStr;
+    return`<div class="timeoff-item"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><i class="ti ti-calendar-off" style="color:#C05A2A;font-size:14px;flex-shrink:0"></i><div style="flex:1"><div class="txt bold">${t.name}${isToday?' <span class="badge b-red" style="font-size:10px;margin-left:4px">Out today</span>':''}</div><div class="txt-xs">${dateRange}${t.note?' &nbsp;·&nbsp; '+t.note:''}</div></div><button class="del" onclick="delTimeoff('${t.id}')"><i class="ti ti-x"></i></button></div></div>`;
+  }).join('');
+  setSynced();
+}
+async function addTimeoff(){
+  const who=document.getElementById('toWho').value;const start=document.getElementById('toStart').value;
+  const end=document.getElementById('toEnd').value;const note=document.getElementById('toNote').value.trim();
+  if(!who||!start||!end)return alert('Please fill in name, start date, and end date.');
+  if(end<start)return alert('End date cannot be before start date.');
+  setSyncing();
+  await sb.from('time_off').insert({name:who,start_date:start,end_date:end,note:note||null});
+  document.getElementById('toWho').value='';document.getElementById('toStart').value='';
+  document.getElementById('toEnd').value='';document.getElementById('toNote').value='';
+  document.getElementById('timeoffForm').classList.add('hidden');await loadTimeoff();setSynced();
+}
+async function delTimeoff(id){setSyncing();await sb.from('time_off').delete().eq('id',id);await loadTimeoff();setSynced();}
+document.getElementById('togTimeoff').onclick=function(){document.getElementById('timeoffForm').classList.toggle('hidden');};
 
 async function loadWorkload(){
   const{data}=await sb.from('workload').select('*').eq('date',todayStr).order('created_at');
