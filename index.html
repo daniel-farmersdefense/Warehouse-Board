@@ -91,7 +91,6 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .av1{background:var(--teal-bg);color:var(--teal-text)}
 .av2{background:var(--purple-bg);color:var(--purple-text)}
 .av3{background:var(--amber-bg);color:var(--amber-text)}
-.av4{background:var(--coral-bg);color:var(--coral-text)}
 .av5{background:var(--pink-bg);color:var(--pink-text)}
 .row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
 .row:last-child{border-bottom:none}
@@ -126,6 +125,9 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .cleanup-task{display:flex;align-items:center;gap:10px}
 .cleanup-icon{width:32px;height:32px;border-radius:var(--radius-md);background:var(--teal-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .cleanup-icon i{font-size:16px;color:var(--teal-text)}
+.aberham-toggle{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--blue-bg);border:1px solid var(--blue);border-radius:var(--radius-md);margin-bottom:12px;cursor:pointer;user-select:none}
+.aberham-toggle input{cursor:pointer;width:16px;height:16px;accent-color:var(--blue)}
+.aberham-toggle label{font-size:13px;font-weight:600;color:var(--blue-text);cursor:pointer}
 .break-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .break-card{background:var(--bg);border-radius:var(--radius-md);padding:14px;border:1px solid var(--border)}
 .break-card .shift-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:0.04em}
@@ -223,7 +225,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     <i class="ti ti-building-warehouse" style="font-size:22px;color:#4a9eff"></i>
     <div>
       <div class="topbar-logo">Warehouse <span>Board</span></div>
-      <div class="topbar-sub">Daniel Rodriguez &nbsp;·&nbsp; Team of 6</div>
+      <div class="topbar-sub">Daniel Rodriguez &nbsp;·&nbsp; Team of 5</div>
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
@@ -263,7 +265,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
   </div>
 
   <div class="card card-amber full">
-    <div class="ch"><i class="ti ti-shield-check" style="color:var(--amber)"></i><h2>Daily safety topic</h2><span class="badge b-amber" id="safetyDate"></span><span class="badge b-amber" id="ackBadge">0 / 6 acknowledged</span></div>
+    <div class="ch"><i class="ti ti-shield-check" style="color:var(--amber)"></i><h2>Daily safety topic</h2><span class="badge b-amber" id="safetyDate"></span><span class="badge b-amber" id="ackBadge">0 / 5 acknowledged</span></div>
     <div class="safety-box"><div class="s-title" id="safetyTopic">Pallet jack speed control</div><div class="s-detail" id="safetyDetail">Always walk at a safe pace when operating the pallet jack. Never ride on the forks. Keep your feet clear of the wheels at all times.</div></div>
     <div class="ack-grid" id="ackGrid"></div>
     <div class="ack-summary" id="ackSummary"></div>
@@ -320,7 +322,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     <div id="bdayList"><div class="loading">Loading...</div></div>
     <div class="tog" id="togBday"><i class="ti ti-plus"></i> Add birthday</div>
     <div class="add-form hidden" id="bdayForm">
-      <select id="bWho"><option value="">Select team member…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Oranday</option></select>
+      <select id="bWho"><option value="">Select team member…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option></select>
       <input type="text" id="bDate" placeholder="Birthday (MM/DD e.g. 03/15)…"/>
       <button class="btn" onclick="addBday()"><i class="ti ti-cake"></i> Save birthday</button>
     </div>
@@ -331,7 +333,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     <div id="kudoList"><div class="loading">Loading...</div></div>
     <div class="tog" id="togKudo"><i class="ti ti-plus"></i> Give kudos</div>
     <div class="add-form hidden" id="kudoForm">
-      <select id="kWho"><option value="">Recognizing…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Oranday</option><option>The whole team</option></select>
+      <select id="kWho"><option value="">Recognizing…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>The whole team</option></select>
       <input type="text" id="kFrom" placeholder="Your name (from)…"/>
       <textarea id="kMsg" placeholder="What did they do great?…"></textarea>
       <button class="btn" onclick="addKudo()"><i class="ti ti-star"></i> Post kudos</button>
@@ -344,7 +346,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     <div id="timeoffList"><div class="loading">Loading...</div></div>
     <div class="tog" id="togTimeoff"><i class="ti ti-plus"></i> Add time off</div>
     <div class="add-form hidden" id="timeoffForm">
-      <select id="toWho"><option value="">Select team member…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Oranday</option></select>
+      <select id="toWho"><option value="">Select team member…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option></select>
       <input type="date" id="toStart"/>
       <input type="date" id="toEnd"/>
       <input type="text" id="toNote" placeholder="Note (optional — e.g. vacation, appointment)…"/>
@@ -432,6 +434,10 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 
   <div class="card card-teal">
     <div class="ch"><i class="ti ti-trash" style="color:#0F6E56"></i><h2>Weekly cleanup</h2><span class="badge b-teal" id="weekBadge"></span></div>
+    <div class="aberham-toggle">
+      <input type="checkbox" id="aberhamIn" onchange="toggleAberham()"/>
+      <label for="aberhamIn">Aberham is in today — include in rotation</label>
+    </div>
     <div id="cleanupList"></div>
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn btn-ghost" onclick="rotateCleanup()"><i class="ti ti-rotate"></i> Rotate</button>
@@ -439,7 +445,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
     </div>
     <div class="add-form hidden" id="overrideForm">
       <select id="oTask"><option value="">Select task…</option><option>Cardboard break down</option><option>Hallway trash bags</option><option>Station trash cans</option><option>Sweep Hallways</option><option>Sweep stations</option></select>
-      <select id="oWho"><option value="">Assign to…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option><option>Natalie Oranday</option></select>
+      <select id="oWho"><option value="">Assign to…</option><option>Aberham Ordaz</option><option>Carson Cole</option><option>Gio Rodriguez</option><option>Jon Tolbert</option><option>Lani Rodriguez</option></select>
       <button class="btn" onclick="applyOverride()"><i class="ti ti-check"></i> Apply</button>
     </div>
   </div>
@@ -468,14 +474,15 @@ document.getElementById('safetyDate').textContent=dateStr;
 function getWeekStart(){const d=new Date();const day=d.getDay();const diff=d.getDate()-((day+6)%7);const mon=new Date(d);mon.setDate(diff);return mon.toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'});}
 const weekStart=getWeekStart();
 
-const TEAM=[
+const ALL_TEAM=[
   {initials:'AO',name:'Aberham Ordaz',av:'av0'},
   {initials:'CC',name:'Carson Cole',av:'av1'},
   {initials:'GR',name:'Gio Rodriguez',av:'av2'},
   {initials:'JT',name:'Jon Tolbert',av:'av3'},
   {initials:'LR',name:'Lani Rodriguez',av:'av5'},
-  {initials:'NO',name:'Natalie Oranday',av:'av4'},
 ];
+// Core team always shown on board (excludes Aberham from perf/safety/status)
+const TEAM=ALL_TEAM;
 const statusDot={on:'#1D9E75',off:'#888780',break:'#EF9F27'};
 const statusLabel={on:'On shift',off:'Off today',break:'On break'};
 function setSynced(){document.getElementById('syncDot').className='sync-dot live';document.getElementById('syncLabel').textContent='Live';}
@@ -686,17 +693,10 @@ async function addAnn(){const tag=document.getElementById('aTag').value;const te
 async function delAnn(id){setSyncing();await sb.from('announcements').delete().eq('id',id);await loadAnns();}
 document.getElementById('togAnn').onclick=function(){document.getElementById('annForm').classList.toggle('hidden');};
 
-// ── BIRTHDAYS — with celebration on actual birthday ──────────────
 async function loadBdays(){
   const{data}=await sb.from('birthdays').select('*').order('name');
   const el=document.getElementById('bdayList');const soonEl=document.getElementById('bdaySoon');
-  if(!data||!data.length){
-    el.innerHTML='<p class="txt-sm" style="padding:8px 0">No birthdays added yet.</p>';
-    soonEl.innerHTML='';
-    document.getElementById('bdayBadge').textContent='None added yet';
-    document.getElementById('bdayBadge').className='badge b-gray';
-    return;
-  }
+  if(!data||!data.length){el.innerHTML='<p class="txt-sm" style="padding:8px 0">No birthdays added yet.</p>';soonEl.innerHTML='';document.getElementById('bdayBadge').textContent='None added yet';document.getElementById('bdayBadge').className='badge b-gray';return;}
   const now=new Date();const thisYear=now.getFullYear();
   const upcoming=data.map(b=>{
     const parts=b.birthday.split('-');const month=parseInt(parts[1]);const day=parseInt(parts[2]);
@@ -707,11 +707,7 @@ async function loadBdays(){
   }).sort((a,b)=>a.daysUntil-b.daysUntil);
   const next=upcoming[0];
   if(next.isToday){
-    soonEl.innerHTML=`<div class="bday-celebrate">
-      <div style="font-size:40px;margin-bottom:8px">🎂🎉🎈</div>
-      <div style="font-size:20px;font-weight:700;color:var(--purple-text)">Happy Birthday ${next.name}!</div>
-      <div style="font-size:13px;color:var(--purple);margin-top:6px">Wishing you an amazing day from the whole team! 🎊</div>
-    </div>`;
+    soonEl.innerHTML=`<div class="bday-celebrate"><div style="font-size:40px;margin-bottom:8px">🎂🎉🎈</div><div style="font-size:20px;font-weight:700;color:var(--purple-text)">Happy Birthday ${next.name}!</div><div style="font-size:13px;color:var(--purple);margin-top:6px">Wishing you an amazing day from the whole team! 🎊</div></div>`;
     document.getElementById('bdayBadge').textContent='🎂 Happy Birthday!';
     document.getElementById('bdayBadge').className='badge b-purple';
   } else if(next.daysUntil<=7){
@@ -741,8 +737,8 @@ async function addBday(){
 async function delBday(id){setSyncing();await sb.from('birthdays').delete().eq('id',id);await loadBdays();setSynced();}
 document.getElementById('togBday').onclick=function(){document.getElementById('bdayForm').classList.toggle('hidden');};
 
-const kudoAv={'Aberham Ordaz':'av0','Carson Cole':'av1','Gio Rodriguez':'av2','Jon Tolbert':'av3','Lani Rodriguez':'av5','Natalie Oranday':'av4','The whole team':'av1'};
-const kudoIn={'Aberham Ordaz':'AO','Carson Cole':'CC','Gio Rodriguez':'GR','Jon Tolbert':'JT','Lani Rodriguez':'LR','Natalie Oranday':'NO','The whole team':'ALL'};
+const kudoAv={'Aberham Ordaz':'av0','Carson Cole':'av1','Gio Rodriguez':'av2','Jon Tolbert':'av3','Lani Rodriguez':'av5','The whole team':'av1'};
+const kudoIn={'Aberham Ordaz':'AO','Carson Cole':'CC','Gio Rodriguez':'GR','Jon Tolbert':'JT','Lani Rodriguez':'LR','The whole team':'ALL'};
 async function loadKudos(){
   const{data}=await sb.from('kudos').select('*').eq('date',todayStr).order('created_at',{ascending:false});
   const el=document.getElementById('kudoList');
@@ -909,16 +905,55 @@ async function loadHistDay(date){
   document.getElementById('histContent').innerHTML=`<div style="margin-bottom:14px"><div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">${total} of ${goal} orders &nbsp;·&nbsp; ${pct}% of goal</div><div style="width:100%;height:16px;background:var(--bg);border-radius:var(--radius-md);overflow:hidden"><div style="width:${pct}%;height:100%;background:${barColor};border-radius:var(--radius-md)"></div></div></div><table class="hist-table"><thead><tr><th>Associate</th><th>AM</th><th>PM</th><th>Total</th></tr></thead><tbody>${data.sort((a,b)=>(b.am+b.pm)-(a.am+a.pm)).map(r=>`<tr><td>${r.name}</td><td>${r.am}</td><td>${r.pm}</td><td style="font-weight:700">${r.am+r.pm}</td></tr>`).join('')}<tr class="total-row"><td>Team total</td><td colspan="2"></td><td>${total}</td></tr></tbody></table>`;
 }
 
+// ── CLEANUP — Aberham on-call toggle ─────────────────────────────
 const TASKS=['Cardboard break down','Hallway trash bags','Station trash cans','Sweep Hallways','Sweep stations'];
 const TASK_ICONS=['ti-box','ti-trash','ti-trash','ti-arrows-right','ti-arrows-right'];
+const CORE_TEAM=['Carson Cole','Gio Rodriguez','Jon Tolbert','Lani Rodriguez'];
+let aberhamInToday=false;
+let cleanupAssignments=[];
+
 function getWeekNumber(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+3-(d.getDay()+6)%7);const w1=new Date(d.getFullYear(),0,4);return 1+Math.round(((d-w1)/86400000-3+(w1.getDay()+6)%7)/7);}
 function getWeekOf(){const d=new Date();const day=d.getDay();const diff=d.getDate()-day+(day===0?-6:1);const mon=new Date(d.setDate(diff));return mon.toLocaleDateString('en-US',{month:'short',day:'numeric'});}
-const weekNum=getWeekNumber();document.getElementById('weekBadge').textContent='Week of '+getWeekOf();
-let cleanupAssignments=TASKS.map((task,i)=>({task,icon:TASK_ICONS[i],assigneeIdx:(i+weekNum)%TEAM.length}));
-function renderCleanup(){document.getElementById('cleanupList').innerHTML=cleanupAssignments.map(c=>`<div class="cleanup-row"><div class="cleanup-task"><div class="cleanup-icon"><i class="ti ${c.icon}"></i></div><div class="txt bold">${c.task}</div></div><div style="display:flex;align-items:center;gap:8px"><div class="av ${TEAM[c.assigneeIdx].av}" style="width:28px;height:28px;font-size:10px">${TEAM[c.assigneeIdx].initials}</div><div class="txt" style="white-space:nowrap">${TEAM[c.assigneeIdx].name.split(' ')[0]}</div></div></div>`).join('');}
-function rotateCleanup(){cleanupAssignments=cleanupAssignments.map(c=>({...c,assigneeIdx:(c.assigneeIdx+1)%TEAM.length}));renderCleanup();}
-function applyOverride(){const task=document.getElementById('oTask').value;const who=document.getElementById('oWho').value;if(!task||!who)return;const idx=TEAM.findIndex(m=>m.name===who);const tIdx=cleanupAssignments.findIndex(c=>c.task===task);if(idx>=0&&tIdx>=0)cleanupAssignments[tIdx].assigneeIdx=idx;document.getElementById('oTask').value='';document.getElementById('oWho').value='';document.getElementById('overrideForm').classList.add('hidden');renderCleanup();}
-renderCleanup();
+const weekNum=getWeekNumber();
+document.getElementById('weekBadge').textContent='Week of '+getWeekOf();
+
+function buildCleanupTeam(){
+  return aberhamInToday?['Aberham Ordaz',...CORE_TEAM]:CORE_TEAM;
+}
+function initCleanup(){
+  const team=buildCleanupTeam();
+  cleanupAssignments=TASKS.map((task,i)=>({task,icon:TASK_ICONS[i],assigneeName:team[i%team.length]}));
+  renderCleanup();
+}
+function toggleAberham(){
+  aberhamInToday=document.getElementById('aberhamIn').checked;
+  initCleanup();
+}
+function renderCleanup(){
+  const allNames=['Aberham Ordaz','Carson Cole','Gio Rodriguez','Jon Tolbert','Lani Rodriguez'];
+  document.getElementById('cleanupList').innerHTML=cleanupAssignments.map(c=>{
+    const m=ALL_TEAM.find(t=>t.name===c.assigneeName)||ALL_TEAM[0];
+    return`<div class="cleanup-row"><div class="cleanup-task"><div class="cleanup-icon"><i class="ti ${c.icon}"></i></div><div class="txt bold">${c.task}</div></div><div style="display:flex;align-items:center;gap:8px"><div class="av ${m.av}" style="width:28px;height:28px;font-size:10px">${m.initials}</div><div class="txt" style="white-space:nowrap">${m.name.split(' ')[0]}</div></div></div>`;
+  }).join('');
+}
+function rotateCleanup(){
+  const team=buildCleanupTeam();
+  cleanupAssignments=cleanupAssignments.map(c=>{
+    const idx=team.indexOf(c.assigneeName);
+    const next=team[(idx+1)%team.length];
+    return{...c,assigneeName:next};
+  });
+  renderCleanup();
+}
+function applyOverride(){
+  const task=document.getElementById('oTask').value;const who=document.getElementById('oWho').value;
+  if(!task||!who)return;
+  const tIdx=cleanupAssignments.findIndex(c=>c.task===task);
+  if(tIdx>=0)cleanupAssignments[tIdx].assigneeName=who;
+  document.getElementById('oTask').value='';document.getElementById('oWho').value='';
+  document.getElementById('overrideForm').classList.add('hidden');renderCleanup();
+}
+initCleanup();
 
 sb.channel('board-changes')
   .on('postgres_changes',{event:'*',schema:'public',table:'announcements'},()=>loadAnns())
