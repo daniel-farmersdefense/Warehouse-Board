@@ -438,10 +438,11 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
       <input type="checkbox" id="aberhamIn" onchange="toggleAberham()"/>
       <label for="aberhamIn">Aberham is in today — include in rotation</label>
     </div>
-    <div id="cleanupList"></div>
+    <div id="cleanupList"><div class="loading">Loading...</div></div>
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn btn-ghost" onclick="rotateCleanup()"><i class="ti ti-rotate"></i> Rotate</button>
       <button class="btn btn-ghost" onclick="document.getElementById('overrideForm').classList.toggle('hidden')"><i class="ti ti-edit"></i> Override</button>
+      <button class="btn btn-ghost" onclick="resetCleanup()"><i class="ti ti-refresh"></i> Reset week</button>
     </div>
     <div class="add-form hidden" id="overrideForm">
       <select id="oTask"><option value="">Select task…</option><option>Cardboard break down</option><option>Hallway trash bags</option><option>Station trash cans</option><option>Sweep Hallways</option><option>Sweep stations</option></select>
@@ -481,8 +482,8 @@ const ALL_TEAM=[
   {initials:'JT',name:'Jon Tolbert',av:'av3'},
   {initials:'LR',name:'Lani Rodriguez',av:'av5'},
 ];
-// Core team always shown on board (excludes Aberham from perf/safety/status)
 const TEAM=ALL_TEAM;
+const CORE_TEAM=ALL_TEAM.filter(m=>m.name!=='Aberham Ordaz');
 const statusDot={on:'#1D9E75',off:'#888780',break:'#EF9F27'};
 const statusLabel={on:'On shift',off:'Off today',break:'On break'};
 function setSynced(){document.getElementById('syncDot').className='sync-dot live';document.getElementById('syncLabel').textContent='Live';}
@@ -544,6 +545,74 @@ async function saveExercise(){
   document.getElementById('exForm').classList.add('hidden');await loadExercise();setSynced();
 }
 document.getElementById('togEx').onclick=function(){document.getElementById('exForm').classList.toggle('hidden');};
+
+// ── CLEANUP — saved to Supabase ───────────────────────────────────
+const TASKS=['Cardboard break down','Hallway trash bags','Station trash cans','Sweep Hallways','Sweep stations'];
+const TASK_ICONS={'Cardboard break down':'ti-box','Hallway trash bags':'ti-trash','Station trash cans':'ti-trash','Sweep Hallways':'ti-arrows-right','Sweep stations':'ti-arrows-right'};
+let aberhamInToday=false;
+
+function getWeekOf(){const d=new Date();const day=d.getDay();const diff=d.getDate()-day+(day===0?-6:1);const mon=new Date(d.setDate(diff));return mon.toLocaleDateString('en-US',{month:'short',day:'numeric'});}
+document.getElementById('weekBadge').textContent='Week of '+getWeekOf();
+
+function getActiveTeam(){return aberhamInToday?ALL_TEAM.map(m=>m.name):CORE_TEAM.map(m=>m.name);}
+
+async function loadCleanup(){
+  const{data}=await sb.from('cleanup').select('*').eq('week_of',weekStart).order('task');
+  if(data&&data.length===5){
+    renderCleanupFromData(data);
+  } else {
+    // No saved rotation for this week — create default
+    const team=getActiveTeam();
+    const rows=TASKS.map((task,i)=>({week_of:weekStart,task,assignee:team[i%team.length]}));
+    await sb.from('cleanup').delete().eq('week_of',weekStart);
+    await sb.from('cleanup').insert(rows);
+    renderCleanupFromData(rows);
+  }
+  setSynced();
+}
+
+function renderCleanupFromData(data){
+  document.getElementById('cleanupList').innerHTML=data.map(c=>{
+    const m=ALL_TEAM.find(t=>t.name===c.assignee)||ALL_TEAM[0];
+    return`<div class="cleanup-row"><div class="cleanup-task"><div class="cleanup-icon"><i class="ti ${TASK_ICONS[c.task]||'ti-check'}"></i></div><div class="txt bold">${c.task}</div></div><div style="display:flex;align-items:center;gap:8px"><div class="av ${m.av}" style="width:28px;height:28px;font-size:10px">${m.initials}</div><div class="txt" style="white-space:nowrap">${m.name.split(' ')[0]}</div></div></div>`;
+  }).join('');
+}
+
+async function rotateCleanup(){
+  setSyncing();
+  const{data}=await sb.from('cleanup').select('*').eq('week_of',weekStart).order('task');
+  if(!data||!data.length)return;
+  const team=getActiveTeam();
+  const updates=data.map(c=>{
+    const idx=team.indexOf(c.assignee);
+    const next=team[(idx+1)%team.length]||team[0];
+    return{...c,assignee:next};
+  });
+  await sb.from('cleanup').delete().eq('week_of',weekStart);
+  await sb.from('cleanup').insert(updates.map(u=>({week_of:weekStart,task:u.task,assignee:u.assignee})));
+  await loadCleanup();setSynced();
+}
+
+async function applyOverride(){
+  const task=document.getElementById('oTask').value;const who=document.getElementById('oWho').value;
+  if(!task||!who)return;setSyncing();
+  await sb.from('cleanup').update({assignee:who}).eq('week_of',weekStart).eq('task',task);
+  document.getElementById('oTask').value='';document.getElementById('oWho').value='';
+  document.getElementById('overrideForm').classList.add('hidden');
+  await loadCleanup();setSynced();
+}
+
+async function resetCleanup(){
+  if(!confirm('Reset cleanup assignments for this week?'))return;
+  setSyncing();
+  await sb.from('cleanup').delete().eq('week_of',weekStart);
+  await loadCleanup();setSynced();
+}
+
+async function toggleAberham(){
+  aberhamInToday=document.getElementById('aberhamIn').checked;
+  await loadCleanup();
+}
 
 const SAFETY_LIBRARY={
   'Pallet Jack Safety':[
@@ -905,56 +974,6 @@ async function loadHistDay(date){
   document.getElementById('histContent').innerHTML=`<div style="margin-bottom:14px"><div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">${total} of ${goal} orders &nbsp;·&nbsp; ${pct}% of goal</div><div style="width:100%;height:16px;background:var(--bg);border-radius:var(--radius-md);overflow:hidden"><div style="width:${pct}%;height:100%;background:${barColor};border-radius:var(--radius-md)"></div></div></div><table class="hist-table"><thead><tr><th>Associate</th><th>AM</th><th>PM</th><th>Total</th></tr></thead><tbody>${data.sort((a,b)=>(b.am+b.pm)-(a.am+a.pm)).map(r=>`<tr><td>${r.name}</td><td>${r.am}</td><td>${r.pm}</td><td style="font-weight:700">${r.am+r.pm}</td></tr>`).join('')}<tr class="total-row"><td>Team total</td><td colspan="2"></td><td>${total}</td></tr></tbody></table>`;
 }
 
-// ── CLEANUP — Aberham on-call toggle ─────────────────────────────
-const TASKS=['Cardboard break down','Hallway trash bags','Station trash cans','Sweep Hallways','Sweep stations'];
-const TASK_ICONS=['ti-box','ti-trash','ti-trash','ti-arrows-right','ti-arrows-right'];
-const CORE_TEAM=['Carson Cole','Gio Rodriguez','Jon Tolbert','Lani Rodriguez'];
-let aberhamInToday=false;
-let cleanupAssignments=[];
-
-function getWeekNumber(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+3-(d.getDay()+6)%7);const w1=new Date(d.getFullYear(),0,4);return 1+Math.round(((d-w1)/86400000-3+(w1.getDay()+6)%7)/7);}
-function getWeekOf(){const d=new Date();const day=d.getDay();const diff=d.getDate()-day+(day===0?-6:1);const mon=new Date(d.setDate(diff));return mon.toLocaleDateString('en-US',{month:'short',day:'numeric'});}
-const weekNum=getWeekNumber();
-document.getElementById('weekBadge').textContent='Week of '+getWeekOf();
-
-function buildCleanupTeam(){
-  return aberhamInToday?['Aberham Ordaz',...CORE_TEAM]:CORE_TEAM;
-}
-function initCleanup(){
-  const team=buildCleanupTeam();
-  cleanupAssignments=TASKS.map((task,i)=>({task,icon:TASK_ICONS[i],assigneeName:team[i%team.length]}));
-  renderCleanup();
-}
-function toggleAberham(){
-  aberhamInToday=document.getElementById('aberhamIn').checked;
-  initCleanup();
-}
-function renderCleanup(){
-  const allNames=['Aberham Ordaz','Carson Cole','Gio Rodriguez','Jon Tolbert','Lani Rodriguez'];
-  document.getElementById('cleanupList').innerHTML=cleanupAssignments.map(c=>{
-    const m=ALL_TEAM.find(t=>t.name===c.assigneeName)||ALL_TEAM[0];
-    return`<div class="cleanup-row"><div class="cleanup-task"><div class="cleanup-icon"><i class="ti ${c.icon}"></i></div><div class="txt bold">${c.task}</div></div><div style="display:flex;align-items:center;gap:8px"><div class="av ${m.av}" style="width:28px;height:28px;font-size:10px">${m.initials}</div><div class="txt" style="white-space:nowrap">${m.name.split(' ')[0]}</div></div></div>`;
-  }).join('');
-}
-function rotateCleanup(){
-  const team=buildCleanupTeam();
-  cleanupAssignments=cleanupAssignments.map(c=>{
-    const idx=team.indexOf(c.assigneeName);
-    const next=team[(idx+1)%team.length];
-    return{...c,assigneeName:next};
-  });
-  renderCleanup();
-}
-function applyOverride(){
-  const task=document.getElementById('oTask').value;const who=document.getElementById('oWho').value;
-  if(!task||!who)return;
-  const tIdx=cleanupAssignments.findIndex(c=>c.task===task);
-  if(tIdx>=0)cleanupAssignments[tIdx].assigneeName=who;
-  document.getElementById('oTask').value='';document.getElementById('oWho').value='';
-  document.getElementById('overrideForm').classList.add('hidden');renderCleanup();
-}
-initCleanup();
-
 sb.channel('board-changes')
   .on('postgres_changes',{event:'*',schema:'public',table:'announcements'},()=>loadAnns())
   .on('postgres_changes',{event:'*',schema:'public',table:'workload'},()=>loadWorkload())
@@ -969,10 +988,11 @@ sb.channel('board-changes')
   .on('postgres_changes',{event:'*',schema:'public',table:'birthdays'},()=>loadBdays())
   .on('postgres_changes',{event:'*',schema:'public',table:'exercise'},()=>loadExercise())
   .on('postgres_changes',{event:'*',schema:'public',table:'time_off'},()=>loadTimeoff())
+  .on('postgres_changes',{event:'*',schema:'public',table:'cleanup'},()=>loadCleanup())
   .subscribe();
 
 async function init(){
-  await Promise.all([loadWeather(),loadIncident(),loadExercise(),loadSafety(),loadPriority(),loadWorkload(),loadAnns(),loadBdays(),loadKudos(),loadTimeoff(),loadSugg(),loadTeam(),loadPerf(),loadWeeklyChart(),loadHistory()]);
+  await Promise.all([loadWeather(),loadIncident(),loadExercise(),loadSafety(),loadPriority(),loadWorkload(),loadAnns(),loadBdays(),loadKudos(),loadTimeoff(),loadSugg(),loadTeam(),loadPerf(),loadWeeklyChart(),loadHistory(),loadCleanup()]);
   setSynced();
   setInterval(loadWeather,10*60*1000);
 }
