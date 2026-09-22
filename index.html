@@ -546,22 +546,17 @@ async function saveExercise(){
 }
 document.getElementById('togEx').onclick=function(){document.getElementById('exForm').classList.toggle('hidden');};
 
-// ── CLEANUP — saved to Supabase ───────────────────────────────────
+// ── CLEANUP ───────────────────────────────────────────────────────
 const TASKS=['Cardboard break down','Hallway trash bags','Station trash cans','Sweep Hallways','Sweep stations'];
 const TASK_ICONS={'Cardboard break down':'ti-box','Hallway trash bags':'ti-trash','Station trash cans':'ti-trash','Sweep Hallways':'ti-arrows-right','Sweep stations':'ti-arrows-right'};
 let aberhamInToday=false;
-
 function getWeekOf(){const d=new Date();const day=d.getDay();const diff=d.getDate()-day+(day===0?-6:1);const mon=new Date(d.setDate(diff));return mon.toLocaleDateString('en-US',{month:'short',day:'numeric'});}
 document.getElementById('weekBadge').textContent='Week of '+getWeekOf();
-
 function getActiveTeam(){return aberhamInToday?ALL_TEAM.map(m=>m.name):CORE_TEAM.map(m=>m.name);}
-
 async function loadCleanup(){
   const{data}=await sb.from('cleanup').select('*').eq('week_of',weekStart).order('task');
-  if(data&&data.length===5){
-    renderCleanupFromData(data);
-  } else {
-    // No saved rotation for this week — create default
+  if(data&&data.length===5){renderCleanupFromData(data);}
+  else{
     const team=getActiveTeam();
     const rows=TASKS.map((task,i)=>({week_of:weekStart,task,assignee:team[i%team.length]}));
     await sb.from('cleanup').delete().eq('week_of',weekStart);
@@ -570,29 +565,22 @@ async function loadCleanup(){
   }
   setSynced();
 }
-
 function renderCleanupFromData(data){
   document.getElementById('cleanupList').innerHTML=data.map(c=>{
     const m=ALL_TEAM.find(t=>t.name===c.assignee)||ALL_TEAM[0];
     return`<div class="cleanup-row"><div class="cleanup-task"><div class="cleanup-icon"><i class="ti ${TASK_ICONS[c.task]||'ti-check'}"></i></div><div class="txt bold">${c.task}</div></div><div style="display:flex;align-items:center;gap:8px"><div class="av ${m.av}" style="width:28px;height:28px;font-size:10px">${m.initials}</div><div class="txt" style="white-space:nowrap">${m.name.split(' ')[0]}</div></div></div>`;
   }).join('');
 }
-
 async function rotateCleanup(){
   setSyncing();
   const{data}=await sb.from('cleanup').select('*').eq('week_of',weekStart).order('task');
   if(!data||!data.length)return;
   const team=getActiveTeam();
-  const updates=data.map(c=>{
-    const idx=team.indexOf(c.assignee);
-    const next=team[(idx+1)%team.length]||team[0];
-    return{...c,assignee:next};
-  });
+  const updates=data.map(c=>{const idx=team.indexOf(c.assignee);const next=team[(idx+1)%team.length]||team[0];return{...c,assignee:next};});
   await sb.from('cleanup').delete().eq('week_of',weekStart);
   await sb.from('cleanup').insert(updates.map(u=>({week_of:weekStart,task:u.task,assignee:u.assignee})));
   await loadCleanup();setSynced();
 }
-
 async function applyOverride(){
   const task=document.getElementById('oTask').value;const who=document.getElementById('oWho').value;
   if(!task||!who)return;setSyncing();
@@ -601,20 +589,32 @@ async function applyOverride(){
   document.getElementById('overrideForm').classList.add('hidden');
   await loadCleanup();setSynced();
 }
-
 async function resetCleanup(){
   if(!confirm('Reset cleanup assignments for this week?'))return;
-  setSyncing();
-  await sb.from('cleanup').delete().eq('week_of',weekStart);
-  await loadCleanup();setSynced();
+  setSyncing();await sb.from('cleanup').delete().eq('week_of',weekStart);await loadCleanup();setSynced();
 }
+async function toggleAberham(){aberhamInToday=document.getElementById('aberhamIn').checked;await loadCleanup();}
 
-async function toggleAberham(){
-  aberhamInToday=document.getElementById('aberhamIn').checked;
-  await loadCleanup();
-}
-
+// ── SAFETY LIBRARY ────────────────────────────────────────────────
 const SAFETY_LIBRARY={
+  'Forklift Safety':[
+    {t:'Pre-operation inspection checklist',d:'OSHA requires a forklift inspection before every shift. Check: forks for cracks or bends, tires for damage, lights and horn working, battery charge level, hydraulic fluid, mast and chains for wear, seatbelt functioning. If anything is defective tag it out and report it to Daniel immediately — never operate a forklift with a known defect. This inspection is not optional, it is a legal requirement.'},
+    {t:'Safe speeds and stopping distances',d:'Our sit-down electric forklift can reach speeds that feel manageable but stopping distances are longer than you think — especially with a load. Maximum safe indoor speed is 5 mph — a slow walking pace. Always slow down at intersections, blind corners, ramps, and dock areas. A loaded forklift can take several feet to stop fully. Speed is the number one cause of forklift tip-overs and pedestrian strikes.'},
+    {t:'Pedestrian right of way — horn at every intersection',d:'Pedestrians always have the right of way over the forklift — no exceptions. Sound the horn at every blind corner, every aisle intersection, and every doorway between buildings. Make eye contact with any pedestrian before proceeding. Never assume someone can see or hear you. The operator is responsible for what is in the path of the forklift at all times.'},
+    {t:'Never carry passengers on the forklift',d:'Our forklift is designed for one operator only. Never carry another person on the forks, the back of the machine, or anywhere on the forklift. This is not just a rule — it is a Cal/OSHA violation and has caused fatal accidents in warehouses across the country. If someone needs a ride somewhere, they walk.'},
+    {t:'Traveling with forks in the lowered position',d:'When traveling without a load or between picks, forks must be kept 3 to 4 inches off the ground — low enough to clear the floor but high enough to avoid dragging. Never travel with forks raised. A raised mast raises the center of gravity dramatically and makes tip-overs far more likely, especially when turning. Lower the load as soon as you have cleared the rack.'},
+    {t:'Turning safely with the forklift',d:'Forklifts are rear-wheel steered, which means the back swings out wider than you expect when turning. Always slow to a near stop before turning. Take wide, gradual turns. Never turn sharply while carrying a load — the load shifts and tip-overs happen fast. Watch the rear of the machine as you turn in tight spaces. If in doubt, take a wider path.'},
+    {t:'Loading dock forklift operations',d:'The dock is the highest-risk area for forklift incidents. Before driving onto or off a truck: verify the truck engine is off, the wheels are chocked, and the dock lock or restraint is engaged. Never drive onto a trailer that is not fully secured — trailers can roll away or collapse under forklift weight. Check the trailer floor for soft spots or damage before driving on. Post a spotter when visibility is limited.'},
+    {t:'Electric forklift battery charging safety',d:'Our forklift uses a large-format battery that requires specific handling during charging. Never charge in an enclosed space without ventilation — batteries release hydrogen gas during charging which is explosive. Never smoke or create sparks near a charging battery. Follow the posted charging procedure: connect the charger before leaving the forklift, do not interrupt mid-charge unless necessary. Report any battery that is swelling, leaking, or not holding a charge to Daniel immediately.'},
+    {t:'Parking the forklift safely at end of shift',d:'At the end of every shift the forklift must be: parked in its designated spot only, forks fully lowered flat to the floor, key removed and secured, parking brake set, and plugged in to charge. Never leave the forklift unattended with the key in or the engine running, even for a moment. An unsecured forklift is a liability — anyone could move it, including someone not trained to operate it.'},
+    {t:'Never exceed the forklift rated load capacity',d:'Every forklift has a data plate on the mast that shows the maximum load capacity — typically based on the load center distance. Exceeding this rating does not just risk dropping the load — it can cause the forklift to tip forward, which is one of the most dangerous and fast-moving accidents in warehousing. If you are unsure whether a load is within capacity, ask Daniel before lifting. Never guess.'},
+  ],
+  'Expanded Warehouse — Annex Space':[
+    {t:'Know your emergency exits in both buildings',d:'With the expansion into the annex next door, every associate needs to know the emergency exits in both buildings — not just the main warehouse. Walk both spaces and identify every exit. In an emergency you may be in the annex and need to exit from there. Know where the outdoor assembly point is for each building. Do not assume exits are in the same location as the main space.'},
+    {t:'Keeping the connecting area between buildings clear',d:'The connecting path between the main warehouse and the annex must remain clear at all times. This is a high-traffic zone for both foot traffic and the forklift. Never leave pallets, boxes, carts, or equipment in the connecting area. This path is also a critical emergency exit route — blocking it even temporarily creates a serious safety hazard.'},
+    {t:'Communication and accountability across both spaces',d:'Working across two buildings means it is easier to lose track of where people are. Before moving to the annex to work, let a teammate or Daniel know. If you are working alone in the annex, check in regularly. In an emergency, we need to account for everyone quickly. The team status on the board helps — keep it updated so we always know who is where.'},
+    {t:'Annex rack inspection — daily walk',d:'The annex racks must be inspected at the start of each shift just like the main warehouse racks. Walk all aisles and look for: bent uprights, damaged beams, missing safety clips, and overloaded or unstable shelves. The annex is a newer space to our operation — everyone should be extra alert until we have established a rhythm. Report any damage to Daniel before loading the rack.'},
+  ],
   'Pallet Jack Safety':[
     {t:'Pallet jack speed control',d:'Always walk at a safe pace when operating the pallet jack. Never ride on the forks. Keep your feet clear of the wheels at all times, especially when turning.'},
     {t:'Loading a pallet jack correctly',d:'Make sure forks are fully inserted under the pallet before pumping. Check that the load is balanced and stable. Never exceed the 5,500 lb weight limit.'},
@@ -656,6 +656,9 @@ const SAFETY_LIBRARY={
     {t:'Slip, trip, and fall prevention',d:'Report spills immediately and place wet floor signs. Keep work areas and aisles clear of boxes and debris. Wear slip-resistant footwear. Watch for uneven surfaces near the dock.'},
     {t:'Maintaining good housekeeping',d:'A clean warehouse is a safe warehouse. Break down cardboard immediately after unpacking. Return equipment to its designated spot. Clean your workstation at the end of every shift.'},
     {t:'Reporting unsafe conditions',d:'Every associate is responsible for safety. If you see something unsafe — a damaged rack, a spill, broken equipment — report it to Daniel immediately. Never assume someone else will handle it.'},
+    {t:'Powered equipment awareness as a pedestrian',d:'Now that we have a sit-down electric forklift operating in the warehouse, every associate on foot needs to be aware at all times. The forklift is quiet — you may not hear it coming. Always look both ways before stepping into an aisle. Stay in designated pedestrian walkways when the forklift is operating. Never walk behind a reversing forklift. If you are unsure if the forklift operator sees you — assume they do not and wait.'},
+    {t:'Forklift blind spots — always make eye contact',d:'A sit-down electric forklift has significant blind spots, especially when carrying a load that blocks the operator\'s forward view. The operator may be driving in reverse to see better — which means the load is behind them. Never assume the operator sees you. Before crossing in front of or behind an operating forklift, make direct eye contact with the operator and wait for a clear signal. One second of confirmation can prevent a life-altering injury.'},
+    {t:'Reporting near misses — not just incidents',d:'A near miss is any event where someone almost got hurt — a forklift that came close, a box that almost fell, a slip that did not result in a fall. Near misses are warnings. Every near miss reported to Daniel is a chance to fix something before it becomes a real injury. There is no punishment for reporting a near miss. If you see it or experience it — say something. Our safety record depends on learning from close calls, not just from accidents.'},
     {t:'Box cutter and utility knife safety',d:'Always cut away from your body — never toward yourself or anyone nearby. Retract the blade immediately after every use. Never leave an open box cutter on a surface. Replace dull blades — dull blades require more force and slip more easily. Box cutters cause more warehouse injuries than almost any other tool.'},
     {t:'Loading dock awareness',d:'The loading dock is one of the most hazardous areas in the warehouse. Key rules: never stand at the edge of an open dock door, always verify a truck is fully secured before unloading, watch for moving vehicles in the dock area, and never turn your back to an open dock. Falls from dock height are often fatal.'},
     {t:'Hand and finger pinch points',d:'Pinch point injuries happen fast and often leave permanent damage. Be aware of pinch points at: pallet jack handles and forks, rack beam clips, rolling ladder hinges, and box flaps under heavy loads. Always keep fingers clear when setting down heavy items or engaging equipment. Never reach into a space you cannot fully see.'},
@@ -666,6 +669,7 @@ const SAFETY_LIBRARY={
     {t:'Emergency exit routes and assembly point',d:'Every associate must know the emergency exit routes from every part of the warehouse — not just the nearest exit to where you normally work. Walk all exit routes during your first week and refresh your memory regularly. In any emergency: stay calm, do not grab personal belongings, exit quickly using the nearest safe route, and meet at the designated outdoor assembly point. Do a headcount. Do not re-enter the building for any reason until Daniel or emergency services say it is safe.'},
   ],
 };
+
 function renderLibrary(){
   const panel=document.getElementById('libraryPanel');panel.innerHTML='';
   Object.entries(SAFETY_LIBRARY).forEach(([cat,topics])=>{
