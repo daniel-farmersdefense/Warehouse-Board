@@ -24,16 +24,12 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;position:relative;overflow-x:hidden}
-
-/* ── HALLOWEEN BACKGROUND ── */
 .halloween-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.spooky{position:absolute;user-select:none;line-height:1;opacity:0.13}
-.hw{position:absolute;opacity:0.14}
-.spider-thread{position:absolute;display:flex;flex-direction:column;align-items:center;opacity:0.13;z-index:0}
+.spooky{position:absolute;user-select:none;line-height:1;opacity:0.28}
+.hw{position:absolute;opacity:0.25}
+.spider-thread{position:absolute;display:flex;flex-direction:column;align-items:center;opacity:0.28;z-index:0}
 .spider-thread .line{width:1px;background:#5a2d00}
 .spider-thread .spider{font-size:24px}
-
-/* ── TOPBAR ── */
 .topbar{background:#2d1a00;border-bottom:3px solid var(--orange);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
 .topbar-logo{font-size:18px;font-weight:700;letter-spacing:-0.02em;color:#ffffff}
 .topbar-logo span{color:#f0955a}
@@ -42,8 +38,6 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .sync-dot{width:7px;height:7px;border-radius:50%;background:#888;display:inline-block;margin-right:6px;transition:background 0.3s}
 .sync-dot.live{background:var(--green)}
 .sync-status{font-size:11px;color:rgba(255,255,255,0.45);display:flex;align-items:center;background:rgba(29,158,117,0.1);border:1px solid rgba(29,158,117,0.2);padding:3px 10px;border-radius:20px}
-
-/* ── LAYOUT ── */
 .container{max-width:1100px;margin:0 auto;padding:2rem 1.5rem;position:relative;z-index:1}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
 .full{grid-column:1/-1}
@@ -57,7 +51,6 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .card-gray{border-top:3px solid #888780}
 .card-coral{border-top:3px solid #C05A2A}
 .card-orange{border-top:3px solid var(--orange)}
-
 .ch{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);flex-wrap:wrap}
 .ch i{font-size:18px}
 .ch h2{font-size:13px;font-weight:700;color:var(--text);flex:1;letter-spacing:0.03em;text-transform:uppercase}
@@ -71,7 +64,6 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .b-teal{background:var(--teal-bg);color:var(--teal-text)}
 .b-coral{background:#FAECE7;color:#712B13}
 .b-orange{background:var(--orange-bg);color:var(--orange-text)}
-
 .safety-box{background:var(--amber-bg);border-left:3px solid var(--amber);padding:14px 16px;margin-bottom:12px}
 .safety-box .s-title{font-size:15px;font-weight:600;color:#412402;margin-bottom:6px}
 .safety-box .s-detail{font-size:13px;color:var(--amber-text);line-height:1.65}
@@ -208,10 +200,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 </head>
 <body>
 
-<!-- HALLOWEEN BACKGROUND -->
 <div class="halloween-bg" aria-hidden="true">
-
-  <!-- PUMPKINS -->
   <div class="spooky" style="font-size:160px;top:-25px;left:-15px;transform:rotate(-10deg)">🎃</div>
   <div class="spooky" style="font-size:110px;top:-10px;left:26%;transform:rotate(5deg)">🎃</div>
   <div class="spooky" style="font-size:170px;top:-20px;right:-10px;transform:rotate(8deg)">🎃</div>
@@ -229,7 +218,6 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
   <div class="spooky" style="font-size:105px;top:1790px;right:-5px;transform:rotate(5deg)">🎃</div>
   <div class="spooky" style="font-size:95px;top:1795px;left:44%;transform:rotate(-3deg)">🎃</div>
 
-  <!-- GHOSTS -->
   <div class="spooky" style="font-size:120px;top:100px;left:12%;transform:rotate(-4deg)">👻</div>
   <div class="spooky" style="font-size:100px;top:90px;right:14%;transform:rotate(6deg)">👻</div>
   <div class="spooky" style="font-size:110px;top:500px;left:22%;transform:rotate(-7deg)">👻</div>
@@ -241,68 +229,63 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
   <div class="spooky" style="font-size:105px;top:1600px;left:18%;transform:rotate(-4deg)">👻</div>
   <div class="spooky" style="font-size:100px;top:1610px;right:16%;transform:rotate(7deg)">👻</div>
 
-  <!-- SPIDER WEBS — corners, repeating down the page -->
   <svg class="hw" style="top:56px;left:0;width:240px;height:240px" viewBox="0 0 240 240">
     <g stroke="#5a2d00" stroke-width="1.2" fill="none">
       <line x1="0" y1="0" x2="240" y2="120"/><line x1="0" y1="0" x2="200" y2="240"/><line x1="0" y1="0" x2="110" y2="240"/><line x1="0" y1="0" x2="35" y2="240"/><line x1="0" y1="0" x2="240" y2="240"/><line x1="0" y1="0" x2="240" y2="55"/>
       <ellipse cx="0" cy="0" rx="45" ry="45" stroke-dasharray="4,10"/><ellipse cx="0" cy="0" rx="90" ry="90" stroke-dasharray="4,12"/><ellipse cx="0" cy="0" rx="135" ry="135" stroke-dasharray="4,14"/><ellipse cx="0" cy="0" rx="180" ry="180" stroke-dasharray="4,16"/><ellipse cx="0" cy="0" rx="225" ry="225" stroke-dasharray="4,18"/>
     </g>
-    <text x="6" y="20" font-size="20" opacity="0.6">🕷</text>
+    <text x="6" y="20" font-size="20" opacity="0.7">🕷</text>
   </svg>
   <svg class="hw" style="top:56px;right:0;width:240px;height:240px" viewBox="0 0 240 240">
     <g stroke="#5a2d00" stroke-width="1.2" fill="none" transform="scale(-1,1) translate(-240,0)">
       <line x1="0" y1="0" x2="240" y2="120"/><line x1="0" y1="0" x2="200" y2="240"/><line x1="0" y1="0" x2="110" y2="240"/><line x1="0" y1="0" x2="35" y2="240"/><line x1="0" y1="0" x2="240" y2="240"/><line x1="0" y1="0" x2="240" y2="55"/>
       <ellipse cx="0" cy="0" rx="45" ry="45" stroke-dasharray="4,10"/><ellipse cx="0" cy="0" rx="90" ry="90" stroke-dasharray="4,12"/><ellipse cx="0" cy="0" rx="135" ry="135" stroke-dasharray="4,14"/><ellipse cx="0" cy="0" rx="180" ry="180" stroke-dasharray="4,16"/><ellipse cx="0" cy="0" rx="225" ry="225" stroke-dasharray="4,18"/>
     </g>
-    <text x="214" y="20" font-size="20" opacity="0.6">🕷</text>
+    <text x="214" y="20" font-size="20" opacity="0.7">🕷</text>
   </svg>
-
   <svg class="hw" style="top:500px;left:0;width:180px;height:180px" viewBox="0 0 180 180">
     <g stroke="#5a2d00" stroke-width="1" fill="none">
       <line x1="0" y1="0" x2="180" y2="90"/><line x1="0" y1="0" x2="150" y2="180"/><line x1="0" y1="0" x2="70" y2="180"/><line x1="0" y1="0" x2="0" y2="180"/><line x1="0" y1="0" x2="180" y2="180"/>
       <ellipse cx="0" cy="0" rx="38" ry="38" stroke-dasharray="3,8"/><ellipse cx="0" cy="0" rx="76" ry="76" stroke-dasharray="3,10"/><ellipse cx="0" cy="0" rx="114" ry="114" stroke-dasharray="3,12"/><ellipse cx="0" cy="0" rx="152" ry="152" stroke-dasharray="3,14"/>
     </g>
-    <text x="5" y="18" font-size="16" opacity="0.6">🕷</text>
+    <text x="5" y="18" font-size="16" opacity="0.7">🕷</text>
   </svg>
   <svg class="hw" style="top:490px;right:0;width:180px;height:180px" viewBox="0 0 180 180">
     <g stroke="#5a2d00" stroke-width="1" fill="none" transform="scale(-1,1) translate(-180,0)">
       <line x1="0" y1="0" x2="180" y2="90"/><line x1="0" y1="0" x2="150" y2="180"/><line x1="0" y1="0" x2="70" y2="180"/><line x1="0" y1="0" x2="0" y2="180"/><line x1="0" y1="0" x2="180" y2="180"/>
       <ellipse cx="0" cy="0" rx="38" ry="38" stroke-dasharray="3,8"/><ellipse cx="0" cy="0" rx="76" ry="76" stroke-dasharray="3,10"/><ellipse cx="0" cy="0" rx="114" ry="114" stroke-dasharray="3,12"/><ellipse cx="0" cy="0" rx="152" ry="152" stroke-dasharray="3,14"/>
     </g>
-    <text x="156" y="18" font-size="16" opacity="0.6">🕷</text>
+    <text x="156" y="18" font-size="16" opacity="0.7">🕷</text>
   </svg>
-
   <svg class="hw" style="top:1000px;left:0;width:200px;height:200px" viewBox="0 0 200 200">
     <g stroke="#5a2d00" stroke-width="1.1" fill="none">
       <line x1="0" y1="0" x2="200" y2="100"/><line x1="0" y1="0" x2="170" y2="200"/><line x1="0" y1="0" x2="80" y2="200"/><line x1="0" y1="0" x2="0" y2="200"/><line x1="0" y1="0" x2="200" y2="200"/>
       <ellipse cx="0" cy="0" rx="40" ry="40" stroke-dasharray="3,9"/><ellipse cx="0" cy="0" rx="80" ry="80" stroke-dasharray="3,11"/><ellipse cx="0" cy="0" rx="120" ry="120" stroke-dasharray="3,13"/><ellipse cx="0" cy="0" rx="160" ry="160" stroke-dasharray="3,15"/>
     </g>
-    <text x="5" y="19" font-size="18" opacity="0.6">🕷</text>
+    <text x="5" y="19" font-size="18" opacity="0.7">🕷</text>
   </svg>
   <svg class="hw" style="top:1010px;right:0;width:200px;height:200px" viewBox="0 0 200 200">
     <g stroke="#5a2d00" stroke-width="1.1" fill="none" transform="scale(-1,1) translate(-200,0)">
       <line x1="0" y1="0" x2="200" y2="100"/><line x1="0" y1="0" x2="170" y2="200"/><line x1="0" y1="0" x2="80" y2="200"/><line x1="0" y1="0" x2="0" y2="200"/><line x1="0" y1="0" x2="200" y2="200"/>
       <ellipse cx="0" cy="0" rx="40" ry="40" stroke-dasharray="3,9"/><ellipse cx="0" cy="0" rx="80" ry="80" stroke-dasharray="3,11"/><ellipse cx="0" cy="0" rx="120" ry="120" stroke-dasharray="3,13"/><ellipse cx="0" cy="0" rx="160" ry="160" stroke-dasharray="3,15"/>
     </g>
-    <text x="174" y="19" font-size="18" opacity="0.6">🕷</text>
+    <text x="174" y="19" font-size="18" opacity="0.7">🕷</text>
   </svg>
-
   <svg class="hw" style="top:1500px;left:0;width:180px;height:180px" viewBox="0 0 180 180">
     <g stroke="#5a2d00" stroke-width="1" fill="none">
       <line x1="0" y1="0" x2="180" y2="90"/><line x1="0" y1="0" x2="150" y2="180"/><line x1="0" y1="0" x2="70" y2="180"/><line x1="0" y1="0" x2="0" y2="180"/><line x1="0" y1="0" x2="180" y2="180"/>
       <ellipse cx="0" cy="0" rx="38" ry="38" stroke-dasharray="3,8"/><ellipse cx="0" cy="0" rx="76" ry="76" stroke-dasharray="3,10"/><ellipse cx="0" cy="0" rx="114" ry="114" stroke-dasharray="3,12"/><ellipse cx="0" cy="0" rx="152" ry="152" stroke-dasharray="3,14"/>
     </g>
-    <text x="5" y="18" font-size="16" opacity="0.6">🕷</text>
+    <text x="5" y="18" font-size="16" opacity="0.7">🕷</text>
   </svg>
   <svg class="hw" style="top:1510px;right:0;width:180px;height:180px" viewBox="0 0 180 180">
     <g stroke="#5a2d00" stroke-width="1" fill="none" transform="scale(-1,1) translate(-180,0)">
       <line x1="0" y1="0" x2="180" y2="90"/><line x1="0" y1="0" x2="150" y2="180"/><line x1="0" y1="0" x2="70" y2="180"/><line x1="0" y1="0" x2="0" y2="180"/><line x1="0" y1="0" x2="180" y2="180"/>
       <ellipse cx="0" cy="0" rx="38" ry="38" stroke-dasharray="3,8"/><ellipse cx="0" cy="0" rx="76" ry="76" stroke-dasharray="3,10"/><ellipse cx="0" cy="0" rx="114" ry="114" stroke-dasharray="3,12"/><ellipse cx="0" cy="0" rx="152" ry="152" stroke-dasharray="3,14"/>
     </g>
-    <text x="156" y="18" font-size="16" opacity="0.6">🕷</text>
+    <text x="156" y="18" font-size="16" opacity="0.7">🕷</text>
   </svg>
 
-  <!-- HANGING SPIDERS -->
   <div class="spider-thread" style="top:56px;left:35%"><div class="line" style="height:60px"></div><div class="spider">🕷</div></div>
   <div class="spider-thread" style="top:56px;left:55%"><div class="line" style="height:90px"></div><div class="spider">🕷</div></div>
   <div class="spider-thread" style="top:56px;right:38%"><div class="line" style="height:70px"></div><div class="spider">🕷</div></div>
@@ -312,7 +295,6 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
   <div class="spider-thread" style="top:700px;right:35%"><div class="line" style="height:75px"></div><div class="spider" style="font-size:20px">🕷</div></div>
   <div class="spider-thread" style="top:1200px;left:30%"><div class="line" style="height:65px"></div><div class="spider">🕷</div></div>
   <div class="spider-thread" style="top:1200px;right:28%"><div class="line" style="height:50px"></div><div class="spider">🕷</div></div>
-
 </div>
 
 <div class="topbar">
