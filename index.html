@@ -8,49 +8,53 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
-  --bg:#f5ede0;--surface:rgba(255,255,255,0.83);--border:rgba(0,0,0,0.08);--border-mid:rgba(0,0,0,0.14);
+  --bg:#faf0dc;--surface:rgba(255,255,255,0.84);--border:rgba(0,0,0,0.08);--border-mid:rgba(0,0,0,0.14);
   --text:#1a1a18;--text-muted:#6b6b67;--text-hint:#9a9a96;
   --radius-md:8px;--radius-lg:12px;
   --green:#1D9E75;--green-bg:#EAF3DE;--green-text:#27500A;
   --amber:#BA7517;--amber-bg:#FAEEDA;--amber-text:#633806;
   --red:#E24B4A;--red-bg:#FCEBEB;--red-text:#A32D2D;
-  --blue:#378ADD;--blue-bg:#E6F1FB;--blue-text:#0C447C;
-  --purple:#7F77DD;--purple-bg:#EEEDFE;--purple-text:#3C3489;
+  --blue:#7a4a21;--blue-bg:#f3e6d3;--blue-text:#5a3714;
+  --purple:#8c2f39;--purple-bg:#f3d9dc;--purple-text:#6e1f28;
   --gray-bg:#F1EFE8;--gray-text:#444441;
-  --teal-bg:#E1F5EE;--teal-text:#085041;
+  --teal-bg:#e4ebc8;--teal-text:#3d4a12;
   --coral-bg:#FAECE7;--coral-text:#712B13;
   --pink-bg:#FDE8F0;--pink-text:#7B1040;
-  --orange:#e8651a;--orange-bg:#fde8d8;--orange-text:#9a3a08;
+  --orange:#d9731a;--orange-bg:#fbe3cc;--orange-text:#8a3f08;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;position:relative;overflow-x:hidden}
-.halloween-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.spooky{position:absolute;user-select:none;line-height:1;opacity:0.28}
-.hw{position:absolute;opacity:0.25}
-.spider-thread{position:absolute;display:flex;flex-direction:column;align-items:center;opacity:0.28;z-index:0}
-.spider-thread .line{width:1px;background:#5a2d00}
-.spider-thread .spider{font-size:24px}
-.topbar{background:#2d1a00;border-bottom:3px solid var(--orange);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+
+/* ── THANKSGIVING BACKGROUND ── */
+.fall-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.sp{position:absolute;user-select:none;line-height:1;opacity:0.28}
+.garland{position:absolute;top:56px;left:0;width:100%;height:70px;opacity:0.6}
+
+/* ── TOPBAR ── */
+.topbar{background:#3a2214;border-bottom:3px solid var(--orange);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
 .topbar-logo{font-size:18px;font-weight:700;letter-spacing:-0.02em;color:#ffffff}
-.topbar-logo span{color:#f0955a}
-.topbar-sub{font-size:12px;color:rgba(255,255,255,0.35)}
-.topbar-date{font-size:12px;color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-md);padding:5px 12px}
+.topbar-logo span{color:#f3b26b}
+.topbar-sub{font-size:12px;color:rgba(255,255,255,0.4)}
+.topbar-date{font-size:12px;color:rgba(255,255,255,0.55);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-md);padding:5px 12px}
 .sync-dot{width:7px;height:7px;border-radius:50%;background:#888;display:inline-block;margin-right:6px;transition:background 0.3s}
 .sync-dot.live{background:var(--green)}
-.sync-status{font-size:11px;color:rgba(255,255,255,0.45);display:flex;align-items:center;background:rgba(29,158,117,0.1);border:1px solid rgba(29,158,117,0.2);padding:3px 10px;border-radius:20px}
-.container{max-width:1100px;margin:0 auto;padding:2rem 1.5rem;position:relative;z-index:1}
+.sync-status{font-size:11px;color:rgba(255,255,255,0.5);display:flex;align-items:center;background:rgba(29,158,117,0.12);border:1px solid rgba(29,158,117,0.25);padding:3px 10px;border-radius:20px}
+
+/* ── LAYOUT ── */
+.container{max-width:1100px;margin:0 auto;padding:4rem 1.5rem 2rem;position:relative;z-index:1}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
 .full{grid-column:1/-1}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;backdrop-filter:blur(4px)}
 .card-blue{border-top:3px solid var(--blue)}
-.card-green{border-top:3px solid var(--green)}
-.card-amber{border-top:3px solid var(--amber)}
-.card-red{border-top:3px solid var(--red)}
+.card-green{border-top:3px solid #6b7a2f}
+.card-amber{border-top:3px solid #d4a017}
+.card-red{border-top:3px solid #8c2f39}
 .card-purple{border-top:3px solid var(--purple)}
-.card-teal{border-top:3px solid #0F6E56}
+.card-teal{border-top:3px solid #6b7a2f}
 .card-gray{border-top:3px solid #888780}
 .card-coral{border-top:3px solid #C05A2A}
 .card-orange{border-top:3px solid var(--orange)}
+
 .ch{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);flex-wrap:wrap}
 .ch i{font-size:18px}
 .ch h2{font-size:13px;font-weight:700;color:var(--text);flex:1;letter-spacing:0.03em;text-transform:uppercase}
@@ -64,9 +68,10 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .b-teal{background:var(--teal-bg);color:var(--teal-text)}
 .b-coral{background:#FAECE7;color:#712B13}
 .b-orange{background:var(--orange-bg);color:var(--orange-text)}
-.safety-box{background:var(--amber-bg);border-left:3px solid var(--amber);padding:14px 16px;margin-bottom:12px}
-.safety-box .s-title{font-size:15px;font-weight:600;color:#412402;margin-bottom:6px}
-.safety-box .s-detail{font-size:13px;color:var(--amber-text);line-height:1.65}
+
+.safety-box{background:#f8ecc4;border-left:3px solid #d4a017;padding:14px 16px;margin-bottom:12px}
+.safety-box .s-title{font-size:15px;font-weight:600;color:#4a3606;margin-bottom:6px}
+.safety-box .s-detail{font-size:13px;color:#6b5008;line-height:1.65}
 .ack-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:12px}
 .ack-btn{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--border-mid);border-radius:var(--radius-md);cursor:pointer;background:var(--bg);font-size:13px;color:var(--text);font-family:inherit;transition:all 0.15s}
 .ack-btn.acked{background:var(--green-bg);border-color:#97C459;color:var(--green-text)}
@@ -155,9 +160,9 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .incident-num{font-size:72px;font-weight:900;line-height:1;letter-spacing:-0.04em}
 .incident-label{font-size:13px;color:var(--text-muted);margin-top:6px}
 .incident-record{font-size:12px;color:var(--text-muted);margin-top:4px}
-.ex-box{background:var(--teal-bg);border-left:3px solid var(--green);padding:14px 16px;margin-bottom:12px}
-.ex-box .ex-main{font-size:22px;font-weight:700;color:#085041;margin-bottom:4px}
-.ex-box .ex-sub{font-size:13px;color:#0F6E56}
+.ex-box{background:var(--teal-bg);border-left:3px solid #6b7a2f;padding:14px 16px;margin-bottom:12px}
+.ex-box .ex-main{font-size:22px;font-weight:700;color:#3d4a12;margin-bottom:4px}
+.ex-box .ex-sub{font-size:13px;color:#6b7a2f}
 .topic-cat{margin-bottom:14px}
 .topic-cat-title{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .topic-chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -187,7 +192,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .bday-soon{background:var(--purple-bg);border-left:3px solid var(--purple);border-radius:var(--radius-md);padding:10px 14px;margin-bottom:10px}
 .bday-soon .bday-name{font-size:15px;font-weight:600;color:var(--purple-text)}
 .bday-soon .bday-date{font-size:12px;color:var(--purple-text);margin-top:2px}
-.bday-celebrate{background:linear-gradient(135deg,#EEEDFE,#FDE8F0);border:2px solid var(--purple);border-radius:var(--radius-lg);padding:16px;margin-bottom:12px;text-align:center;animation:celebrate 2s ease-in-out infinite alternate}
+.bday-celebrate{background:linear-gradient(135deg,#f3d9dc,#fbe3cc);border:2px solid var(--purple);border-radius:var(--radius-lg);padding:16px;margin-bottom:12px;text-align:center;animation:celebrate 2s ease-in-out infinite alternate}
 @keyframes celebrate{0%{transform:scale(1)}100%{transform:scale(1.02)}}
 .priority-item{border-left:3px solid var(--red);padding-left:10px}
 .priority-item.done{border-left-color:var(--green);opacity:0.7}
@@ -195,113 +200,106 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 .timeoff-today-label{font-size:12px;font-weight:700;color:#712B13;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px}
 .footer{text-align:center;padding:1.5rem 2rem;font-size:12px;color:var(--text-hint);position:relative;z-index:1;letter-spacing:0.08em;text-transform:uppercase}
 .loading{text-align:center;padding:20px;font-size:13px;color:var(--text-muted)}
-@media(max-width:600px){.topbar{padding:0 1rem}.container{padding:1rem}.perf-hdr,.perf-row{grid-template-columns:28px 1fr 48px 48px 48px 70px;gap:4px}.break-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.topbar{padding:0 1rem}.container{padding:3.5rem 1rem 1rem}.perf-hdr,.perf-row{grid-template-columns:28px 1fr 48px 48px 48px 70px;gap:4px}.break-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<div class="halloween-bg" aria-hidden="true">
-  <div class="spooky" style="font-size:160px;top:-25px;left:-15px;transform:rotate(-10deg)">🎃</div>
-  <div class="spooky" style="font-size:110px;top:-10px;left:26%;transform:rotate(5deg)">🎃</div>
-  <div class="spooky" style="font-size:170px;top:-20px;right:-10px;transform:rotate(8deg)">🎃</div>
-  <div class="spooky" style="font-size:120px;top:320px;left:-20px;transform:rotate(-6deg)">🎃</div>
-  <div class="spooky" style="font-size:130px;top:310px;right:-15px;transform:rotate(12deg)">🎃</div>
-  <div class="spooky" style="font-size:100px;top:700px;left:8%;transform:rotate(-8deg)">🎃</div>
-  <div class="spooky" style="font-size:115px;top:690px;right:6%;transform:rotate(7deg)">🎃</div>
-  <div class="spooky" style="font-size:95px;top:685px;left:48%;transform:rotate(-4deg)">🎃</div>
-  <div class="spooky" style="font-size:105px;top:1100px;left:-10px;transform:rotate(6deg)">🎃</div>
-  <div class="spooky" style="font-size:95px;top:1090px;right:-5px;transform:rotate(-8deg)">🎃</div>
-  <div class="spooky" style="font-size:110px;top:1095px;left:40%;transform:rotate(4deg)">🎃</div>
-  <div class="spooky" style="font-size:100px;top:1500px;left:15%;transform:rotate(-5deg)">🎃</div>
-  <div class="spooky" style="font-size:115px;top:1490px;right:12%;transform:rotate(9deg)">🎃</div>
-  <div class="spooky" style="font-size:90px;top:1800px;left:-10px;transform:rotate(-7deg)">🎃</div>
-  <div class="spooky" style="font-size:105px;top:1790px;right:-5px;transform:rotate(5deg)">🎃</div>
-  <div class="spooky" style="font-size:95px;top:1795px;left:44%;transform:rotate(-3deg)">🎃</div>
+<!-- THANKSGIVING BACKGROUND -->
+<div class="fall-bg" aria-hidden="true">
 
-  <div class="spooky" style="font-size:120px;top:100px;left:12%;transform:rotate(-4deg)">👻</div>
-  <div class="spooky" style="font-size:100px;top:90px;right:14%;transform:rotate(6deg)">👻</div>
-  <div class="spooky" style="font-size:110px;top:500px;left:22%;transform:rotate(-7deg)">👻</div>
-  <div class="spooky" style="font-size:95px;top:490px;right:20%;transform:rotate(5deg)">👻</div>
-  <div class="spooky" style="font-size:105px;top:280px;left:46%;transform:rotate(-3deg)">👻</div>
-  <div class="spooky" style="font-size:100px;top:900px;left:5%;transform:rotate(4deg)">👻</div>
-  <div class="spooky" style="font-size:110px;top:890px;right:8%;transform:rotate(-6deg)">👻</div>
-  <div class="spooky" style="font-size:95px;top:1300px;left:30%;transform:rotate(5deg)">👻</div>
-  <div class="spooky" style="font-size:105px;top:1600px;left:18%;transform:rotate(-4deg)">👻</div>
-  <div class="spooky" style="font-size:100px;top:1610px;right:16%;transform:rotate(7deg)">👻</div>
+  <!-- TURKEYS -->
+  <div class="sp" style="font-size:150px;top:4%;right:-10px;transform:rotate(8deg)">🦃</div>
+  <div class="sp" style="font-size:115px;top:14%;left:13%;transform:rotate(-6deg)">🦃</div>
+  <div class="sp" style="font-size:130px;top:32%;left:-15px;transform:rotate(-8deg)">🦃</div>
+  <div class="sp" style="font-size:105px;top:24%;left:45%;transform:rotate(4deg)">🦃</div>
+  <div class="sp" style="font-size:110px;top:42%;right:19%;transform:rotate(-5deg)">🦃</div>
+  <div class="sp" style="font-size:105px;top:62%;left:8%;transform:rotate(7deg)">🦃</div>
+  <div class="sp" style="font-size:115px;top:60%;right:7%;transform:rotate(-7deg)">🦃</div>
+  <div class="sp" style="font-size:95px;top:64%;left:42%;transform:rotate(5deg)">🦃</div>
+  <div class="sp" style="font-size:105px;top:82%;left:70%;transform:rotate(-6deg)">🦃</div>
+  <div class="sp" style="font-size:110px;top:84%;left:18%;transform:rotate(6deg)">🦃</div>
 
-  <svg class="hw" style="top:56px;left:0;width:240px;height:240px" viewBox="0 0 240 240">
-    <g stroke="#5a2d00" stroke-width="1.2" fill="none">
-      <line x1="0" y1="0" x2="240" y2="120"/><line x1="0" y1="0" x2="200" y2="240"/><line x1="0" y1="0" x2="110" y2="240"/><line x1="0" y1="0" x2="35" y2="240"/><line x1="0" y1="0" x2="240" y2="240"/><line x1="0" y1="0" x2="240" y2="55"/>
-      <ellipse cx="0" cy="0" rx="45" ry="45" stroke-dasharray="4,10"/><ellipse cx="0" cy="0" rx="90" ry="90" stroke-dasharray="4,12"/><ellipse cx="0" cy="0" rx="135" ry="135" stroke-dasharray="4,14"/><ellipse cx="0" cy="0" rx="180" ry="180" stroke-dasharray="4,16"/><ellipse cx="0" cy="0" rx="225" ry="225" stroke-dasharray="4,18"/>
-    </g>
-    <text x="6" y="20" font-size="20" opacity="0.7">🕷</text>
+  <!-- LEAVES, CORN, PIE, APPLES, WHEAT -->
+  <div class="sp" style="font-size:140px;top:4%;left:-15px;transform:rotate(-10deg)">🍁</div>
+  <div class="sp" style="font-size:100px;top:5%;left:27%;transform:rotate(5deg)">🌽</div>
+  <div class="sp" style="font-size:120px;top:30%;right:-12px;transform:rotate(10deg)">🥧</div>
+  <div class="sp" style="font-size:95px;top:12%;right:19%;transform:rotate(6deg)">🍂</div>
+  <div class="sp" style="font-size:100px;top:44%;left:22%;transform:rotate(-7deg)">🍁</div>
+  <div class="sp" style="font-size:88px;top:44%;left:62%;transform:rotate(8deg)">🍎</div>
+  <div class="sp" style="font-size:90px;top:15%;left:66%;transform:rotate(-4deg)">🌾</div>
+  <div class="sp" style="font-size:85px;top:66%;left:24%;transform:rotate(-5deg)">🍂</div>
+  <div class="sp" style="font-size:100px;top:80%;right:-5px;transform:rotate(8deg)">🌽</div>
+  <div class="sp" style="font-size:105px;top:80%;left:-10px;transform:rotate(-8deg)">🥧</div>
+  <div class="sp" style="font-size:90px;top:88%;left:48%;transform:rotate(5deg)">🍎</div>
+  <div class="sp" style="font-size:100px;top:90%;right:6%;transform:rotate(-6deg)">🍁</div>
+  <div class="sp" style="font-size:90px;top:92%;left:5%;transform:rotate(7deg)">🌾</div>
+
+  <!-- REGULAR PUMPKINS -->
+  <svg class="sp" style="left:62%;top:60%;width:100px;transform:rotate(-6deg)" viewBox="0 0 100 90">
+    <ellipse cx="30" cy="54" rx="24" ry="32" fill="#e8821e" stroke="#a8520b" stroke-width="2"/>
+    <ellipse cx="70" cy="54" rx="24" ry="32" fill="#e8821e" stroke="#a8520b" stroke-width="2"/>
+    <ellipse cx="50" cy="54" rx="21" ry="35" fill="#f09a35" stroke="#a8520b" stroke-width="2"/>
+    <path d="M50 20 C46 12 48 8 52 6 L56 8 C54 12 55 16 56 20Z" fill="#5b7a2a" stroke="#3f5a1a" stroke-width="1.5"/>
+    <path d="M56 10 C64 4 72 8 70 16" fill="none" stroke="#5b7a2a" stroke-width="2" stroke-linecap="round"/>
   </svg>
-  <svg class="hw" style="top:56px;right:0;width:240px;height:240px" viewBox="0 0 240 240">
-    <g stroke="#5a2d00" stroke-width="1.2" fill="none" transform="scale(-1,1) translate(-240,0)">
-      <line x1="0" y1="0" x2="240" y2="120"/><line x1="0" y1="0" x2="200" y2="240"/><line x1="0" y1="0" x2="110" y2="240"/><line x1="0" y1="0" x2="35" y2="240"/><line x1="0" y1="0" x2="240" y2="240"/><line x1="0" y1="0" x2="240" y2="55"/>
-      <ellipse cx="0" cy="0" rx="45" ry="45" stroke-dasharray="4,10"/><ellipse cx="0" cy="0" rx="90" ry="90" stroke-dasharray="4,12"/><ellipse cx="0" cy="0" rx="135" ry="135" stroke-dasharray="4,14"/><ellipse cx="0" cy="0" rx="180" ry="180" stroke-dasharray="4,16"/><ellipse cx="0" cy="0" rx="225" ry="225" stroke-dasharray="4,18"/>
-    </g>
-    <text x="214" y="20" font-size="20" opacity="0.7">🕷</text>
+  <svg class="sp" style="left:3%;top:48%;width:105px;transform:rotate(7deg)" viewBox="0 0 100 90">
+    <ellipse cx="30" cy="54" rx="24" ry="32" fill="#e8821e" stroke="#a8520b" stroke-width="2"/>
+    <ellipse cx="70" cy="54" rx="24" ry="32" fill="#e8821e" stroke="#a8520b" stroke-width="2"/>
+    <ellipse cx="50" cy="54" rx="21" ry="35" fill="#f09a35" stroke="#a8520b" stroke-width="2"/>
+    <path d="M50 20 C46 12 48 8 52 6 L56 8 C54 12 55 16 56 20Z" fill="#5b7a2a" stroke="#3f5a1a" stroke-width="1.5"/>
+    <path d="M56 10 C64 4 72 8 70 16" fill="none" stroke="#5b7a2a" stroke-width="2" stroke-linecap="round"/>
   </svg>
-  <svg class="hw" style="top:500px;left:0;width:180px;height:180px" viewBox="0 0 180 180">
-    <g stroke="#5a2d00" stroke-width="1" fill="none">
-      <line x1="0" y1="0" x2="180" y2="90"/><line x1="0" y1="0" x2="150" y2="180"/><line x1="0" y1="0" x2="70" y2="180"/><line x1="0" y1="0" x2="0" y2="180"/><line x1="0" y1="0" x2="180" y2="180"/>
-      <ellipse cx="0" cy="0" rx="38" ry="38" stroke-dasharray="3,8"/><ellipse cx="0" cy="0" rx="76" ry="76" stroke-dasharray="3,10"/><ellipse cx="0" cy="0" rx="114" ry="114" stroke-dasharray="3,12"/><ellipse cx="0" cy="0" rx="152" ry="152" stroke-dasharray="3,14"/>
-    </g>
-    <text x="5" y="18" font-size="16" opacity="0.7">🕷</text>
+  <svg class="sp" style="right:2%;top:50%;width:90px;transform:rotate(-9deg)" viewBox="0 0 100 90">
+    <ellipse cx="30" cy="54" rx="24" ry="32" fill="#e8821e" stroke="#a8520b" stroke-width="2"/>
+    <ellipse cx="70" cy="54" rx="24" ry="32" fill="#e8821e" stroke="#a8520b" stroke-width="2"/>
+    <ellipse cx="50" cy="54" rx="21" ry="35" fill="#f09a35" stroke="#a8520b" stroke-width="2"/>
+    <path d="M50 20 C46 12 48 8 52 6 L56 8 C54 12 55 16 56 20Z" fill="#5b7a2a" stroke="#3f5a1a" stroke-width="1.5"/>
+    <path d="M56 10 C64 4 72 8 70 16" fill="none" stroke="#5b7a2a" stroke-width="2" stroke-linecap="round"/>
   </svg>
-  <svg class="hw" style="top:490px;right:0;width:180px;height:180px" viewBox="0 0 180 180">
-    <g stroke="#5a2d00" stroke-width="1" fill="none" transform="scale(-1,1) translate(-180,0)">
-      <line x1="0" y1="0" x2="180" y2="90"/><line x1="0" y1="0" x2="150" y2="180"/><line x1="0" y1="0" x2="70" y2="180"/><line x1="0" y1="0" x2="0" y2="180"/><line x1="0" y1="0" x2="180" y2="180"/>
-      <ellipse cx="0" cy="0" rx="38" ry="38" stroke-dasharray="3,8"/><ellipse cx="0" cy="0" rx="76" ry="76" stroke-dasharray="3,10"/><ellipse cx="0" cy="0" rx="114" ry="114" stroke-dasharray="3,12"/><ellipse cx="0" cy="0" rx="152" ry="152" stroke-dasharray="3,14"/>
-    </g>
-    <text x="156" y="18" font-size="16" opacity="0.7">🕷</text>
-  </svg>
-  <svg class="hw" style="top:1000px;left:0;width:200px;height:200px" viewBox="0 0 200 200">
-    <g stroke="#5a2d00" stroke-width="1.1" fill="none">
-      <line x1="0" y1="0" x2="200" y2="100"/><line x1="0" y1="0" x2="170" y2="200"/><line x1="0" y1="0" x2="80" y2="200"/><line x1="0" y1="0" x2="0" y2="200"/><line x1="0" y1="0" x2="200" y2="200"/>
-      <ellipse cx="0" cy="0" rx="40" ry="40" stroke-dasharray="3,9"/><ellipse cx="0" cy="0" rx="80" ry="80" stroke-dasharray="3,11"/><ellipse cx="0" cy="0" rx="120" ry="120" stroke-dasharray="3,13"/><ellipse cx="0" cy="0" rx="160" ry="160" stroke-dasharray="3,15"/>
-    </g>
-    <text x="5" y="19" font-size="18" opacity="0.7">🕷</text>
-  </svg>
-  <svg class="hw" style="top:1010px;right:0;width:200px;height:200px" viewBox="0 0 200 200">
-    <g stroke="#5a2d00" stroke-width="1.1" fill="none" transform="scale(-1,1) translate(-200,0)">
-      <line x1="0" y1="0" x2="200" y2="100"/><line x1="0" y1="0" x2="170" y2="200"/><line x1="0" y1="0" x2="80" y2="200"/><line x1="0" y1="0" x2="0" y2="200"/><line x1="0" y1="0" x2="200" y2="200"/>
-      <ellipse cx="0" cy="0" rx="40" ry="40" stroke-dasharray="3,9"/><ellipse cx="0" cy="0" rx="80" ry="80" stroke-dasharray="3,11"/><ellipse cx="0" cy="0" rx="120" ry="120" stroke-dasharray="3,13"/><ellipse cx="0" cy="0" rx="160" ry="160" stroke-dasharray="3,15"/>
-    </g>
-    <text x="174" y="19" font-size="18" opacity="0.7">🕷</text>
-  </svg>
-  <svg class="hw" style="top:1500px;left:0;width:180px;height:180px" viewBox="0 0 180 180">
-    <g stroke="#5a2d00" stroke-width="1" fill="none">
-      <line x1="0" y1="0" x2="180" y2="90"/><line x1="0" y1="0" x2="150" y2="180"/><line x1="0" y1="0" x2="70" y2="180"/><line x1="0" y1="0" x2="0" y2="180"/><line x1="0" y1="0" x2="180" y2="180"/>
-      <ellipse cx="0" cy="0" rx="38" ry="38" stroke-dasharray="3,8"/><ellipse cx="0" cy="0" rx="76" ry="76" stroke-dasharray="3,10"/><ellipse cx="0" cy="0" rx="114" ry="114" stroke-dasharray="3,12"/><ellipse cx="0" cy="0" rx="152" ry="152" stroke-dasharray="3,14"/>
-    </g>
-    <text x="5" y="18" font-size="16" opacity="0.7">🕷</text>
-  </svg>
-  <svg class="hw" style="top:1510px;right:0;width:180px;height:180px" viewBox="0 0 180 180">
-    <g stroke="#5a2d00" stroke-width="1" fill="none" transform="scale(-1,1) translate(-180,0)">
-      <line x1="0" y1="0" x2="180" y2="90"/><line x1="0" y1="0" x2="150" y2="180"/><line x1="0" y1="0" x2="70" y2="180"/><line x1="0" y1="0" x2="0" y2="180"/><line x1="0" y1="0" x2="180" y2="180"/>
-      <ellipse cx="0" cy="0" rx="38" ry="38" stroke-dasharray="3,8"/><ellipse cx="0" cy="0" rx="76" ry="76" stroke-dasharray="3,10"/><ellipse cx="0" cy="0" rx="114" ry="114" stroke-dasharray="3,12"/><ellipse cx="0" cy="0" rx="152" ry="152" stroke-dasharray="3,14"/>
-    </g>
-    <text x="156" y="18" font-size="16" opacity="0.7">🕷</text>
+  <svg class="sp" style="left:36%;top:80%;width:95px;transform:rotate(5deg)" viewBox="0 0 100 90">
+    <ellipse cx="30" cy="54" rx="24" ry="32" fill="#e8821e" stroke="#a8520b" stroke-width="2"/>
+    <ellipse cx="70" cy="54" rx="24" ry="32" fill="#e8821e" stroke="#a8520b" stroke-width="2"/>
+    <ellipse cx="50" cy="54" rx="21" ry="35" fill="#f09a35" stroke="#a8520b" stroke-width="2"/>
+    <path d="M50 20 C46 12 48 8 52 6 L56 8 C54 12 55 16 56 20Z" fill="#5b7a2a" stroke="#3f5a1a" stroke-width="1.5"/>
+    <path d="M56 10 C64 4 72 8 70 16" fill="none" stroke="#5b7a2a" stroke-width="2" stroke-linecap="round"/>
   </svg>
 
-  <div class="spider-thread" style="top:56px;left:35%"><div class="line" style="height:60px"></div><div class="spider">🕷</div></div>
-  <div class="spider-thread" style="top:56px;left:55%"><div class="line" style="height:90px"></div><div class="spider">🕷</div></div>
-  <div class="spider-thread" style="top:56px;right:38%"><div class="line" style="height:70px"></div><div class="spider">🕷</div></div>
-  <div class="spider-thread" style="top:56px;left:20%"><div class="line" style="height:45px"></div><div class="spider" style="font-size:18px">🕷</div></div>
-  <div class="spider-thread" style="top:56px;right:22%"><div class="line" style="height:80px"></div><div class="spider" style="font-size:18px">🕷</div></div>
-  <div class="spider-thread" style="top:700px;left:42%"><div class="line" style="height:55px"></div><div class="spider" style="font-size:20px">🕷</div></div>
-  <div class="spider-thread" style="top:700px;right:35%"><div class="line" style="height:75px"></div><div class="spider" style="font-size:20px">🕷</div></div>
-  <div class="spider-thread" style="top:1200px;left:30%"><div class="line" style="height:65px"></div><div class="spider">🕷</div></div>
-  <div class="spider-thread" style="top:1200px;right:28%"><div class="line" style="height:50px"></div><div class="spider">🕷</div></div>
+  <!-- LEAF GARLAND (repeats across the full width) -->
+  <svg class="garland" width="100%" height="70">
+    <defs>
+      <pattern id="garlandTile" width="680" height="70" patternUnits="userSpaceOnUse">
+        <path d="M0,8 Q170,64 340,8 Q510,64 680,8" fill="none" stroke="#7a4a21" stroke-width="1.5"/>
+        <g transform="translate(34,18) rotate(18)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#c0392b"/></g>
+        <g transform="translate(68,26) rotate(-14)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#e08a1e"/></g>
+        <g transform="translate(102,31) rotate(22)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#d4a017"/></g>
+        <g transform="translate(136,35) rotate(-20)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#a0522d"/></g>
+        <g transform="translate(170,36) rotate(10)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#c0392b"/></g>
+        <g transform="translate(204,35) rotate(-18)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#e08a1e"/></g>
+        <g transform="translate(238,31) rotate(20)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#8a5a2b"/></g>
+        <g transform="translate(272,26) rotate(-12)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#d4a017"/></g>
+        <g transform="translate(306,18) rotate(16)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#c0392b"/></g>
+        <g transform="translate(374,18) rotate(-16)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#e08a1e"/></g>
+        <g transform="translate(408,26) rotate(14)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#a0522d"/></g>
+        <g transform="translate(442,31) rotate(-22)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#c0392b"/></g>
+        <g transform="translate(476,35) rotate(18)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#d4a017"/></g>
+        <g transform="translate(510,36) rotate(-10)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#8a5a2b"/></g>
+        <g transform="translate(544,35) rotate(20)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#e08a1e"/></g>
+        <g transform="translate(578,31) rotate(-18)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#c0392b"/></g>
+        <g transform="translate(612,26) rotate(12)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#d4a017"/></g>
+        <g transform="translate(646,18) rotate(-16)"><path d="M0,0 C6,5 6,14 0,20 C-6,14 -6,5 0,0Z" fill="#a0522d"/></g>
+      </pattern>
+    </defs>
+    <rect width="100%" height="70" fill="url(#garlandTile)"/>
+  </svg>
+
 </div>
 
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:12px">
-    <i class="ti ti-building-warehouse" style="font-size:22px;color:#f0955a"></i>
+    <i class="ti ti-building-warehouse" style="font-size:22px;color:#f3b26b"></i>
     <div>
-      <div class="topbar-logo">Warehouse <span>Board</span> 🎃</div>
+      <div class="topbar-logo">Warehouse <span>Board</span> 🦃</div>
       <div class="topbar-sub">Daniel Rodriguez &nbsp;·&nbsp; Team of 5</div>
     </div>
   </div>
@@ -330,7 +328,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
   </div>
 
   <div class="card card-teal">
-    <div class="ch"><i class="ti ti-trophy" style="color:#0F6E56"></i><h2>Weekly exercise</h2><span class="badge b-teal" id="exWeekBadge">This week</span></div>
+    <div class="ch"><i class="ti ti-trophy" style="color:#6b7a2f"></i><h2>Weekly exercise</h2><span class="badge b-teal" id="exWeekBadge">This week</span></div>
     <div id="exCurrent"><div class="loading">Loading...</div></div>
     <div id="exHistory"></div>
     <div class="tog" id="togEx"><i class="ti ti-edit"></i> Update this week's exercise</div>
@@ -510,7 +508,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
   </div>
 
   <div class="card card-teal">
-    <div class="ch"><i class="ti ti-trash" style="color:#0F6E56"></i><h2>Weekly cleanup</h2><span class="badge b-teal" id="weekBadge"></span></div>
+    <div class="ch"><i class="ti ti-trash" style="color:#6b7a2f"></i><h2>Weekly cleanup</h2><span class="badge b-teal" id="weekBadge"></span></div>
     <div class="aberham-toggle">
       <input type="checkbox" id="aberhamIn" onchange="toggleAberham()"/>
       <label for="aberhamIn">Aberham is in today — include in rotation</label>
@@ -536,7 +534,7 @@ body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:
 </div>
 </div>
 
-<div class="footer">408 · 831 · 828 · 313 · 760 · 209 &nbsp;·&nbsp; 🎃 Happy Halloween &nbsp;·&nbsp; Warehouse Board · Daniel Rodriguez</div>
+<div class="footer">408 · 831 · 828 · 313 · 760 · 209 &nbsp;·&nbsp; 🦃 Thankful for this team &nbsp;·&nbsp; Warehouse Board · Daniel Rodriguez</div>
 
 <script>
 const SUPABASE_URL='https://pwtacpqguobhbmyrhfwi.supabase.co';
@@ -546,7 +544,7 @@ const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 function getPacificDateStr(){return new Date().toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'});}
 const todayStr=getPacificDateStr();
 const dateStr=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric',timeZone:'America/Los_Angeles'});
-document.getElementById('dateBadge').textContent='🎃 '+dateStr;
+document.getElementById('dateBadge').textContent='🦃 '+dateStr;
 document.getElementById('safetyDate').textContent=dateStr;
 
 function getWeekStart(){const d=new Date();const day=d.getDay();const diff=d.getDate()-((day+6)%7);const mon=new Date(d);mon.setDate(diff);return mon.toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'});}
@@ -999,7 +997,7 @@ function calcPerf(){
 }
 function updateGoalBar(total){
   const pct=Math.min(Math.round(total/dailyGoal*100),100);const fill=document.getElementById('goalBarFill');
-  fill.style.width=pct+'%';fill.style.background=pct>=100?'#1D9E75':pct>=75?'#BA7517':'#e8651a';
+  fill.style.width=pct+'%';fill.style.background=pct>=100?'#1D9E75':pct>=75?'#BA7517':'#d9731a';
   document.getElementById('goalBarPct').textContent=pct>10?pct+'%':'';
   document.getElementById('goalMetaLeft').textContent=`${total} of ${dailyGoal} orders`;
   document.getElementById('goalMetaRight').textContent=`${pct}% of daily goal`;
@@ -1029,7 +1027,7 @@ async function loadWeeklyChart(){
   const wrap=document.getElementById('chartBars');wrap.innerHTML='';wrap.style.height=chartH+'px';
   const goalPct=(goalVal/maxVal)*100;
   const goalLineEl=document.createElement('div');goalLineEl.className='goal-line-h';goalLineEl.style.bottom=(goalPct/100*chartH+2)+'px';goalLineEl.innerHTML=`<span class="goal-line-label">Goal: ${goalVal}</span>`;
-  days.forEach((day,i)=>{const v=actuals[i];const h=v>0?Math.round((v/maxVal)*chartH):0;const color=v===0?'#F1EFE8':v>=goalVal?'#1D9E75':'#e8651a';const col=document.createElement('div');col.className='bar-col';col.innerHTML=`<div class="bar-val-label">${v>0?v:''}</div><div class="bar-body" style="height:${h}px;background:${color}"></div><div class="bar-day-label">${day}</div>`;wrap.appendChild(col);});
+  days.forEach((day,i)=>{const v=actuals[i];const h=v>0?Math.round((v/maxVal)*chartH):0;const color=v===0?'#F1EFE8':v>=goalVal?'#1D9E75':'#d9731a';const col=document.createElement('div');col.className='bar-col';col.innerHTML=`<div class="bar-val-label">${v>0?v:''}</div><div class="bar-body" style="height:${h}px;background:${color}"></div><div class="bar-day-label">${day}</div>`;wrap.appendChild(col);});
   wrap.appendChild(goalLineEl);
 }
 
@@ -1048,7 +1046,7 @@ async function loadHistDay(date){
   const{data}=await sb.from('performance').select('*').eq('date',date).neq('name','__goal__');
   if(!data||!data.length){document.getElementById('histContent').innerHTML='<p class="txt-sm" style="padding:8px 0">No data for this day.</p>';return;}
   const goalRow=await sb.from('performance').select('am').eq('date',date).eq('name','__goal__').single();
-  const goal=goalRow.data?goalRow.data.am:200;const total=data.reduce((s,r)=>s+(r.am+r.pm),0);const pct=Math.min(Math.round(total/goal*100),100);const barColor=pct>=100?'#1D9E75':pct>=75?'#BA7517':'#e8651a';
+  const goal=goalRow.data?goalRow.data.am:200;const total=data.reduce((s,r)=>s+(r.am+r.pm),0);const pct=Math.min(Math.round(total/goal*100),100);const barColor=pct>=100?'#1D9E75':pct>=75?'#BA7517':'#d9731a';
   document.getElementById('histContent').innerHTML=`<div style="margin-bottom:14px"><div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">${total} of ${goal} orders &nbsp;·&nbsp; ${pct}% of goal</div><div style="width:100%;height:16px;background:var(--bg);border-radius:var(--radius-md);overflow:hidden"><div style="width:${pct}%;height:100%;background:${barColor};border-radius:var(--radius-md)"></div></div></div><table class="hist-table"><thead><tr><th>Associate</th><th>AM</th><th>PM</th><th>Total</th></tr></thead><tbody>${data.sort((a,b)=>(b.am+b.pm)-(a.am+a.pm)).map(r=>`<tr><td>${r.name}</td><td>${r.am}</td><td>${r.pm}</td><td style="font-weight:700">${r.am+r.pm}</td></tr>`).join('')}<tr class="total-row"><td>Team total</td><td colspan="2"></td><td>${total}</td></tr></tbody></table>`;
 }
 
